@@ -35,4 +35,9 @@ public class UserManagerImpl implements UserManager {
     public List<User> getUserByName(String name) {
         return null;
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        return null;
+    }
 }

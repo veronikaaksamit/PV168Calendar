@@ -14,4 +14,5 @@ public interface UserManager {
     User getUserById(Long id);
     User getUserByEmail(String email);
     List<User> getUserByName(String name);
+    List<User> getAllUsers();
 }
