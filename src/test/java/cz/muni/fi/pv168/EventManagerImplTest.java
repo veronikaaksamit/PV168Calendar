@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -125,12 +126,25 @@ public class EventManagerImplTest {
 
     @Test
     public void listAllEvents(){
+        List<Event> events = newEventList();
+        List<Event> returnedList = eventManager.listAllEvents();
 
+        assertTrue(events.size() == 3);
+        assertTrue(events.size() == returnedList.size());
+        assertDeepEquals(events, returnedList);
     }
 
     @Test
     public void listUserEvents(){
+        List<Event> events = newEventList();
+        //Long userId = new Long(-1);
+        //for(Event e : events){
 
+          //  if(e.getUserId() != new Long(-1)){
+
+           // }
+        //}
+        //eventManager.listUserEvents()
     }
 
     @Test
@@ -200,6 +214,27 @@ public class EventManagerImplTest {
         return event;
     }
 
+    private List<Event> newEventList(){
+        List<Event> events = new ArrayList<Event>();
+        User user1 = newUser("Martin", "martin@email");
+        userManager.createUser(user1);
+        User user2 = newUser("Marek", "marek@email");
+        userManager.createUser(user2);
+
+        Event event1 = newEvent("event1Name", Category.BIRTHDAY, user1);
+        Event event2 = newEvent("event2Name", Category.NAMEDAY, user1);
+        Event event3 = newEvent("event3Name", Category.NAMEDAY, user2);
+
+        eventManager.createEvent(event1);
+        eventManager.createEvent(event2);
+        eventManager.createEvent(event3);
+
+        events.add(event1);
+        events.add(event2);
+        events.add(event3);
+
+        return events;
+    }
 
 
 
