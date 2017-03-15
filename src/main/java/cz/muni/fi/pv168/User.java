@@ -15,10 +15,6 @@ public class User {
     @NotNull
     private String email;
 
-
-
-
-
     public Long getId() {
         return id;
     }

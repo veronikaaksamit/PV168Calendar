@@ -23,7 +23,7 @@ public class EventManagerImpl implements EventManager {
     }
 
     @Override
-    public Event getEventById(Long id) {
+    public Event getEvent(Long id) {
         return null;
     }
 

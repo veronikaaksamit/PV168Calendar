@@ -22,7 +22,7 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User getUser(Long id) {
         return null;
     }
 
