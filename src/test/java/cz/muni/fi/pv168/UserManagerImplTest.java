@@ -43,7 +43,7 @@ public class UserManagerImplTest {
     }
 
     @org.junit.Test(expected = IllegalArgumentException.class)
-    public void createGraveExistingId() {
+    public void createUserExistingId() {
         User user1 = newUser("theBestUser", "theBestUser@muha.ha");
         User user2 = newUser("theBestUser2", "theBestUser2@muha.ha");
         user1.setId(42L);
@@ -138,7 +138,7 @@ public class UserManagerImplTest {
     }
 
     @org.junit.Test(expected = IllegalArgumentException.class) //change exception type
-    public void deleteGraveWithNonExistingId() {
+    public void deleteUserWithNonExistingId() {
         User user = newUser("theBestUser", "theBestUser@muha.ha");
         user.setId(42L);
         manager.deleteUser(user);
