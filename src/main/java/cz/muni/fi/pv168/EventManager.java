@@ -12,7 +12,7 @@ public interface EventManager {
     void updateEvent(Event event);
     void deleteEvent(Event event);
 
-    Event getEventById(Long id);
+    Event getEvent(Long id);
     List<Event> listAllEvents();
     List<Event> listUserEvents(Long id);
 

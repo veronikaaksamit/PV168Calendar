@@ -11,7 +11,7 @@ public interface UserManager {
     void updateUser(User user);
     void deleteUser(User user);
 
-    User getUserById(Long id);
+    User getUser(Long id);
     User getUserByEmail(String email);
     List<User> getUserByName(String name);
     List<User> getAllUsers();
