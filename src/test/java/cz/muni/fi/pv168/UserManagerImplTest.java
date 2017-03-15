@@ -31,7 +31,7 @@ public class UserManagerImplTest {
 
         Long userId = user.getId();
         assertNotNull(userId);
-        User result = manager.getUserById(userId);
+        User result = manager.getUser(userId);
         assertEquals(user, result);
         assertNotSame(user, result);
         assertDeepEquals(user, result);
@@ -61,18 +61,18 @@ public class UserManagerImplTest {
         Long userId = u1.getId();
 
 
-        u1 = manager.getUserById(userId);
+        u1 = manager.getUser(userId);
         u1.setEmail("theBestUser2@muha.ha");
         manager.updateUser(u1);
         assertEquals("theBestUser", u1.getFullName());
         assertEquals("theBestUser2@muha.ha", u1.getEmail());
 
-        u1 = manager.getUserById(userId);
+        u1 = manager.getUser(userId);
         u1.setFullName("theBestUser2");
         manager.updateUser(u1);
         assertEquals("theBestUser2", u1.getFullName());
         assertEquals("theBestUser2@muha.ha", u1.getEmail());
-        assertDeepEquals(u2, manager.getUserById(u2.getId()));
+        assertDeepEquals(u2, manager.getUser(u2.getId()));
 
     }
 
@@ -116,13 +116,13 @@ public class UserManagerImplTest {
         manager.createUser(u1);
         manager.createUser(u2);
 
-        assertNotNull(manager.getUserById(u1.getId()));
-        assertNotNull(manager.getUserById(u2.getId()));
+        assertNotNull(manager.getUser(u1.getId()));
+        assertNotNull(manager.getUser(u2.getId()));
 
         manager.deleteUser(u1);
 
-        assertNull(manager.getUserById(u1.getId()));
-        assertNotNull(manager.getUserById(u2.getId()));
+        assertNull(manager.getUser(u1.getId()));
+        assertNotNull(manager.getUser(u2.getId()));
     }
 
     @org.junit.Test(expected = IllegalArgumentException.class)
