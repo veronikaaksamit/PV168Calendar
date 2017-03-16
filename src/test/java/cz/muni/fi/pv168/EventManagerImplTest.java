@@ -121,7 +121,6 @@ public class EventManagerImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void getEventNull(){
         eventManager.getEvent(null);
-
     }
 
     @Test
@@ -129,40 +128,77 @@ public class EventManagerImplTest {
         List<Event> events = newEventList();
         List<Event> returnedList = eventManager.listAllEvents();
 
-        assertTrue(events.size() == 3);
+        assertTrue(events.size() == 4);
         assertTrue(events.size() == returnedList.size());
         assertDeepEquals(events, returnedList);
     }
 
     @Test
     public void listUserEvents(){
-        List<Event> events = newEventList();
-        //Long userId = new Long(-1);
-        //for(Event e : events){
+        List<Event> events = newEventListOneUser();
+        Event event3 = newEvent("eventName", Category.NAMEDAY);
+        eventManager.createEvent(event3);
+        Event event4 = newEvent("eventName", Category.PERSONAL);
+        eventManager.createEvent(event4);
+        events.add(event3);
+        events.add(event4);
 
-          //  if(e.getUserId() != new Long(-1)){
+        List<Event> returnedEvents = eventManager.listUserEvents(42L);
 
-           // }
-        //}
-        //eventManager.listUserEvents()
+        assertTrue(returnedEvents.size() == 2);
+        assertDeepEquals(events, returnedEvents);
     }
 
     @Test
     public void filterEventByDate(){
+        List<Event> events = newEventList();
+        LocalDateTime from = LocalDateTime.of(2017, 2, 3, 16, 30,0);
+        LocalDateTime to = LocalDateTime.of(2017, 2, 4, 16, 30,0);
 
+        LocalDateTime from2 = LocalDateTime.of(2017, 2, 4, 16, 35,0);
+        LocalDateTime to2 = LocalDateTime.of(2017, 3, 5, 16, 30,0);
+
+        List<Event> okFromTo = eventManager.filterEventByDate(events,from, to);
+        assertTrue(events.size() == 4);
+        assertTrue(events.size() == okFromTo.size());
+        assertDeepEquals(events, okFromTo);
+
+        List<Event> wrongFromTo = eventManager.filterEventByDate(events,from2, to2);
+        assertTrue(wrongFromTo.size() == 0);
+        assertFalse(events.size() == okFromTo.size());
     }
 
     @Test
     public void filterEventByCategory(){
+        List<Event> events = newEventList();
+        List<Event> namedayEvents = eventManager.filterEventByCategory(events,  Category.NAMEDAY);
+        assertTrue(namedayEvents.size() == 2);
+        for(Event event : namedayEvents){
+            assertEquals(event.getCategory(), Category.NAMEDAY);
+        }
 
+        List<Event> birthdayEvents = eventManager.filterEventByCategory(events,  Category.BIRTHDAY);
+        assertTrue(birthdayEvents.size() == 1);
+        assertEquals(birthdayEvents.get(0).getCategory(), Category.BIRTHDAY);
     }
 
     @Test
     public void filterEventByName(){
+        String name= "eventName";
+        List<Event> events = newEventList();
+        List<Event> filteredEvents = eventManager.filterEventByName(events, name);
+        assertTrue(filteredEvents.size() == 2);
+
+        for(Event event : filteredEvents){
+            assertEquals(name, event.getEventName());
+            assertEquals(event.getUserId().longValue(), 45L);
+            assertTrue(event.getCategory() ==  Category.NAMEDAY || event.getCategory() ==  Category.PERSONAL);
+        }
+
 
     }
 
-
+    
     private void assertDeepEquals(Event expected, Event actual) {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getUserId(), actual.getUserId());
@@ -214,24 +250,35 @@ public class EventManagerImplTest {
         return event;
     }
 
-    private List<Event> newEventList(){
+    private List<Event> newEventListOneUser(){
         List<Event> events = new ArrayList<Event>();
         User user1 = newUser("Martin", "martin@email");
+        user1.setId(42L);
         userManager.createUser(user1);
-        User user2 = newUser("Marek", "marek@email");
-        userManager.createUser(user2);
 
         Event event1 = newEvent("event1Name", Category.BIRTHDAY, user1);
         Event event2 = newEvent("event2Name", Category.NAMEDAY, user1);
-        Event event3 = newEvent("event3Name", Category.NAMEDAY, user2);
-
         eventManager.createEvent(event1);
         eventManager.createEvent(event2);
-        eventManager.createEvent(event3);
 
         events.add(event1);
         events.add(event2);
+        return events;
+    }
+
+    private List<Event> newEventList(){
+        List<Event> events = new ArrayList<Event>();
+        events.addAll(newEventListOneUser());
+        User user2 = newUser("Marek", "marek@email");
+        user2.setId(45L);
+        userManager.createUser(user2);
+
+        Event event3 = newEvent("eventName", Category.NAMEDAY, user2);
+        eventManager.createEvent(event3);
+        Event event4 = newEvent("eventName", Category.PERSONAL, user2);
+        eventManager.createEvent(event4);
         events.add(event3);
+        events.add(event4);
 
         return events;
     }
