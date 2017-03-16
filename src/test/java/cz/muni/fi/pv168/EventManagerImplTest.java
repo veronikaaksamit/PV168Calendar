@@ -121,7 +121,7 @@ public class EventManagerImplTest {
     public void deleteEventNull()throws Exception {
         eventManager.deleteEvent(null);
     }
-
+    
     @Test
     public void getEvent()throws Exception{
         Event event = newEvent("event", Category.BIRTHDAY);
@@ -162,6 +162,11 @@ public class EventManagerImplTest {
 
         assertTrue(returnedEvents.size() == 2);
         assertDeepEquals(events, returnedEvents);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void listUserEventsNull() {
+        eventManager.listUserEvents(null);
     }
 
     @Test
