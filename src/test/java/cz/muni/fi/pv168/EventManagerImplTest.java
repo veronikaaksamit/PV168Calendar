@@ -65,6 +65,7 @@ public class EventManagerImplTest {
         Event updatedEvent1 = eventManager.getEvent(event1.getId());
         Event updatedEvent2 = eventManager.getEvent(event2.getId());
 
+        assertNotNull(updatedEvent1);
         assertEquals(event1.getEventName(), updatedEvent1.getEventName());
         assertEquals(event1.getUserId(), updatedEvent1.getUserId());
         assertEquals(event1.getCategory(), updatedEvent1.getCategory());
@@ -72,6 +73,7 @@ public class EventManagerImplTest {
         assertEquals(event1.getEndDate(), updatedEvent1.getEndDate());
         assertEquals(event1.getDescription(), updatedEvent1.getDescription());
 
+        assertNotNull(updatedEvent2);
         assertEquals("eventName", updatedEvent2.getEventName());
         assertEquals(user1.getId(), updatedEvent2.getUserId());
         assertEquals(Category.OTHER, updatedEvent2.getCategory());
@@ -85,6 +87,14 @@ public class EventManagerImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void updateEventNull()throws Exception {
         eventManager.updateEvent(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void updateNotExistingEvent(){
+        Event event = new Event();
+        event.setEventName("name");
+        event.setCategory(Category.BIRTHDAY);
+        eventManager.updateEvent(event);
     }
 
     @Test
@@ -111,7 +121,17 @@ public class EventManagerImplTest {
     public void deleteEventNull()throws Exception {
         eventManager.deleteEvent(null);
     }
-    
+
+    @Test
+    public void getEvent()throws Exception{
+        Event event = newEvent("event", Category.BIRTHDAY);
+        event.setId(42L);
+        eventManager.updateEvent(event);
+
+        Event returnedEvent = eventManager.getEvent(event.getId());
+        assertNotNull(returnedEvent);
+        assertDeepEquals(event, returnedEvent);
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void getEventNull()throws Exception {
