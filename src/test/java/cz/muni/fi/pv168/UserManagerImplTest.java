@@ -38,12 +38,12 @@ public class UserManagerImplTest {
     }
 
     @org.junit.Test(expected = IllegalArgumentException.class)
-    public void createUserNull() {
+    public void createUserNull() throws Exception {
         manager.createUser(null);
     }
 
     @org.junit.Test(expected = IllegalArgumentException.class)
-    public void createUserExistingId() {
+    public void createUserExistingId() throws Exception {
         User user1 = newUser("theBestUser", "theBestUser@muha.ha");
         User user2 = newUser("theBestUser2", "theBestUser2@muha.ha");
         user1.setId(42L);
@@ -82,28 +82,28 @@ public class UserManagerImplTest {
     }
 
     @org.junit.Test(expected = IllegalArgumentException.class) //change exception type
-    public void updateUserWithNonExistingId() {
+    public void updateUserWithNonExistingId() throws Exception {
         User user = newUser("theBestUser", "theBestUser@muha.ha");
         user.setId(42L);
         manager.updateUser(user);
     }
 
     @org.junit.Test(expected = IllegalArgumentException.class)
-    public void updateUserWithNullId() {
+    public void updateUserWithNullId() throws Exception {
         User user = newUser("theBestUser", "theBestUser@muha.ha");
         user.setId(null);
         manager.updateUser(user);
     }
 
     @org.junit.Test(expected = IllegalArgumentException.class) //change exception type
-    public void updateUserNullEmail() {
+    public void updateUserNullEmail() throws Exception {
         User user = newUser("theBestUser", "theBestUser@muha.ha");
         user.setEmail(null);
         manager.updateUser(user);
     }
 
     @org.junit.Test(expected = IllegalArgumentException.class) //change exception type
-    public void updateUserEmptyEmail() {
+    public void updateUserEmptyEmail() throws Exception {
         User user = newUser("theBestUser", "theBestUser@muha.ha");
         user.setEmail("");
         manager.updateUser(user);
@@ -131,21 +131,21 @@ public class UserManagerImplTest {
     }
 
     @org.junit.Test(expected = IllegalArgumentException.class)
-    public void deleteUserWithNullId() {
+    public void deleteUserWithNullId() throws Exception {
         User user = newUser("theBestUser", "theBestUser@muha.ha");
         user.setId(null);
         manager.deleteUser(user);
     }
 
     @org.junit.Test(expected = IllegalArgumentException.class) //change exception type
-    public void deleteUserWithNonExistingId() {
+    public void deleteUserWithNonExistingId() throws Exception {
         User user = newUser("theBestUser", "theBestUser@muha.ha");
         user.setId(42L);
         manager.deleteUser(user);
     }
 
     @org.junit.Test
-    public void getUserByEmailIgnoreCase() {
+    public void getUserByEmailIgnoreCase() throws Exception {
         User u1 = newUser("theBestUser", "theBestUser@muha.ha");
         manager.createUser(u1);
 
@@ -157,7 +157,7 @@ public class UserManagerImplTest {
     }
 
     @org.junit.Test
-    public void getUserByNameIgnoreCase() {
+    public void getUserByNameIgnoreCase() throws Exception {
         User u1 = newUser("theBestUser", "theBestUser@muha.ha");
         User u2 = newUser("theSecondBestUser", "theSecondBestUser@muha.ha");
         manager.createUser(u1);
@@ -173,7 +173,7 @@ public class UserManagerImplTest {
     }
 
     @org.junit.Test
-    public void getAllUsers() {
+    public void getAllUsers() throws Exception {
         User u1 = newUser("theBestUser", "theBestUser@muha.ha");
         User u2 = newUser("theSecondBestUser", "theSecondBestUser@muha.ha");
         manager.createUser(u1);

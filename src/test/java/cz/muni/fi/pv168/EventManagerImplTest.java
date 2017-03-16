@@ -25,7 +25,7 @@ public class EventManagerImplTest {
     }
 
     @Test
-    public void createEvent(){
+    public void createEvent() throws Exception {
         Event event = newEvent("event", Category.BIRTHDAY);
 
         eventManager.createEvent(event);
@@ -38,12 +38,12 @@ public class EventManagerImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createEventNull() {
+    public void createEventNull()throws Exception {
         eventManager.createEvent(null);
     }
 
     @Test
-    public void updateEvent(){
+    public void updateEvent()throws Exception {
         User user1 = newUser("Marek", "email@email.com");
         userManager.createUser(user1);
         Event event1 = newEvent("event1Name", Category.BIRTHDAY, user1);
@@ -83,12 +83,12 @@ public class EventManagerImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void updateEventNull(){
+    public void updateEventNull()throws Exception {
         eventManager.updateEvent(null);
     }
 
     @Test
-    public void deleteEvent(){
+    public void deleteEvent() throws Exception {
         Event event1 = newEvent("event1Name", Category.BIRTHDAY);
         eventManager.createEvent(event1);
         Event event2 = newEvent("event2Name", Category.NAMEDAY);
@@ -108,23 +108,18 @@ public class EventManagerImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void deleteEventNull(){
+    public void deleteEventNull()throws Exception {
         eventManager.deleteEvent(null);
     }
-
-    @Test
-    public void getEvent(){
-
-
-    }
+    
 
     @Test(expected = IllegalArgumentException.class)
-    public void getEventNull(){
+    public void getEventNull()throws Exception {
         eventManager.getEvent(null);
     }
 
     @Test
-    public void listAllEvents(){
+    public void listAllEvents()throws Exception {
         List<Event> events = newEventList();
         List<Event> returnedList = eventManager.listAllEvents();
 
@@ -134,7 +129,7 @@ public class EventManagerImplTest {
     }
 
     @Test
-    public void listUserEvents(){
+    public void listUserEvents()throws Exception {
         List<Event> events = newEventListOneUser();
         Event event3 = newEvent("eventName", Category.NAMEDAY);
         eventManager.createEvent(event3);
@@ -150,7 +145,7 @@ public class EventManagerImplTest {
     }
 
     @Test
-    public void filterEventByDate(){
+    public void filterEventByDate() throws Exception {
         List<Event> events = newEventList();
         LocalDateTime from = LocalDateTime.of(2017, 2, 3, 16, 30,0);
         LocalDateTime to = LocalDateTime.of(2017, 2, 4, 16, 30,0);
@@ -169,7 +164,7 @@ public class EventManagerImplTest {
     }
 
     @Test
-    public void filterEventByCategory(){
+    public void filterEventByCategory() throws Exception {
         List<Event> events = newEventList();
         List<Event> namedayEvents = eventManager.filterEventByCategory(events,  Category.NAMEDAY);
         assertTrue(namedayEvents.size() == 2);
@@ -183,7 +178,7 @@ public class EventManagerImplTest {
     }
 
     @Test
-    public void filterEventByName(){
+    public void filterEventByName()throws Exception {
         String name= "eventName";
         List<Event> events = newEventList();
         List<Event> filteredEvents = eventManager.filterEventByName(events, name);
