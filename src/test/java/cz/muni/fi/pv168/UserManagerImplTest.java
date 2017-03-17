@@ -44,11 +44,9 @@ public class UserManagerImplTest {
 
     @org.junit.Test(expected = IllegalArgumentException.class)
     public void createUserExistingId() throws Exception {
-        User user1 = newUser("theBestUser", "theBestUser@muha.ha");
-        User user2 = newUser("theBestUser2", "theBestUser2@muha.ha");
-        user1.setId(42L);
-        user2.setId(42L);
-        manager.createUser(user2);
+        User user = newUser("theBestUser", "theBestUser@muha.ha");
+        user.setId(42L);
+        manager.createUser(user);
 
     }
 
@@ -64,12 +62,14 @@ public class UserManagerImplTest {
         u1 = manager.getUser(userId);
         u1.setEmail("theBestUser2@muha.ha");
         manager.updateUser(u1);
+        u1 = manager.getUser(userId);
         assertEquals("theBestUser", u1.getFullName());
         assertEquals("theBestUser2@muha.ha", u1.getEmail());
 
         u1 = manager.getUser(userId);
         u1.setFullName("theBestUser2");
         manager.updateUser(u1);
+        u1 = manager.getUser(userId);
         assertEquals("theBestUser2", u1.getFullName());
         assertEquals("theBestUser2@muha.ha", u1.getEmail());
         assertDeepEquals(u2, manager.getUser(u2.getId()));
@@ -98,6 +98,7 @@ public class UserManagerImplTest {
     @org.junit.Test(expected = IllegalArgumentException.class) //change exception type
     public void updateUserNullEmail() throws Exception {
         User user = newUser("theBestUser", "theBestUser@muha.ha");
+        manager.createUser(user);
         user.setEmail(null);
         manager.updateUser(user);
     }

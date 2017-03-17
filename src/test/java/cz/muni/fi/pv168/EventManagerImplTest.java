@@ -6,6 +6,8 @@ import org.junit.Test;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -15,6 +17,8 @@ import static org.junit.Assert.*;
  */
 public class EventManagerImplTest {
 
+    private static final Comparator<Event> EVENT_ID_COMPARATOR =
+            (e1, e2) -> e1.getId().compareTo(e2.getId());
     private EventManager eventManager;
     private UserManager userManager;
 
@@ -66,12 +70,6 @@ public class EventManagerImplTest {
         Event updatedEvent2 = eventManager.getEvent(event2.getId());
 
         assertNotNull(updatedEvent1);
-        assertEquals(event1.getEventName(), updatedEvent1.getEventName());
-        assertEquals(event1.getUserId(), updatedEvent1.getUserId());
-        assertEquals(event1.getCategory(), updatedEvent1.getCategory());
-        assertEquals(event1.getStartDate(), updatedEvent1.getStartDate());
-        assertEquals(event1.getEndDate(), updatedEvent1.getEndDate());
-        assertEquals(event1.getDescription(), updatedEvent1.getDescription());
 
         assertNotNull(updatedEvent2);
         assertEquals("eventName", updatedEvent2.getEventName());
@@ -90,7 +88,7 @@ public class EventManagerImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void updateNotExistingEvent(){
+    public void updateNotExistingEvent() throws Exception {
         Event event = new Event();
         event.setEventName("name");
         event.setCategory(Category.BIRTHDAY);
@@ -125,9 +123,6 @@ public class EventManagerImplTest {
     @Test
     public void getEvent()throws Exception{
         Event event = newEvent("event", Category.BIRTHDAY);
-        event.setId(42L);
-        eventManager.updateEvent(event);
-
         Event returnedEvent = eventManager.getEvent(event.getId());
         assertNotNull(returnedEvent);
         assertDeepEquals(event, returnedEvent);
@@ -150,7 +145,9 @@ public class EventManagerImplTest {
 
     @Test
     public void listUserEvents()throws Exception {
-        List<Event> events = newEventListOneUser();
+        User user1 = newUser("Martin", "martin@email");
+        userManager.createUser(user1);
+        List<Event> events = newEventListOneUser(user1);
         Event event3 = newEvent("eventName", Category.NAMEDAY);
         eventManager.createEvent(event3);
         Event event4 = newEvent("eventName", Category.PERSONAL);
@@ -158,7 +155,7 @@ public class EventManagerImplTest {
         events.add(event3);
         events.add(event4);
 
-        List<Event> returnedEvents = eventManager.listUserEvents(42L);
+        List<Event> returnedEvents = eventManager.listUserEvents(user1.getId());
 
         assertTrue(returnedEvents.size() == 2);
         assertDeepEquals(events, returnedEvents);
@@ -211,7 +208,6 @@ public class EventManagerImplTest {
 
         for(Event event : filteredEvents){
             assertEquals(name, event.getEventName());
-            assertEquals(event.getUserId().longValue(), 45L);
             assertTrue(event.getCategory() ==  Category.NAMEDAY || event.getCategory() ==  Category.PERSONAL);
         }
 
@@ -230,7 +226,11 @@ public class EventManagerImplTest {
     }
 
     private void assertDeepEquals(List<Event> expected, List<Event> actual){
+
         assertTrue(expected.size() == actual.size());
+
+        Collections.sort(expected, EVENT_ID_COMPARATOR);
+        Collections.sort(actual, EVENT_ID_COMPARATOR);
 
         for( int i = 0; i< expected.size(); i++){
             assertDeepEquals(expected.get(i), actual.get(i));
@@ -270,14 +270,11 @@ public class EventManagerImplTest {
         return event;
     }
 
-    private List<Event> newEventListOneUser(){
+    private List<Event> newEventListOneUser(User user){
         List<Event> events = new ArrayList<Event>();
-        User user1 = newUser("Martin", "martin@email");
-        user1.setId(42L);
-        userManager.createUser(user1);
 
-        Event event1 = newEvent("event1Name", Category.BIRTHDAY, user1);
-        Event event2 = newEvent("event2Name", Category.NAMEDAY, user1);
+        Event event1 = newEvent("event1Name", Category.BIRTHDAY, user);
+        Event event2 = newEvent("event2Name", Category.NAMEDAY, user);
         eventManager.createEvent(event1);
         eventManager.createEvent(event2);
 
@@ -288,9 +285,10 @@ public class EventManagerImplTest {
 
     private List<Event> newEventList(){
         List<Event> events = new ArrayList<Event>();
-        events.addAll(newEventListOneUser());
+        User user1 = newUser("Martin", "martin@email");
+        userManager.createUser(user1);
+        events.addAll(newEventListOneUser(user1));
         User user2 = newUser("Marek", "marek@email");
-        user2.setId(45L);
         userManager.createUser(user2);
 
         Event event3 = newEvent("eventName", Category.NAMEDAY, user2);
