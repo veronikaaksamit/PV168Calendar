@@ -1,6 +1,7 @@
 package cz.muni.fi.pv168;
 
 import com.sun.istack.internal.NotNull;
+import org.omg.CORBA.Environment;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -89,5 +90,35 @@ public class Event {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" + id + ": " + System.lineSeparator()
+                + userId + ", " + System.lineSeparator()
+                + eventName + ", " + System.lineSeparator()
+                + category + ", " + System.lineSeparator()
+                + startDate + ", " + System.lineSeparator()
+                + endDate + ", " + System.lineSeparator()
+                + description +"}";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null) return false;
+        if(obj.getClass() != this.getClass()) return false;
+
+        final Event other = (Event) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
     }
 }
