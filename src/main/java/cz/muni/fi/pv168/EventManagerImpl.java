@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168;
 
+import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,6 +8,14 @@ import java.util.List;
  * Created by xaksamit on 10.3.17.
  */
 public class EventManagerImpl implements EventManager {
+
+    private final DataSource dataSource;
+
+    public EventManagerImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+
     @Override
     public void createEvent(Event event) {
 

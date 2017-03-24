@@ -1,11 +1,8 @@
 package cz.muni.fi.pv168;
 
 import com.sun.istack.internal.NotNull;
-import org.omg.CORBA.Environment;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by xaksamit on 10.3.17.
@@ -29,12 +26,7 @@ public class Event {
 
     private String description;
 
-
-
-
-
-
-
+    
 
     public Long getId() {
         return id;
