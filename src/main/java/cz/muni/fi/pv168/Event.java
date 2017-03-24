@@ -26,7 +26,7 @@ public class Event {
 
     private String description;
 
-    
+
 
     public Long getId() {
         return id;
