@@ -9,5 +9,21 @@ public enum Category {
     NAMEDAY,
     PERSONAL,
     WORK,
-    OTHER
+    OTHER;
+
+    public static Category fromInteger(int x) {
+        switch(x) {
+            case 0:
+                return BIRTHDAY;
+            case 1:
+                return NAMEDAY;
+            case 2:
+                return PERSONAL;
+            case 3:
+                return WORK;
+            case 4:
+                return OTHER;
+        }
+        return null;
+    }
 }
