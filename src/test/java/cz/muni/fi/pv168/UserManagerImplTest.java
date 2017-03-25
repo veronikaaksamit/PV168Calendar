@@ -2,12 +2,14 @@ package cz.muni.fi.pv168;
 
 import org.junit.Test;
 
+import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * Created by xplacht on 10.3.17.
@@ -21,7 +23,7 @@ public class UserManagerImplTest {
 
     @org.junit.Before
     public void setUp() throws Exception {
-        manager = new UserManagerImpl();
+        manager = new UserManagerImpl(mock(DataSource.class));
     }
 
     @org.junit.Test

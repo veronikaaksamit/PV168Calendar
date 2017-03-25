@@ -3,6 +3,7 @@ package cz.muni.fi.pv168;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
@@ -10,7 +11,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by xaksamit on 10.3.17.
@@ -24,8 +27,8 @@ public class EventManagerImplTest {
 
     @Before
     public void setUp() throws Exception {
-        eventManager = new EventManagerImpl();
-        userManager = new UserManagerImpl();
+        eventManager = new EventManagerImpl(mock(DataSource.class));
+        userManager = new UserManagerImpl(mock(DataSource.class));
     }
 
     @Test
