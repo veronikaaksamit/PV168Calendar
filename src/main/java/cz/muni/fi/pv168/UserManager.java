@@ -31,7 +31,7 @@ public interface UserManager {
     /**
      * Finds user with specific id
      * @exception IllegalArgumentException
-     * @param id with which User shoud be deleted
+     * @param id with which User should be deleted
      * @return User with specific id
      */
     User getUser(Long id);

@@ -7,7 +7,6 @@ import com.sun.istack.internal.NotNull;
  */
 public class User {
 
-    @NotNull //really?
     private Long id;
 
     private String fullName;
