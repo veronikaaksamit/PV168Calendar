@@ -22,7 +22,7 @@ public class UserManagerImpl implements UserManager {
     @Override
     public void createUser(User user) {
         try(Connection conn = dataSource.getConnection()) {
-            try(PreparedStatement ps = conn.prepareStatement("INSERT INTO USER(FULLNAME, EMAIL) VALUES (?,?)",
+            try(PreparedStatement ps = conn.prepareStatement("INSERT INTO USERS (FULLNAME, EMAIL) VALUES (?,?)",
                                                              PreparedStatement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1,user.getFullName());
                 ps.setString(2,user.getEmail());
@@ -43,7 +43,7 @@ public class UserManagerImpl implements UserManager {
     @Override
     public void updateUser(User user) {
         try(Connection conn = dataSource.getConnection()) {
-            try(PreparedStatement ps = conn.prepareStatement("UPDATE USER SET FULLANEM=?, EMAIL=? WHERE ID = ?")) {
+            try(PreparedStatement ps = conn.prepareStatement("UPDATE USERS SET FULLANEM=?, EMAIL=? WHERE ID = ?")) {
                 ps.setString(1, user.getFullName());
                 ps.setString(2, user.getEmail());
                 ps.setLong(3, user.getId());
@@ -62,7 +62,7 @@ public class UserManagerImpl implements UserManager {
     public void deleteUser(User user) {
 
         try(Connection conn = dataSource.getConnection()) {
-            try(PreparedStatement ps = conn.prepareStatement("DELETE FROM USER WHERE ID = ?")) {
+            try(PreparedStatement ps = conn.prepareStatement("DELETE FROM USERS WHERE ID = ?")) {
                 ps.setLong(1, user.getId());
                 int n = ps.executeUpdate();
                 if(n != 1) {
@@ -77,7 +77,7 @@ public class UserManagerImpl implements UserManager {
     @Override
     public User getUser(Long id) {
         try(Connection conn = dataSource.getConnection()) {
-            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM USER WHERE ID = ?")) {
+            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM USERS WHERE ID = ?")) {
                 ps.setLong(1, id);
                 getUserFromQuery(ps);
             }
@@ -90,7 +90,7 @@ public class UserManagerImpl implements UserManager {
     @Override
     public User getUserByEmail(String email) {
         try(Connection conn = dataSource.getConnection()) {
-            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM USER WHERE EMAIL = ?")) {
+            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM USERS WHERE EMAIL = ?")) {
                 ps.setString(1, email);
                 getUserFromQuery(ps);
 
@@ -104,7 +104,7 @@ public class UserManagerImpl implements UserManager {
     @Override
     public List<User> getUserByName(String name) {
         try(Connection conn = dataSource.getConnection()) {
-            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM USER WHERE FULLNAME = ?")) {
+            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM USERS WHERE FULLNAME = ?")) {
                 ps.setString(1, name);
                 return getUserListFromQuery(ps);
             }
@@ -117,7 +117,7 @@ public class UserManagerImpl implements UserManager {
     @Override
     public List<User> getAllUsers() {
         try(Connection conn = dataSource.getConnection()) {
-            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM USER")) {
+            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM USERS")) {
                 return getUserListFromQuery(ps);
             }
         } catch (SQLException ex) {

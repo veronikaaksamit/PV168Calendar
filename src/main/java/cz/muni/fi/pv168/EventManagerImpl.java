@@ -26,17 +26,17 @@ public class EventManagerImpl implements EventManager {
     public void createEvent(Event event) {
         try(Connection conn = dataSource.getConnection()){
             try(PreparedStatement ps = conn.prepareStatement
-                    ("INSERT INTO EVENT (USERID, EVENTNAME, DESCRIPTION, STARTDATE, ENDDATE, CATEGORY) VALUES(?,?,?,?,?,?)",
+                    ("INSERT INTO EVENTS (USERID, EVENTNAME, DESCRIPTION, STARTDATE, ENDDATE, CATEGORY) VALUES(?,?,?,?,?,?)",
                             PreparedStatement.RETURN_GENERATED_KEYS)){
                 ps.setLong(1, event.getUserId());
                 ps.setString(2, event.getEventName());
                 ps.setString(3, event.getDescription());
 
                 LocalDateTime startDate = event.getStartDate();
-                ps.setObject(4, startDate == null ? null : startDate.toString(), Types.TIMESTAMP);
+                ps.setObject(4, startDate == null ? null : Timestamp.valueOf(startDate), Types.TIMESTAMP);
 
                 LocalDateTime endDate = event.getEndDate();
-                ps.setObject(5, endDate == null ? null : endDate.toString(), Types.TIMESTAMP);
+                ps.setObject(5, endDate == null ? null : Timestamp.valueOf(endDate), Types.TIMESTAMP);
 
                 ps.setInt(6, event.getCategory().ordinal());
                 ps.executeUpdate();
@@ -59,7 +59,7 @@ public class EventManagerImpl implements EventManager {
     public void updateEvent(Event event) {
         try(Connection conn = dataSource.getConnection()){
             try(PreparedStatement ps = conn.prepareStatement
-                    ("UPDATE EVENT SET USERID=?, EVENTNAME=?, DESCRIPTION=?, STARTDATE=?, ENDDATE=?, CATEGORY=? WHERE id = ?")){
+                    ("UPDATE EVENTS SET USERID=?, EVENTNAME=?, DESCRIPTION=?, STARTDATE=?, ENDDATE=?, CATEGORY=? WHERE id = ?")){
                 ps.setLong(7, event.getId());
 
                 ps.setLong(1, event.getUserId());
@@ -67,10 +67,10 @@ public class EventManagerImpl implements EventManager {
                 ps.setString(3, event.getDescription());
 
                 LocalDateTime startDate = event.getStartDate();
-                ps.setObject(4, startDate == null ? null : startDate.toString(), Types.TIMESTAMP);
+                ps.setObject(4, startDate == null ? null : Timestamp.valueOf(startDate), Types.TIMESTAMP);
 
                 LocalDateTime endDate = event.getEndDate();
-                ps.setObject(5, endDate == null ? null : endDate.toString(), Types.TIMESTAMP);
+                ps.setObject(5, endDate == null ? null : Timestamp.valueOf(endDate), Types.TIMESTAMP);
 
                 ps.setInt(6, event.getCategory().ordinal());
                 int n = ps.executeUpdate();
@@ -87,7 +87,7 @@ public class EventManagerImpl implements EventManager {
     @Override
     public void deleteEvent(Event event) {
         try(Connection conn = dataSource.getConnection()){
-            try(PreparedStatement ps = conn.prepareStatement("DELETE FROM EVENT WHERE id = ?")){
+            try(PreparedStatement ps = conn.prepareStatement("DELETE FROM EVENTS WHERE id = ?")){
                 ps.setLong(1,event.getId());
                 int n = ps.executeUpdate();
                 if (n != 1) {
@@ -104,7 +104,7 @@ public class EventManagerImpl implements EventManager {
     public Event getEvent(Long id) {
         Event result = new Event();
         try(Connection conn = dataSource.getConnection()){
-            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM EVENT WHERE ID = ?")){
+            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM EVENTS WHERE ID = ?")){
                 ps.setLong(1, id);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
@@ -131,7 +131,7 @@ public class EventManagerImpl implements EventManager {
     @Override
     public List<Event> listAllEvents() {
         try(Connection conn = dataSource.getConnection()){
-            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM EVENT")){
+            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM EVENTS")){
                 try(ResultSet rs = ps.executeQuery()){
                     List<Event> events = new ArrayList<>();
                     while(rs.next()){
@@ -160,7 +160,7 @@ public class EventManagerImpl implements EventManager {
     public List<Event> listUserEvents(Long id) {
         List<Event> userEvents = new ArrayList<>();
         try(Connection conn = dataSource.getConnection()){
-            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM EVENT WHERE USERID = ?")){
+            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM EVENTS WHERE USERID = ?")){
                 ps.setLong(1, id);
                 try (ResultSet rs = ps.executeQuery()) {
                     while(rs.next()){
