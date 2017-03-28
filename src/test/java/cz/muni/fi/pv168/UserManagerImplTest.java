@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168;
 
+import cz.muni.fi.pv168.common.DBUtils;
 import org.junit.Test;
 
 import javax.sql.DataSource;
@@ -17,13 +18,14 @@ import static org.mockito.Mockito.mock;
 public class UserManagerImplTest {
 
     private UserManager manager;
-
+    private DataSource dataSource;
     private static final Comparator<User> USER_ID_COMPARATOR =
             (u1, u2) -> u1.getId().compareTo(u2.getId());
 
     @org.junit.Before
     public void setUp() throws Exception {
-        manager = new UserManagerImpl(mock(DataSource.class));
+        dataSource = DBUtils.initDB();
+        manager = new UserManagerImpl(dataSource);
     }
 
     @org.junit.Test
@@ -50,6 +52,29 @@ public class UserManagerImplTest {
         user.setId(42L);
         manager.createUser(user);
 
+    }
+
+    @org.junit.Test(expected = IllegalArgumentException.class)
+    public void createUserExistingEmail() throws Exception {
+        User user = newUser("theBestUser", "theBestUser@muha.ha");
+        manager.createUser(user);
+        user.setId(null);
+        manager.createUser(user);
+
+    }
+
+    @org.junit.Test(expected = IllegalArgumentException.class)
+    public void createUserNullEmail() throws Exception {
+        User user = newUser("theBestUser", "theBestUser@muha.ha");
+        user.setEmail(null);
+        manager.createUser(user);
+    }
+
+    @org.junit.Test(expected = IllegalArgumentException.class)
+    public void createUserEmptyEmail() throws Exception {
+        User user = newUser("theBestUser", "theBestUser@muha.ha");
+        user.setEmail("");
+        manager.createUser(user);
     }
 
     @org.junit.Test
@@ -97,7 +122,7 @@ public class UserManagerImplTest {
         manager.updateUser(user);
     }
 
-    @org.junit.Test(expected = IllegalArgumentException.class) //change exception type
+    @org.junit.Test(expected = IllegalArgumentException.class)
     public void updateUserNullEmail() throws Exception {
         User user = newUser("theBestUser", "theBestUser@muha.ha");
         manager.createUser(user);
@@ -105,7 +130,7 @@ public class UserManagerImplTest {
         manager.updateUser(user);
     }
 
-    @org.junit.Test(expected = IllegalArgumentException.class) //change exception type
+    @org.junit.Test(expected = IllegalArgumentException.class)
     public void updateUserEmptyEmail() throws Exception {
         User user = newUser("theBestUser", "theBestUser@muha.ha");
         user.setEmail("");
@@ -140,7 +165,7 @@ public class UserManagerImplTest {
         manager.deleteUser(user);
     }
 
-    @org.junit.Test(expected = IllegalArgumentException.class) //change exception type
+    @org.junit.Test(expected = IllegalArgumentException.class)
     public void deleteUserWithNonExistingId() throws Exception {
         User user = newUser("theBestUser", "theBestUser@muha.ha");
         user.setId(42L);
@@ -151,7 +176,6 @@ public class UserManagerImplTest {
     public void getUserByEmailIgnoreCase() throws Exception {
         User u1 = newUser("theBestUser", "theBestUser@muha.ha");
         manager.createUser(u1);
-
         User result = manager.getUserByEmail("thebestuser@muha.ha");
 
         assertEquals(u1, result);

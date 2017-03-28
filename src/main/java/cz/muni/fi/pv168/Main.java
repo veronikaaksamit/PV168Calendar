@@ -1,17 +1,13 @@
 package cz.muni.fi.pv168;
 
 import cz.muni.fi.pv168.common.DBUtils;
-import org.apache.commons.dbcp2.BasicDataSource;
 
+
+import javax.sql.DataSource;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Created by xaksamit on 24.3.17.
@@ -20,19 +16,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException, SQLException{
 
-        Properties dbConf = new Properties();
-
-        dbConf.load(Main.class.getResourceAsStream("/dbConf.properties"));
-
-
-        BasicDataSource ds = new BasicDataSource();
-        ds.setUrl(dbConf.getProperty("jdbc.url"));
-        ds.setUsername(dbConf.getProperty("jdbc.user"));
-        ds.setPassword(dbConf.getProperty("jdbc.password"));
-
-        //DBUtils.executeSqlScript(ds, Main.class.getResource("/dropTables.sql"));
-        DBUtils.executeSqlScript(ds, Main.class.getResource("/createTables.sql"));
-
+        DataSource ds = DBUtils.initDB();
 
         UserManager userManager = new UserManagerImpl(ds);
 
