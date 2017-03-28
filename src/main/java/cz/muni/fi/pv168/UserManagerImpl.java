@@ -59,7 +59,7 @@ public class UserManagerImpl implements UserManager {
         try(Connection conn = dataSource.getConnection()) {
             try(PreparedStatement ps = conn.prepareStatement("UPDATE USERS SET FULLNAME=?, EMAIL=? WHERE ID = ?")) {
                 ps.setString(1, user.getFullName());
-                ps.setString(2, user.getEmail());
+                ps.setString(2, user.getEmail().toLowerCase());
                 ps.setLong(3, user.getId());
                 int n = ps.executeUpdate();
                 if(n == 0) {

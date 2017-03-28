@@ -28,6 +28,12 @@ public class UserManagerImplTest {
         manager = new UserManagerImpl(dataSource);
     }
 
+    @org.junit.After
+    public void cleanUp() throws Exception {
+        DBUtils.executeSqlScript(dataSource, Main.class.getResource("/dropTables.sql"));
+        dataSource = null;
+    }
+
     @org.junit.Test
     public void createUser() throws Exception {
         User user = newUser("theBestUser", "theBestUser@muha.ha");
@@ -91,14 +97,14 @@ public class UserManagerImplTest {
         manager.updateUser(u1);
         u1 = manager.getUser(userId);
         assertEquals("theBestUser", u1.getFullName());
-        assertEquals("theBestUser2@muha.ha", u1.getEmail());
+        assertEquals("theBestUser2@muha.ha".toLowerCase(), u1.getEmail());
 
         u1 = manager.getUser(userId);
         u1.setFullName("theBestUser2");
         manager.updateUser(u1);
         u1 = manager.getUser(userId);
         assertEquals("theBestUser2", u1.getFullName());
-        assertEquals("theBestUser2@muha.ha", u1.getEmail());
+        assertEquals("theBestUser2@muha.ha".toLowerCase(), u1.getEmail());
         assertDeepEquals(u2, manager.getUser(u2.getId()));
 
     }

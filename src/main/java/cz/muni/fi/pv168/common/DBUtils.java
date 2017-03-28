@@ -66,7 +66,6 @@ public class DBUtils {
         ds.setUsername(dbConf.getProperty("jdbc.user"));
         ds.setPassword(dbConf.getProperty("jdbc.password"));
 
-        //DBUtils.executeSqlScript(ds, Main.class.getResource("/dropTables.sql"));
         DBUtils.executeSqlScript(ds, Main.class.getResource("/createTables.sql"));
         return ds;
     }
