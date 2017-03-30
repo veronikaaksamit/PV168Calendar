@@ -1,14 +1,10 @@
 package cz.muni.fi.pv168;
 
-import org.apache.derby.client.am.DateTime;
-import org.apache.derby.client.am.SqlException;
-
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by xaksamit on 10.3.17.
@@ -24,6 +20,15 @@ public class EventManagerImpl implements EventManager {
 
     @Override
     public void createEvent(Event event) {
+
+        if(event == null) throw new IllegalArgumentException("creating event is null");
+        if(event.getId() != null) throw new IllegalArgumentException("creating event with existing id");
+        if(event.getCategory() == null) throw new IllegalArgumentException("creating event category is null");
+        if(event.getEventName().isEmpty()) throw new IllegalArgumentException("creating eventName is empty");
+        if(event.getStartDate() == null) throw new IllegalArgumentException("creating event with startDate null");
+        if(event.getEndDate() == null) throw new IllegalArgumentException("creating event with endDate null");
+        if(event.getUserId() == null) throw new IllegalArgumentException("creating event with userId null");
+
         try(Connection conn = dataSource.getConnection()){
             try(PreparedStatement ps = conn.prepareStatement
                     ("INSERT INTO EVENTS (USERID, EVENTNAME, DESCRIPTION, STARTDATE, ENDDATE, CATEGORY) VALUES(?,?,?,?,?,?)",
@@ -57,6 +62,15 @@ public class EventManagerImpl implements EventManager {
 
     @Override
     public void updateEvent(Event event) {
+
+        if(event == null) throw new IllegalArgumentException("updating event is null");
+        if(event.getId() == null) throw new IllegalArgumentException("updating event with id null");
+        if(event.getCategory() == null) throw new IllegalArgumentException("updating event with category null");
+        if(event.getEventName().isEmpty()) throw new IllegalArgumentException("updating eventName is empty");
+        if(event.getStartDate() == null) throw new IllegalArgumentException("updating event with startDate null");
+        if(event.getEndDate() == null) throw new IllegalArgumentException("updating event with endDate null");
+        if(event.getUserId() == null) throw new IllegalArgumentException("updating event with userId null");
+
         try(Connection conn = dataSource.getConnection()){
             try(PreparedStatement ps = conn.prepareStatement
                     ("UPDATE EVENTS SET USERID=?, EVENTNAME=?, DESCRIPTION=?, STARTDATE=?, ENDDATE=?, CATEGORY=? WHERE id = ?")){
@@ -86,6 +100,9 @@ public class EventManagerImpl implements EventManager {
 
     @Override
     public void deleteEvent(Event event) {
+
+        if(event.getId() ==  null) throw new IllegalArgumentException("deleting event with id null");
+
         try(Connection conn = dataSource.getConnection()){
             try(PreparedStatement ps = conn.prepareStatement("DELETE FROM EVENTS WHERE id = ?")){
                 ps.setLong(1,event.getId());
@@ -103,6 +120,8 @@ public class EventManagerImpl implements EventManager {
     @Override
     public Event getEvent(Long id) {
         Event result = new Event();
+        if(id == null) throw new IllegalArgumentException("getting event with id null");
+
         try(Connection conn = dataSource.getConnection()){
             try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM EVENTS WHERE ID = ?")){
                 ps.setLong(1, id);
@@ -132,55 +151,27 @@ public class EventManagerImpl implements EventManager {
     public List<Event> listAllEvents() {
         try(Connection conn = dataSource.getConnection()){
             try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM EVENTS")){
-                try(ResultSet rs = ps.executeQuery()){
-                    List<Event> events = new ArrayList<>();
-                    while(rs.next()){
-                        Event e = new Event();
-                        e.setId(rs.getLong(1));
-                        e.setUserId(rs.getLong(2));
-                        e.setEventName(rs.getString(3));
-                        e.setDescription(rs.getString(4));
-                        e.setStartDate(rs.getTimestamp(5).toLocalDateTime());
-                        e.setEndDate(rs.getTimestamp(6).toLocalDateTime());
-                        e.setCategory(Category.fromInteger(rs.getInt(7)));
-                        events.add(e);
-                    }
-                    return events;
-                }
+                return getEventsListFromQuery(ps);
             }
         }
         catch(SQLException ex){
-            //throw Exception("Could not select all Events", ex); //NEED TO CORRECT
-            System.out.println("Could not select all Events");
+            ex.printStackTrace();
         }
         return null;
     }
 
     @Override
     public List<Event> listUserEvents(Long id) {
-        List<Event> userEvents = new ArrayList<>();
         try(Connection conn = dataSource.getConnection()){
             try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM EVENTS WHERE USERID = ?")){
                 ps.setLong(1, id);
-                try (ResultSet rs = ps.executeQuery()) {
-                    while(rs.next()){
-                        Event e = new Event();
-                        e.setId(rs.getLong(1));
-                        e.setUserId(rs.getLong(2));
-                        e.setEventName(rs.getString(3));
-                        e.setDescription(rs.getString(4));
-                        e.setStartDate(rs.getTimestamp(5).toLocalDateTime());
-                        e.setEndDate(rs.getTimestamp(6).toLocalDateTime());
-                        e.setCategory(Category.fromInteger(rs.getInt(7)));
-                        userEvents.add(e);
-                    }
-                }
+                return getEventsListFromQuery(ps);
             }
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -214,6 +205,30 @@ public class EventManagerImpl implements EventManager {
             if(e.getEventName().equals(eventName)){
                 events.add(e);
             }
+        }
+        return events;
+    }
+
+
+    private List<Event> getEventsListFromQuery(PreparedStatement ps) {
+        List<Event> events = new ArrayList<>();
+        try(ResultSet rs = ps.executeQuery()){
+            while(rs.next()){
+                Event e = new Event();
+                e.setId(rs.getLong(1));
+                e.setUserId(rs.getLong(2));
+                e.setEventName(rs.getString(3));
+                e.setDescription(rs.getString(4));
+                e.setStartDate(rs.getTimestamp(5).toLocalDateTime());
+                e.setEndDate(rs.getTimestamp(6).toLocalDateTime());
+                e.setCategory(Category.fromInteger(rs.getInt(7)));
+                events.add(e);
+            }
+            return events;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Could not select all Events");
         }
         return events;
     }
