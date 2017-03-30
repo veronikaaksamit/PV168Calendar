@@ -1,5 +1,7 @@
 package cz.muni.fi.pv168;
 
+import cz.muni.fi.pv168.common.DBUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,18 +24,29 @@ public class EventManagerImplTest {
 
     private static final Comparator<Event> EVENT_ID_COMPARATOR =
             (e1, e2) -> e1.getId().compareTo(e2.getId());
+
     private EventManager eventManager;
     private UserManager userManager;
 
+    private DataSource dataSource;
+
     @Before
     public void setUp() throws Exception {
-        eventManager = new EventManagerImpl(mock(DataSource.class));
-        userManager = new UserManagerImpl(mock(DataSource.class));
+        dataSource = DBUtils.initDB();
+        eventManager = new EventManagerImpl(dataSource);
+        userManager = new UserManagerImpl(dataSource);
+    }
+
+    @After
+    public void cleanUp() throws Exception{
+        DBUtils.executeSqlScript(dataSource, Main.class.getResource("/dropTables.sql"));
     }
 
     @Test
     public void createEvent() throws Exception {
-        Event event = newEvent("event", Category.BIRTHDAY);
+        User user1 = newUser("Marek", "email");
+        userManager.createUser(user1);
+        Event event = newEvent("event", Category.BIRTHDAY, user1);
 
         eventManager.createEvent(event);
         Long eventId = event.getId();
@@ -100,9 +113,11 @@ public class EventManagerImplTest {
 
     @Test
     public void deleteEvent() throws Exception {
-        Event event1 = newEvent("event1Name", Category.BIRTHDAY);
+        User user1 = newUser("Marek", "email");
+        userManager.createUser(user1);
+        Event event1 = newEvent("event1Name", Category.BIRTHDAY, user1);
         eventManager.createEvent(event1);
-        Event event2 = newEvent("event2Name", Category.NAMEDAY);
+        Event event2 = newEvent("event2Name", Category.NAMEDAY, user1);
         eventManager.createEvent(event2);
 
         List<Event> events = eventManager.listAllEvents();
@@ -125,7 +140,12 @@ public class EventManagerImplTest {
     
     @Test
     public void getEvent()throws Exception{
-        Event event = newEvent("event", Category.BIRTHDAY);
+        User user1 = newUser("Marek", "email");
+        userManager.createUser(user1);
+
+        Event event = newEvent("event", Category.BIRTHDAY, user1);
+        eventManager.createEvent(event);
+
         Event returnedEvent = eventManager.getEvent(event.getId());
         assertNotNull(returnedEvent);
         assertDeepEquals(event, returnedEvent);
@@ -151,12 +171,15 @@ public class EventManagerImplTest {
         User user1 = newUser("Martin", "martin@email");
         userManager.createUser(user1);
         List<Event> events = newEventListOneUser(user1);
-        Event event3 = newEvent("eventName", Category.NAMEDAY);
+
+
+        User user2 = newUser("Marcel", "marcel@email");
+        userManager.createUser(user2);
+        Event event3 = newEvent("eventName", Category.NAMEDAY, user2);
+        Event event4 = newEvent("eventName", Category.PERSONAL, user2);
+
         eventManager.createEvent(event3);
-        Event event4 = newEvent("eventName", Category.PERSONAL);
         eventManager.createEvent(event4);
-        events.add(event3);
-        events.add(event4);
 
         List<Event> returnedEvents = eventManager.listUserEvents(user1.getId());
 
@@ -251,20 +274,6 @@ public class EventManagerImplTest {
         Event event = new Event();
 
         event.setUserId(user.getId());
-        event.setEventName(name);
-        event.setCategory(category);
-        event.setStartDate(LocalDateTime.of(2017, 2, 3, 16, 30,0));
-        event.setEndDate(LocalDateTime.of(2017, 2, 4, 16, 30,0));
-        event.setDescription("description");
-        return event;
-    }
-
-    private Event newEvent(String name, Category category) {
-        User user1 = newUser("Marek", "email");
-        userManager.createUser(user1);
-        Event event = new Event();
-
-        event.setUserId(user1.getId());
         event.setEventName(name);
         event.setCategory(category);
         event.setStartDate(LocalDateTime.of(2017, 2, 3, 16, 30,0));

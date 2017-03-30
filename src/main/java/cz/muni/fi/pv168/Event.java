@@ -20,8 +20,10 @@ public class Event {
     @NotNull
     private Category category;
 
+    @NotNull
     private LocalDateTime startDate;
 
+    @NotNull
     private LocalDateTime endDate;
 
     private String description;

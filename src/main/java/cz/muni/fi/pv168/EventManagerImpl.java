@@ -101,6 +101,7 @@ public class EventManagerImpl implements EventManager {
     @Override
     public void deleteEvent(Event event) {
 
+        if(event == null)throw new IllegalArgumentException("deleting null event");
         if(event.getId() ==  null) throw new IllegalArgumentException("deleting event with id null");
 
         try(Connection conn = dataSource.getConnection()){
@@ -162,6 +163,7 @@ public class EventManagerImpl implements EventManager {
 
     @Override
     public List<Event> listUserEvents(Long id) {
+        if(id == null) throw new IllegalArgumentException("selecting userEvents with userId null");
         try(Connection conn = dataSource.getConnection()){
             try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM EVENTS WHERE USERID = ?")){
                 ps.setLong(1, id);
