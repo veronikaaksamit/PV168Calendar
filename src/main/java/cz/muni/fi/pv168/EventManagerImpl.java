@@ -180,11 +180,12 @@ public class EventManagerImpl implements EventManager {
     public List<Event> filterEventByDate(List<Event> list, LocalDateTime from, LocalDateTime to) {
         List<Event> events = new ArrayList<>();
         for (Event e: list) {
-
-            //ERROR NEED TO IMPLEMENT
-           // if(e.getStartDate().){
-              //  events.add(e);
-            //}
+            if(e.getStartDate().isAfter(from) || e.getStartDate().isEqual(from)){
+                if(e.getStartDate().isBefore(to) || e.getStartDate().isEqual(to))
+                {
+                    events.add(e);
+                }
+            }
         }
         return events;
     }

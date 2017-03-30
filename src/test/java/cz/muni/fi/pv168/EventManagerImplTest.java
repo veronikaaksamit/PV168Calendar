@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,7 +14,6 @@ import java.util.List;
 
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * Created by xaksamit on 10.3.17.
@@ -44,9 +42,9 @@ public class EventManagerImplTest {
 
     @Test
     public void createEvent() throws Exception {
-        User user1 = newUser("Marek", "email");
+        User user1 = getNewUser("Marek", "email");
         userManager.createUser(user1);
-        Event event = newEvent("event", Category.BIRTHDAY, user1);
+        Event event = getNewEvent("event", Category.BIRTHDAY, user1);
 
         eventManager.createEvent(event);
         Long eventId = event.getId();
@@ -64,14 +62,14 @@ public class EventManagerImplTest {
 
     @Test
     public void updateEvent()throws Exception {
-        User user1 = newUser("Marek", "email@email.com");
+        User user1 = getNewUser("Marek", "email@email.com");
         userManager.createUser(user1);
-        Event event1 = newEvent("event1Name", Category.BIRTHDAY, user1);
+        Event event1 = getNewEvent("event1Name", Category.BIRTHDAY, user1);
         eventManager.createEvent(event1);
 
-        User user2 = newUser("Matus", "matus@email.com");
+        User user2 = getNewUser("Matus", "matus@email.com");
         userManager.createUser(user2);
-        Event event2 = newEvent("event2Name", Category.NAMEDAY, user2);
+        Event event2 = getNewEvent("event2Name", Category.NAMEDAY, user2);
         eventManager.createEvent(event2);
 
         eventManager.updateEvent(event1);
@@ -113,11 +111,11 @@ public class EventManagerImplTest {
 
     @Test
     public void deleteEvent() throws Exception {
-        User user1 = newUser("Marek", "email");
+        User user1 = getNewUser("Marek", "email");
         userManager.createUser(user1);
-        Event event1 = newEvent("event1Name", Category.BIRTHDAY, user1);
+        Event event1 = getNewEvent("event1Name", Category.BIRTHDAY, user1);
         eventManager.createEvent(event1);
-        Event event2 = newEvent("event2Name", Category.NAMEDAY, user1);
+        Event event2 = getNewEvent("event2Name", Category.NAMEDAY, user1);
         eventManager.createEvent(event2);
 
         List<Event> events = eventManager.listAllEvents();
@@ -140,10 +138,10 @@ public class EventManagerImplTest {
     
     @Test
     public void getEvent()throws Exception{
-        User user1 = newUser("Marek", "email");
+        User user1 = getNewUser("Marek", "email");
         userManager.createUser(user1);
 
-        Event event = newEvent("event", Category.BIRTHDAY, user1);
+        Event event = getNewEvent("event", Category.BIRTHDAY, user1);
         eventManager.createEvent(event);
 
         Event returnedEvent = eventManager.getEvent(event.getId());
@@ -168,15 +166,15 @@ public class EventManagerImplTest {
 
     @Test
     public void listUserEvents()throws Exception {
-        User user1 = newUser("Martin", "martin@email");
+        User user1 = getNewUser("Martin", "martin@email");
         userManager.createUser(user1);
         List<Event> events = newEventListOneUser(user1);
 
 
-        User user2 = newUser("Marcel", "marcel@email");
+        User user2 = getNewUser("Marcel", "marcel@email");
         userManager.createUser(user2);
-        Event event3 = newEvent("eventName", Category.NAMEDAY, user2);
-        Event event4 = newEvent("eventName", Category.PERSONAL, user2);
+        Event event3 = getNewEvent("eventName", Category.NAMEDAY, user2);
+        Event event4 = getNewEvent("eventName", Category.PERSONAL, user2);
 
         eventManager.createEvent(event3);
         eventManager.createEvent(event4);
@@ -208,7 +206,7 @@ public class EventManagerImplTest {
 
         List<Event> wrongFromTo = eventManager.filterEventByDate(events,from2, to2);
         assertTrue(wrongFromTo.size() == 0);
-        assertFalse(events.size() == okFromTo.size());
+        assertFalse(events.size() == wrongFromTo.size());
     }
 
     @Test
@@ -263,14 +261,21 @@ public class EventManagerImplTest {
         }
     }
 
-    private User newUser(String name, String email) {
+    private User getNewUser(String name, String email) {
         User user = new User();
         user.setFullName(name);
         user.setEmail(email);
         return user;
     }
 
-    private Event newEvent(String name, Category category, User user) {
+    /**
+     * Just return object with set values, does not create it in db
+     * @param name
+     * @param category
+     * @param user
+     * @return set object
+     */
+    private Event getNewEvent(String name, Category category, User user) {
         Event event = new Event();
 
         event.setUserId(user.getId());
@@ -285,8 +290,8 @@ public class EventManagerImplTest {
     private List<Event> newEventListOneUser(User user){
         List<Event> events = new ArrayList<Event>();
 
-        Event event1 = newEvent("event1Name", Category.BIRTHDAY, user);
-        Event event2 = newEvent("event2Name", Category.NAMEDAY, user);
+        Event event1 = getNewEvent("event1Name", Category.BIRTHDAY, user);
+        Event event2 = getNewEvent("event2Name", Category.NAMEDAY, user);
         eventManager.createEvent(event1);
         eventManager.createEvent(event2);
 
@@ -297,15 +302,15 @@ public class EventManagerImplTest {
 
     private List<Event> newEventList(){
         List<Event> events = new ArrayList<Event>();
-        User user1 = newUser("Martin", "martin@email");
+        User user1 = getNewUser("Martin", "martin@email");
         userManager.createUser(user1);
         events.addAll(newEventListOneUser(user1));
-        User user2 = newUser("Marek", "marek@email");
+        User user2 = getNewUser("Marek", "marek@email");
         userManager.createUser(user2);
 
-        Event event3 = newEvent("eventName", Category.NAMEDAY, user2);
+        Event event3 = getNewEvent("eventName", Category.NAMEDAY, user2);
         eventManager.createEvent(event3);
-        Event event4 = newEvent("eventName", Category.PERSONAL, user2);
+        Event event4 = getNewEvent("eventName", Category.PERSONAL, user2);
         eventManager.createEvent(event4);
         events.add(event3);
         events.add(event4);
