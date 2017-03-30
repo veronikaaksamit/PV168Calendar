@@ -1,5 +1,7 @@
 package cz.muni.fi.pv168;
 
+import cz.muni.fi.pv168.common.ServiceFailureException;
+
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -89,7 +91,7 @@ public class EventManagerImpl implements EventManager {
                 ps.setInt(6, event.getCategory().ordinal());
                 int n = ps.executeUpdate();
                 if (n != 1) {
-                    //ERROR //throw new BookException("not updated book with id " + book.getId(), null);
+                    throw new ServiceFailureException("not updated event with id " + event.getId());
                 }
             }
         }
@@ -109,7 +111,7 @@ public class EventManagerImpl implements EventManager {
                 ps.setLong(1,event.getId());
                 int n = ps.executeUpdate();
                 if (n != 1) {
-                    //ERROR //throw new BookException("not updated book with id " + book.getId(), null);
+                    throw new ServiceFailureException("not deleted event with id " + event.getId());
                 }
             }
         }
@@ -231,7 +233,7 @@ public class EventManagerImpl implements EventManager {
         }
         catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Could not select all Events");
+            System.out.println("Could not select events");
         }
         return events;
     }

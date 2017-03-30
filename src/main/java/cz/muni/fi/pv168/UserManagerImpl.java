@@ -1,5 +1,7 @@
 package cz.muni.fi.pv168;
 
+import cz.muni.fi.pv168.common.ServiceFailureException;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -66,7 +68,7 @@ public class UserManagerImpl implements UserManager {
                     throw new IllegalArgumentException("updating user with nonexisting id");
                 }
                 if(n != 1) {
-                    //TODO throw exception
+                    throw new ServiceFailureException("not updated user with id " + user.getId());
                 }
             }
         } catch (SQLException ex) {
@@ -88,7 +90,7 @@ public class UserManagerImpl implements UserManager {
                     throw new IllegalArgumentException("deleting user with nonexisting id");
                 }
                 if(n != 1) {
-                    //TODO throw exeption
+                    throw new ServiceFailureException("not deleted user with id " + user.getId());
                 }
             }
         } catch (SQLException ex) {
