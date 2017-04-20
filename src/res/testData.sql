@@ -1,0 +1,10 @@
+-- my-test-data.sql
+
+INSERT INTO USERS (FULLNAME, EMAIL) VALUES ('Anièka Nová','anka@example.com');
+
+INSERT INTO USERS (FULLNAME, EMAIL) VALUES ('Valentín Beniakov','valto@example.com');
+
+INSERT INTO EVENTS (USERID, EVENTNAME, STARTDATE, ENDDATE, CATEGORY, DESCRIPTION) VALUES (1,'Anickin event','2013-04-01','2013-05-20', 1,'skvely event');
+
+INSERT INTO EVENTS (USERID, EVENTNAME, STARTDATE, ENDDATE, CATEGORY, DESCRIPTION) VALUES (2,'Valtov event', '2012-04-08','2013-05-29', 2, 'jednoduchy event');
+
