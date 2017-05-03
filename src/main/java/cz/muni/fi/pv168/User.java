@@ -1,6 +1,5 @@
 package cz.muni.fi.pv168;
 
-import com.sun.istack.internal.NotNull;
 
 /**
  * Created by xaksamit on 10.3.17.
@@ -11,7 +10,6 @@ public class User {
 
     private String fullName;
 
-    @NotNull
     private String email;
 
     public Long getId() {

@@ -1,6 +1,5 @@
 package cz.muni.fi.pv168;
 
-import com.sun.istack.internal.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -9,21 +8,16 @@ import java.time.LocalDateTime;
  */
 public class Event {
 
-    @NotNull
     private Long id;
 
-    @NotNull
     private Long userId;
 
     private String eventName;
 
-    @NotNull
     private Category category;
 
-    @NotNull
     private LocalDateTime startDate;
 
-    @NotNull
     private LocalDateTime endDate;
 
     private String description;
