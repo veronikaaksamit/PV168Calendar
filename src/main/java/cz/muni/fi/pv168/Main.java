@@ -8,6 +8,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.derby.jdbc.EmbeddedDriver;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 /**
  * Created by xaksamit on 24.3.17.
@@ -21,7 +28,7 @@ public class Main {
         UserManager userManager = new UserManagerImpl(ds);
 
         User user = new User();
-        user.setEmail("bla");
+        user.setEmail("blabla bla");
         user.setFullName("BLA");
         userManager.createUser(user);
         List<User> users = userManager.getAllUsers();
@@ -53,9 +60,16 @@ public class Main {
         for (Event e: events) {
             System.out.println(e.toString());
         }
-
-
-
-
     }
+    public static DataSource createMemoryDatabase() throws IOException, SQLException {
+        DataSource ds = DBUtils.initDB();
+        
+        return ds;
+    }
+    
+    /*public static DataSource createMemoryDatabase() throws IOException, SQLException{
+        DataSource ds = DBUtils.initDB();
+        return ds;
+    }*/
+            
 }

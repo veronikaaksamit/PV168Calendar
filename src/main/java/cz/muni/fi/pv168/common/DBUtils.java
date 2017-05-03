@@ -6,6 +6,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import javax.sql.DataSource;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.Connection;
@@ -57,16 +58,18 @@ public class DBUtils {
 
     public static DataSource initDB() throws SQLException, IOException{
         Properties dbConf = new Properties();
-
         dbConf.load(Main.class.getResourceAsStream("/dbConf.properties"));
 
-
         BasicDataSource ds = new BasicDataSource();
+        
+        
         ds.setUrl(dbConf.getProperty("jdbc.url"));
         ds.setUsername(dbConf.getProperty("jdbc.user"));
         ds.setPassword(dbConf.getProperty("jdbc.password"));
 
         DBUtils.executeSqlScript(ds, Main.class.getResource("/createTables.sql"));
+        
+        //DBUtils.executeSqlScript(ds, Main.class.getResource("/testData.sql"));
         return ds;
     }
     private static String[] readSqlStatements(URL path) {
