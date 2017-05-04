@@ -49,31 +49,35 @@ public class CalendarGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        selectUserlabel = new javax.swing.JLabel();
         javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
-        usersList = new javax.swing.JList<>();
+        userComboBox = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        eventTable = new javax.swing.JTable();
         editUserButton = new javax.swing.JButton();
         deleteUserButton = new javax.swing.JButton();
+        createUserButton = new javax.swing.JButton();
+        addEventButton = new javax.swing.JButton();
+        editEventButton = new javax.swing.JButton();
+        deleteEventButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Calendar");
         setBackground(new java.awt.Color(255, 255, 51));
         setName("Calendar"); // NOI18N
 
-        jLabel1.setText("Select user");
-        jLabel1.setFocusable(false);
+        selectUserlabel.setText("Select user");
+        selectUserlabel.setFocusable(false);
 
-        usersList.setModel(new javax.swing.AbstractListModel<String>() {
+        userComboBox.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        usersList.setName("usersList"); // NOI18N
-        jScrollPane1.setViewportView(usersList);
+        userComboBox.setName("userComboBox"); // NOI18N
+        jScrollPane1.setViewportView(userComboBox);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        eventTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -96,11 +100,11 @@ public class CalendarGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
+        jScrollPane2.setViewportView(eventTable);
+        if (eventTable.getColumnModel().getColumnCount() > 0) {
+            eventTable.getColumnModel().getColumn(1).setResizable(false);
+            eventTable.getColumnModel().getColumn(2).setResizable(false);
+            eventTable.getColumnModel().getColumn(3).setResizable(false);
         }
 
         editUserButton.setText("Edit user");
@@ -113,23 +117,40 @@ public class CalendarGUI extends javax.swing.JFrame {
             }
         });
 
+        createUserButton.setText("Create user");
+
+        addEventButton.setText("Add event");
+
+        editEventButton.setText("Edit event");
+
+        deleteEventButton.setText("Delete event");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(editUserButton)
-                        .addGap(51, 51, 51)
-                        .addComponent(deleteUserButton)))
-                .addContainerGap(77, Short.MAX_VALUE))
+                        .addComponent(addEventButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(editEventButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(deleteEventButton))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(selectUserlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(43, 43, 43)
+                            .addComponent(editUserButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(createUserButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(deleteUserButton))))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,13 +159,19 @@ public class CalendarGUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
+                        .addComponent(selectUserlabel, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(editUserButton)
-                        .addComponent(deleteUserButton)))
+                        .addComponent(deleteUserButton)
+                        .addComponent(createUserButton)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addEventButton)
+                    .addComponent(editEventButton)
+                    .addComponent(deleteEventButton))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         getAccessibleContext().setAccessibleName("frame0");
@@ -153,7 +180,7 @@ public class CalendarGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void deleteUserButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteUserButtonMouseClicked
-        int listIndex = usersList.getSelectedIndex();
+        int listIndex = userComboBox.getSelectedIndex();
         //usersList.;
         //userManager.deleteUser(userManager.getUser());
     }//GEN-LAST:event_deleteUserButtonMouseClicked
@@ -200,11 +227,15 @@ public class CalendarGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addEventButton;
+    private javax.swing.JButton createUserButton;
+    private javax.swing.JButton deleteEventButton;
     private javax.swing.JButton deleteUserButton;
+    private javax.swing.JButton editEventButton;
     private javax.swing.JButton editUserButton;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTable eventTable;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JList<String> usersList;
+    private javax.swing.JLabel selectUserlabel;
+    private javax.swing.JList<String> userComboBox;
     // End of variables declaration//GEN-END:variables
 }

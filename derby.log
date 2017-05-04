@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Thu Mar 30 22:15:53 CEST 2017:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-015b-20dc-3299-00000675c528 
-on database directory memory:C:\Users\veronika\Desktop\java 2\PV168Calendar\calendarDB with class loader sun.misc.Launcher$AppClassLoader@6d06d69c 
-Loaded from file:/C:/Users/veronika/.m2/repository/org/apache/derby/derby/10.11.1.1/derby-10.11.1.1.jar
+Thu May 04 21:33:03 CEST 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-015b-d4f3-8d33-0000064df3f8 
+on database directory memory:D:\Dadka\VS\MGR\3. Semestr\PV168\Projekt\PV168Calendar\calendarDB with class loader sun.misc.Launcher$AppClassLoader@6bc7c054 
+Loaded from file:/C:/Users/Dadka/.m2/repository/org/apache/derby/derby/10.11.1.1/derby-10.11.1.1.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_91-b15
-user.dir=C:\Users\veronika\Desktop\java 2\PV168Calendar
-os.name=Windows 7
+java.runtime.version=1.8.0_92-b14
+user.dir=D:\Dadka\VS\MGR\3. Semestr\PV168\Projekt\PV168Calendar
+os.name=Windows 10
 os.arch=amd64
-os.version=6.1
+os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
