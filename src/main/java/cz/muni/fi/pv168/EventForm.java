@@ -5,6 +5,19 @@
  */
 package cz.muni.fi.pv168;
 
+import cz.muni.fi.pv168.common.DateTimePicker;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import org.jdesktop.swingx.JXDatePicker;
+
 /**
  *
  * @author Dadka
@@ -27,54 +40,119 @@ public class EventForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        eventLabel = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        categoryComboBox = new javax.swing.JComboBox<>();
+        startDatelabel = new javax.swing.JLabel();
+        EndDateLabel = new javax.swing.JLabel();
+        eventLabel = new javax.swing.JLabel();
         namelabel = new javax.swing.JLabel();
-        emailLabel = new javax.swing.JLabel();
+        descLabel = new javax.swing.JLabel();
         nameTextField = new javax.swing.JTextField();
-        emailTextField = new javax.swing.JTextField();
+        descTextField = new javax.swing.JTextField();
+        categoryLabel = new javax.swing.JLabel();
+        startDatePanel = new javax.swing.JPanel();
+        endDatePanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        eventLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        eventLabel.setText("Event");
 
         okButton.setText("Ok");
 
         cancelButton.setText("Cancel");
+        cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cancelButtonMouseClicked(evt);
+            }
+        });
+
+        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        startDatelabel.setText("Start Date:");
+
+        EndDateLabel.setText("End Date:");
+
+        eventLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        eventLabel.setText("Event");
 
         namelabel.setText("Name:");
 
-        emailLabel.setText("Email:");
+        descLabel.setText("Description:");
+
+        nameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameTextFieldActionPerformed(evt);
+            }
+        });
+
+        categoryLabel.setText("Category:");
+
+        startDatePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout startDatePanelLayout = new javax.swing.GroupLayout(startDatePanel);
+        startDatePanel.setLayout(startDatePanelLayout);
+        startDatePanelLayout.setHorizontalGroup(
+            startDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 578, Short.MAX_VALUE)
+        );
+        startDatePanelLayout.setVerticalGroup(
+            startDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+        );
+
+        endDatePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout endDatePanelLayout = new javax.swing.GroupLayout(endDatePanel);
+        endDatePanel.setLayout(endDatePanelLayout);
+        endDatePanelLayout.setHorizontalGroup(
+            endDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        endDatePanelLayout.setVerticalGroup(
+            endDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 190, Short.MAX_VALUE)
-                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(namelabel)
                             .addComponent(eventLabel)
-                            .addComponent(emailLabel))
+                            .addComponent(descLabel)
+                            .addComponent(categoryLabel))
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nameTextField)
-                            .addComponent(emailTextField))))
-                .addGap(38, 38, 38))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(nameTextField)
+                                    .addComponent(descTextField)
+                                    .addComponent(categoryComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(24, 24, 24))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 406, Short.MAX_VALUE)
+                                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(38, 38, 38))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(startDatelabel)
+                            .addComponent(EndDateLabel))
+                        .addGap(47, 47, 47)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(startDatePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(endDatePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(89, Short.MAX_VALUE)
+                .addGap(59, 59, 59)
                 .addComponent(eventLabel)
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -82,17 +160,69 @@ public class EventForm extends javax.swing.JFrame {
                     .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(emailLabel)
-                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                    .addComponent(descLabel)
+                    .addComponent(descTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(categoryLabel)
+                    .addComponent(categoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(startDatelabel)
+                    .addComponent(startDatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(EndDateLabel)
+                    .addComponent(endDatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(okButton)
-                    .addComponent(cancelButton))
-                .addGap(27, 27, 27))
+                    .addComponent(cancelButton)))
         );
+
+        Date startDate = new Date();
+        JXDatePicker startDateDtp = new JXDatePicker();
+        startDateDtp.setDate(startDate);
+        startDateDtp.setBounds(0, 0, 200, 30);
+        startDatePanel.add(startDateDtp);
+
+        SpinnerDateModel startDateSm = new SpinnerDateModel(startDate, null, null, Calendar.MINUTE);
+        JSpinner startDateSpinner = new JSpinner(startDateSm);
+        JSpinner.DateEditor startDateDe = new JSpinner.DateEditor(startDateSpinner, "HH:mm");
+        startDateDe.getTextField().setEditable( false );
+        startDateSpinner.setEditor(startDateDe);
+        startDateSpinner.setBounds(210, 0, 100, 30);
+        startDatePanel.add(startDateSpinner);
+        Date endDate = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(endDate);
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+        endDate = cal.getTime();
+
+        JXDatePicker endDateDtp = new JXDatePicker();
+        endDateDtp.setDate(endDate);
+        endDateDtp.setBounds(0, 0, 200, 30);
+        endDatePanel.add(endDateDtp);
+
+        SpinnerDateModel endDateSm = new SpinnerDateModel(endDate, null, null, Calendar.MINUTE);
+        JSpinner endDateSpinner = new JSpinner(endDateSm);
+        JSpinner.DateEditor endDateDe = new JSpinner.DateEditor(endDateSpinner, "HH:mm");
+        endDateDe.getTextField().setEditable( false );
+        endDateSpinner.setEditor(endDateDe);
+        endDateSpinner.setBounds(210, 0, 100, 30);
+        endDatePanel.add(endDateSpinner);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameTextFieldActionPerformed
+
+    private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
+        // TODO add your handling code here:
+      
+    }//GEN-LAST:event_cancelButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -130,12 +260,18 @@ public class EventForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel EndDateLabel;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JLabel emailLabel;
-    private javax.swing.JTextField emailTextField;
+    private javax.swing.JComboBox<String> categoryComboBox;
+    private javax.swing.JLabel categoryLabel;
+    private javax.swing.JLabel descLabel;
+    private javax.swing.JTextField descTextField;
+    private javax.swing.JPanel endDatePanel;
     private javax.swing.JLabel eventLabel;
     private javax.swing.JTextField nameTextField;
     private javax.swing.JLabel namelabel;
     private javax.swing.JButton okButton;
+    private javax.swing.JPanel startDatePanel;
+    private javax.swing.JLabel startDatelabel;
     // End of variables declaration//GEN-END:variables
 }

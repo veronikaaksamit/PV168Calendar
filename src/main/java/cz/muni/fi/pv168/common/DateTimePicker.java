@@ -64,6 +64,7 @@ public class DateTimePicker extends JXDatePicker {
         newPanel.add(timeSpinner);
         newPanel.setBackground(Color.WHITE);
         return newPanel;
+      
     }
 
     private void updateTextFieldFormat() {
@@ -91,6 +92,7 @@ public class DateTimePicker extends JXDatePicker {
 
             Date newDate = calendar.getTime();
             setDate(newDate);
+            
         }
 
     }

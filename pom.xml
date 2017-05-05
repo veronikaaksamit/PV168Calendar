@@ -27,7 +27,9 @@
         </plugins>
     </build>
 
+    
     <dependencies>
+      
         <!-- https://mvnrepository.com/artifact/org.swinglabs/swingx -->
         <dependency>
             <groupId>org.swinglabs</groupId>
