@@ -11,11 +11,19 @@ package cz.muni.fi.pv168;
  */
 public class UserForm extends javax.swing.JFrame {
 
+    private String mode;
+    private long userId;
     /**
      * Creates new form UserForm
      */
     public UserForm() {
         initComponents();
+    }
+    
+    public UserForm(String mode, long userId) {
+        super();
+        this.mode = mode;
+        this.userId = userId;
     }
 
     /**
@@ -38,8 +46,18 @@ public class UserForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         okButton.setText("Ok");
+        okButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                okButtonMouseClicked(evt);
+            }
+        });
 
         cancelButton.setText("Cancel");
+        cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cancelButtonMouseClicked(evt);
+            }
+        });
 
         userLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         userLabel.setText("User");
@@ -92,6 +110,15 @@ public class UserForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_okButtonMouseClicked
+
+    private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_cancelButtonMouseClicked
 
     /**
      * @param args the command line arguments

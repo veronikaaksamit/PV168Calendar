@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="15" failures="0" name="cz.muni.fi.pv168.EventManagerImplTest" time="4.053" errors="0" skipped="0">
+<testsuite tests="15" failures="0" name="cz.muni.fi.pv168.EventManagerImplTest" time="3.099" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_92\jre\bin"/>
@@ -61,19 +61,19 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="listAllEvents" time="2.452"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="createEventNull" time="0.089"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="deleteEvent" time="0.172"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="filterEventByDate" time="0.114"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="filterEventByName" time="0.099"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="listUserEvents" time="0.112"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="updateEvent" time="0.129"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="createEvent" time="0.092"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="getEventNull" time="0.055"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="deleteEventNull" time="0.063"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="listUserEventsNull" time="0.065"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="updateNotExistingEvent" time="0.057"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="updateEventNull" time="0.055"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="filterEventByCategory" time="0.078"/>
-  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="getEvent" time="0.09"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="listAllEvents" time="0.464"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="createEventNull" time="0.158"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="deleteEvent" time="0.18"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="filterEventByDate" time="0.164"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="filterEventByName" time="0.238"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="listUserEvents" time="0.175"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="updateEvent" time="0.18"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="createEvent" time="0.168"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="getEventNull" time="0.155"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="deleteEventNull" time="0.144"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="listUserEventsNull" time="0.236"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="updateNotExistingEvent" time="0.15"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="updateEventNull" time="0.145"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="filterEventByCategory" time="0.272"/>
+  <testcase classname="cz.muni.fi.pv168.EventManagerImplTest" name="getEvent" time="0.17"/>
 </testsuite>
