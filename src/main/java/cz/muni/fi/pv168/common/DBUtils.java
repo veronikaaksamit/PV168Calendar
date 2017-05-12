@@ -67,9 +67,10 @@ public class DBUtils {
         ds.setUsername(dbConf.getProperty("jdbc.user"));
         ds.setPassword(dbConf.getProperty("jdbc.password"));
 
+        DBUtils.executeSqlScript(ds, Main.class.getResource("/dropTables.sql"));
         DBUtils.executeSqlScript(ds, Main.class.getResource("/createTables.sql"));
         
-        //DBUtils.executeSqlScript(ds, Main.class.getResource("/testData.sql"));
+        DBUtils.executeSqlScript(ds, Main.class.getResource("/testData.sql"));
         return ds;
     }
     private static String[] readSqlStatements(URL path) {
