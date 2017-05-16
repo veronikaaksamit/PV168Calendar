@@ -7,16 +7,23 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by xaksamit on 10.3.17.
  */
 public class EventManagerImpl implements EventManager {
 
+    
+    private final static Logger log = LoggerFactory.getLogger(EventManagerImpl.class);
     private final DataSource dataSource;
 
     public EventManagerImpl(DataSource dataSource) {
+        if(dataSource == null)
+            log.error("dataSource is null");
         this.dataSource = dataSource;
+        
     }
 
 
@@ -152,12 +159,15 @@ public class EventManagerImpl implements EventManager {
 
     @Override
     public List<Event> listAllEvents() {
+        log.debug("Starting selecting all events");
         try(Connection conn = dataSource.getConnection()){
             try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM EVENTS")){
+                log.debug("Selecting all events");
                 return getEventsListFromQuery(ps);
             }
         }
         catch(SQLException ex){
+            log.error("SQLException thrown in lisAllEvents EventManger" + ex.getMessage());
             ex.printStackTrace();
         }
         return null;

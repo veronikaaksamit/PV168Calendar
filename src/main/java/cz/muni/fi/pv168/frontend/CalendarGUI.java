@@ -1,20 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package cz.muni.fi.pv168;
+package cz.muni.fi.pv168.frontend;
 
+import cz.muni.fi.pv168.Event;
+import cz.muni.fi.pv168.EventManager;
+import cz.muni.fi.pv168.EventManagerImpl;
+import cz.muni.fi.pv168.User;
+import cz.muni.fi.pv168.UserManager;
+import cz.muni.fi.pv168.UserManagerImpl;
 import cz.muni.fi.pv168.common.DBUtils;
 import java.awt.Color;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.ExecutionException;
 import javax.sql.DataSource;
-import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
+import javax.swing.SwingWorker;
+import org.slf4j.*;
 
 /**
  *
@@ -22,22 +22,56 @@ import javax.swing.ListModel;
  */
 public class CalendarGUI extends javax.swing.JFrame {
 
+    private final static Logger log = LoggerFactory.getLogger(CalendarGUI.class);
+    private DataSource ds;
     private UserManager userManager;
-    private List<User> users;
+    private EventManager eventManager;
+    
+    private EventTableModel eventModel;
+    
+    private FindAllEventsWorker findAllEventsWorker;
+    
+    
+    
+    
+     private class FindAllEventsWorker extends SwingWorker<List<Event>, Integer> {
+
+        @Override
+        protected List<Event> doInBackground() throws Exception {
+            return eventManager.listAllEvents();
+        }
+
+        @Override
+        protected void done() {
+            try{
+                log.debug("Loading all events from.");
+                eventModel.setEvents(get());
+            }catch(ExecutionException ex) {
+                log.error("Exception was thrown in FindAllEventsWorker in method doInBackGround " + ex.getCause());
+            } catch (InterruptedException ex) {
+                log.error("Method doInBackground has been interrupted in FindAllEventsWorker " + ex.getCause());
+                throw new RuntimeException("Operation interrupted in FindAllEventsWorker");
+            }
+        }
+    }
+    
+    
     
     /**
      * Creates new form CalendarGUI
      */
     public CalendarGUI() throws SQLException, IOException {
-        DataSource ds = DBUtils.initDB();
-        userManager = new UserManagerImpl(ds);
-        users = userManager.getAllUsers();
-        
         initComponents();
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.getContentPane().setBackground( new Color(187,255,50));
+        this.ds = DBUtils.initDB();
+        eventManager = new EventManagerImpl(ds);
+        userManager = new UserManagerImpl(ds);
+        log.debug("data source is " + ds.equals(null));
         
-        this.getContentPane().setBackground( new Color(187,255,50));        
-        
-        
+        eventModel = (EventTableModel)JTableEvents.getModel();
+        findAllEventsWorker = new FindAllEventsWorker();
+        findAllEventsWorker.execute();
     }
 
     /**
@@ -53,13 +87,14 @@ public class CalendarGUI extends javax.swing.JFrame {
         javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
         userComboBox = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        eventTable = new javax.swing.JTable();
+        JTableEvents = new javax.swing.JTable();
         editUserButton = new javax.swing.JButton();
         deleteUserButton = new javax.swing.JButton();
         createUserButton = new javax.swing.JButton();
         addEventButton = new javax.swing.JButton();
         editEventButton = new javax.swing.JButton();
         deleteEventButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Calendar");
@@ -77,34 +112,12 @@ public class CalendarGUI extends javax.swing.JFrame {
         userComboBox.setName("userComboBox"); // NOI18N
         jScrollPane1.setViewportView(userComboBox);
 
-        eventTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Event name", "Category", "Start date", "End date", "Description"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                true, false, false, false, true
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(eventTable);
-        if (eventTable.getColumnModel().getColumnCount() > 0) {
-            eventTable.getColumnModel().getColumn(1).setResizable(false);
-            eventTable.getColumnModel().getColumn(2).setResizable(false);
-            eventTable.getColumnModel().getColumn(3).setResizable(false);
+        JTableEvents.setModel(new EventTableModel());
+        jScrollPane2.setViewportView(JTableEvents);
+        if (JTableEvents.getColumnModel().getColumnCount() > 0) {
+            JTableEvents.getColumnModel().getColumn(1).setResizable(false);
+            JTableEvents.getColumnModel().getColumn(2).setResizable(false);
+            JTableEvents.getColumnModel().getColumn(3).setResizable(false);
         }
 
         editUserButton.setText("Edit user");
@@ -125,6 +138,14 @@ public class CalendarGUI extends javax.swing.JFrame {
 
         deleteEventButton.setText("Delete event");
 
+        jButton1.setText("List all events");
+        jButton1.setActionCommand("jButton");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jButton1MouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,6 +154,9 @@ public class CalendarGUI extends javax.swing.JFrame {
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jButton1)
+                        .addGap(62, 62, 62)
                         .addComponent(addEventButton)
                         .addGap(18, 18, 18)
                         .addComponent(editEventButton)
@@ -170,9 +194,12 @@ public class CalendarGUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addEventButton)
                     .addComponent(editEventButton)
-                    .addComponent(deleteEventButton))
+                    .addComponent(deleteEventButton)
+                    .addComponent(jButton1))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
+
+        jButton1.getAccessibleContext().setAccessibleName("jButtonListEvents");
 
         getAccessibleContext().setAccessibleName("frame0");
 
@@ -184,6 +211,13 @@ public class CalendarGUI extends javax.swing.JFrame {
         //usersList.;
         //userManager.deleteUser(userManager.getUser());
     }//GEN-LAST:event_deleteUserButtonMouseClicked
+
+    private void jButton1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseReleased
+        jButton1.setEnabled(false);
+        deleteEventButton.setEnabled(true);
+        findAllEventsWorker = new FindAllEventsWorker();
+        findAllEventsWorker.execute();
+    }//GEN-LAST:event_jButton1MouseReleased
 
     /**
      * @param args the command line arguments
@@ -218,22 +252,23 @@ public class CalendarGUI extends javax.swing.JFrame {
                 try {
                     new CalendarGUI().setVisible(true);
                 } catch (SQLException ex) {
-                    Logger.getLogger(CalendarGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    log.error("Could not run CalendarGUI SQLException...CalendarGUI main. " + ex.getMessage());
                 } catch (IOException ex) {
-                    Logger.getLogger(CalendarGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    log.error("Could not run CalendarGUI IOException ...CalendarGUI main. " + ex.getMessage());
                 }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable JTableEvents;
     private javax.swing.JButton addEventButton;
     private javax.swing.JButton createUserButton;
     private javax.swing.JButton deleteEventButton;
     private javax.swing.JButton deleteUserButton;
     private javax.swing.JButton editEventButton;
     private javax.swing.JButton editUserButton;
-    private javax.swing.JTable eventTable;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel selectUserlabel;
     private javax.swing.JList<String> userComboBox;
