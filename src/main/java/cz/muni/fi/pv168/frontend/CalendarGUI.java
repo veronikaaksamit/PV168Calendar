@@ -3,7 +3,6 @@ package cz.muni.fi.pv168.frontend;
 import cz.muni.fi.pv168.Event;
 import cz.muni.fi.pv168.EventManager;
 import cz.muni.fi.pv168.EventManagerImpl;
-import cz.muni.fi.pv168.User;
 import cz.muni.fi.pv168.UserManager;
 import cz.muni.fi.pv168.UserManagerImpl;
 import cz.muni.fi.pv168.common.DBUtils;
@@ -30,8 +29,6 @@ public class CalendarGUI extends javax.swing.JFrame {
     private EventTableModel eventModel;
     
     private FindAllEventsWorker findAllEventsWorker;
-    
-    
     
     
      private class FindAllEventsWorker extends SwingWorker<List<Event>, Integer> {

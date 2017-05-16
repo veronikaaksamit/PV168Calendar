@@ -40,7 +40,7 @@ public class EventTableModel extends AbstractTableModel {
             case 1:
                 return event.getCategory();
             case 2:
-                return event.getStartDate();
+                return event.getStartDate().toLocalDate() + " " + event.getStartDate().toLocalTime();
             case 3:
                 return event.getEndDate();
             case 4:
