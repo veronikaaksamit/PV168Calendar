@@ -12,6 +12,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +31,18 @@ public class DBUtils {
         return ds;
     }
     
+    public static Integer[] getSortedDesc(int[] a) {
+        if (a == null) {
+            return null;
+        }
+        Integer[] result = new Integer[a.length];
+        for (int i = 0; i < a.length; i++) {
+            result[i] = Integer.valueOf(a[i]);
+            
+        }
+        Arrays.sort(result, Collections.reverseOrder());
+        return result;
+    }
     /**
      * Closes connection and logs possible error.
      *

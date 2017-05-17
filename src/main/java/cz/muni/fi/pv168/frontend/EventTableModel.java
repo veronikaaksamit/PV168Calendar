@@ -6,6 +6,7 @@
 package cz.muni.fi.pv168.frontend;
 
 import cz.muni.fi.pv168.Event;
+import cz.muni.fi.pv168.common.DBUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -34,6 +35,18 @@ public class EventTableModel extends AbstractTableModel {
     
     public Event getEvent(int index) {
         return events.get(index);
+    }
+    
+    private void deleteEvent(int index){
+        events.remove(index);
+        fireTableRowsDeleted(index, index);
+    }
+    
+    public void deleteEvents(int[] indices){
+        Integer[] rowsToDelete = DBUtils.getSortedDesc(indices);
+        for(int i: rowsToDelete){
+            deleteEvent(i);
+        }
     }
 
     @Override
