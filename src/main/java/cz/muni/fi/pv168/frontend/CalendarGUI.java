@@ -3,6 +3,7 @@ package cz.muni.fi.pv168.frontend;
 import cz.muni.fi.pv168.Event;
 import cz.muni.fi.pv168.EventManager;
 import cz.muni.fi.pv168.EventManagerImpl;
+import cz.muni.fi.pv168.User;
 import cz.muni.fi.pv168.UserManager;
 import cz.muni.fi.pv168.UserManagerImpl;
 import cz.muni.fi.pv168.common.DBUtils;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import javax.sql.DataSource;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingWorker;
 import org.slf4j.*;
 
@@ -24,15 +26,22 @@ public class CalendarGUI extends javax.swing.JFrame {
 
     private final static Logger log = LoggerFactory.getLogger(CalendarGUI.class);
     private DataSource ds;
+    private ResourceBundle rb = ResourceBundle.getBundle("texts");
+    
     private UserManager userManager;
     private EventManager eventManager;
     
     private EventTableModel eventModel;
     
     private FindAllEventsWorker findAllEventsWorker;
+    private UserComboBoxWorker userComboBoxWorker;
+    
+    private DefaultComboBoxModel usersComboBoxModel = new DefaultComboBoxModel();
     
     
-    private ResourceBundle rb = ResourceBundle.getBundle("texts");
+    private DefaultComboBoxModel getUsersComboBox(){
+        return usersComboBoxModel;
+    }
     
     
      private class FindAllEventsWorker extends SwingWorker<List<Event>, Integer> {
@@ -56,7 +65,29 @@ public class CalendarGUI extends javax.swing.JFrame {
         }
     }
     
-    
+    public class UserComboBoxWorker extends SwingWorker<List<User>, Integer> {
+
+        @Override
+        protected List<User> doInBackground() throws Exception {
+            return userManager.getAllUsers();
+        }
+
+        @Override
+        protected void done() {
+            try {
+                List<User> users = get();
+                usersComboBoxModel.removeAllElements();
+                for (User user : users) {
+                    usersComboBoxModel.addElement(user);
+                }
+            } catch (ExecutionException ex) {
+                log.error("Exception thrown in doInBackground of UserComboBoxWorker: " + ex.getMessage());
+            } catch (InterruptedException ex) {
+                log.error("doInBackground of OUserComboBoxWorker interrupted: " + ex.getMessage());
+                throw new RuntimeException("Operation interrupted.. UserComboBoxWorker");
+            }
+        }
+    }
     
     /**
      * Creates new form CalendarGUI
@@ -73,6 +104,7 @@ public class CalendarGUI extends javax.swing.JFrame {
         eventModel = (EventTableModel)JTableEvents.getModel();
         findAllEventsWorker = new FindAllEventsWorker();
         findAllEventsWorker.execute();
+        
     }
 
     /**
@@ -85,8 +117,6 @@ public class CalendarGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         selectUserlabel = new javax.swing.JLabel();
-        javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
-        userComboBox = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         JTableEvents = new javax.swing.JTable();
         editUserButton = new javax.swing.JButton();
@@ -96,22 +126,16 @@ public class CalendarGUI extends javax.swing.JFrame {
         editEventButton = new javax.swing.JButton();
         deleteEventButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jComboBoxUsers = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Calendar");
         setBackground(new java.awt.Color(255, 255, 51));
         setName("Calendar"); // NOI18N
 
-        selectUserlabel.setText("Select user");
+        //ResourceBundle resourceB = ResourceBundle.getBundle("texts");
+        selectUserlabel.setText("select-user");
         selectUserlabel.setFocusable(false);
-
-        userComboBox.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        userComboBox.setName("userComboBox"); // NOI18N
-        jScrollPane1.setViewportView(userComboBox);
 
         JTableEvents.setModel(new EventTableModel());
         jScrollPane2.setViewportView(JTableEvents);
@@ -147,6 +171,10 @@ public class CalendarGUI extends javax.swing.JFrame {
             }
         });
 
+        jComboBoxUsers.setModel(getUsersComboBox());
+        userComboBoxWorker = new UserComboBoxWorker();
+        userComboBoxWorker.execute();
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -168,8 +196,8 @@ public class CalendarGUI extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(selectUserlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(43, 43, 43)
+                            .addComponent(jComboBoxUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(27, 27, 27)
                             .addComponent(editUserButton)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(createUserButton)
@@ -182,9 +210,9 @@ public class CalendarGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(selectUserlabel, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(selectUserlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBoxUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(editUserButton)
                         .addComponent(deleteUserButton)
@@ -208,7 +236,7 @@ public class CalendarGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void deleteUserButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteUserButtonMouseClicked
-        int listIndex = userComboBox.getSelectedIndex();
+        
         //usersList.;
         //userManager.deleteUser(userManager.getUser());
     }//GEN-LAST:event_deleteUserButtonMouseClicked
@@ -270,8 +298,8 @@ public class CalendarGUI extends javax.swing.JFrame {
     private javax.swing.JButton editEventButton;
     private javax.swing.JButton editUserButton;
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBoxUsers;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel selectUserlabel;
-    private javax.swing.JList<String> userComboBox;
     // End of variables declaration//GEN-END:variables
 }

@@ -37,7 +37,7 @@ public class EventManagerImplTest {
 
     @After
     public void cleanUp() throws Exception{
-        DBUtils.executeSqlScript(dataSource, Main.class.getResource("/dropTables.sql"));
+        DBUtils.executeSqlScript(dataSource, Main.class.getResourceAsStream("/dropTables.sql"));
     }
 
     @Test

@@ -66,39 +66,37 @@ public class DBUtils {
         ds.setUsername(dbConf.getProperty("jdbc.user"));
         ds.setPassword(dbConf.getProperty("jdbc.password"));
         
-        try{
-            DBUtils.executeSqlScript(ds, Main.class.getResource("/dropTables.sql"));
-        }
-        catch(SQLException ex){
-            logger.log(Level.SEVERE.INFO, "SQLException, maybe the database was not created yet" + ex.getMessage());
-        }
-
-        DBUtils.executeSqlScript(ds, Main.class.getResource("/createTables.sql"));
+        //DBUtils.executeSqlScript(ds, Main.class.getResourceAsStream("/dropTables.sql"));
         
-        DBUtils.executeSqlScript(ds, Main.class.getResource("/testData.sql"));
+
+        DBUtils.executeSqlScript(ds, Main.class.getResourceAsStream("/createTables.sql"));
+        
+        DBUtils.executeSqlScript(ds, Main.class.getResourceAsStream("/testData.sql"));
         return ds;
     }
-    private static String[] readSqlStatements(URL path) {
+    private static String[] readSqlStatements(InputStream inputStream) {
         try {
+            char buffer[] = new char[256];
             StringBuilder result = new StringBuilder();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(path.openStream(), "UTF-8"));
-            String line;
-            while ((line = reader.readLine()) != null) {
-
-                result.append(line);
+            InputStreamReader reader = new InputStreamReader(inputStream, "UTF-8");
+            while (true) {
+                int count = reader.read(buffer);
+                if (count < 0) {
+                    break;
+                }
+                result.append(buffer, 0, count);
             }
             return result.toString().split(";");
-        } catch(IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
+            throw new RuntimeException("Cannot read ", ex);
         }
-        return null;
     }
 
-    public static void executeSqlScript(DataSource ds, URL path) throws SQLException{
+    public static void executeSqlScript(DataSource ds, InputStream inputStream) throws SQLException{
         Connection conn = ds.getConnection();
         try {
             conn = ds.getConnection();
-            for (String sqlStatement : readSqlStatements(path)) {
+            for (String sqlStatement : readSqlStatements(inputStream)) {
                 if (!sqlStatement.trim().isEmpty()) {
                     conn.prepareStatement(sqlStatement).executeUpdate();
                 }
