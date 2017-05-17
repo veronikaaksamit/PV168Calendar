@@ -43,7 +43,7 @@ public class EventTableModel extends AbstractTableModel {
             case 2:
                 return event.getStartDate().toLocalDate() + " " + event.getStartDate().toLocalTime();
             case 3:
-                return event.getEndDate();
+                return event.getEndDate().toLocalDate() + " " + event.getEndDate().toLocalTime();
             case 4:
                 return event.getDescription();
             default:
