@@ -8,6 +8,7 @@ package cz.muni.fi.pv168.frontend;
 import cz.muni.fi.pv168.Event;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.swing.table.AbstractTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,26 @@ public class EventTableModel extends AbstractTableModel {
                 return event.getEndDate();
             case 4:
                 return event.getDescription();
+            default:
+                throw new IllegalArgumentException("columnIndex");
+        }
+    }
+    
+     @Override
+    public String getColumnName(int columnIndex) {
+
+        ResourceBundle rb = ResourceBundle.getBundle("texts");
+        switch (columnIndex) {
+            case 0:
+                return rb.getString("event-name");
+            case 1:
+                return rb.getString("start-date");
+            case 2:
+                return rb.getString("category");
+            case 3:
+                return rb.getString("end-date");
+            case 4:
+                return rb.getString("description");
             default:
                 throw new IllegalArgumentException("columnIndex");
         }

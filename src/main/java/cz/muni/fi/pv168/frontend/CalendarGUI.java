@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import javax.sql.DataSource;
 import javax.swing.SwingWorker;
@@ -29,6 +30,9 @@ public class CalendarGUI extends javax.swing.JFrame {
     private EventTableModel eventModel;
     
     private FindAllEventsWorker findAllEventsWorker;
+    
+    
+    private ResourceBundle rb = ResourceBundle.getBundle("texts");
     
     
      private class FindAllEventsWorker extends SwingWorker<List<Event>, Integer> {
