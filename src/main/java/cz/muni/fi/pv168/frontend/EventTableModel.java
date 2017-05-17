@@ -31,6 +31,10 @@ public class EventTableModel extends AbstractTableModel {
     public int getColumnCount() {
         return 5;
     }
+    
+    public Event getEvent(int index) {
+        return events.get(index);
+    }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {

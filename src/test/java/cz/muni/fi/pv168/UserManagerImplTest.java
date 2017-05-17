@@ -24,13 +24,14 @@ public class UserManagerImplTest {
 
     @org.junit.Before
     public void setUp() throws Exception {
-        dataSource = DBUtils.initDB();
+        DBUtils.createDB();
+        dataSource = DBUtils.getDataSource();
         manager = new UserManagerImpl(dataSource);
     }
 
     @org.junit.After
     public void cleanUp() throws Exception {
-        DBUtils.executeSqlScript(dataSource, Main.class.getResourceAsStream("/dropTables.sql"));
+        DBUtils.executeSqlScript(dataSource, Main.class.getResource("/dropTables.sql"));
         dataSource = null;
     }
 

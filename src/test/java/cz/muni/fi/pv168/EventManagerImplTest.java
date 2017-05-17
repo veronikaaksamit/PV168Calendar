@@ -30,14 +30,16 @@ public class EventManagerImplTest {
 
     @Before
     public void setUp() throws Exception {
-        dataSource = DBUtils.initDB();
+        DBUtils.setDataSource();
+        DBUtils.createDB();
+        dataSource = DBUtils.getDataSource();
         eventManager = new EventManagerImpl(dataSource);
         userManager = new UserManagerImpl(dataSource);
     }
 
     @After
     public void cleanUp() throws Exception{
-        DBUtils.executeSqlScript(dataSource, Main.class.getResourceAsStream("/dropTables.sql"));
+        DBUtils.deleteDB();
     }
 
     @Test

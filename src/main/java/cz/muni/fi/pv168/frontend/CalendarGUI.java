@@ -3,13 +3,16 @@ package cz.muni.fi.pv168.frontend;
 import cz.muni.fi.pv168.Event;
 import cz.muni.fi.pv168.EventManager;
 import cz.muni.fi.pv168.EventManagerImpl;
+import cz.muni.fi.pv168.Main;
 import cz.muni.fi.pv168.User;
 import cz.muni.fi.pv168.UserManager;
 import cz.muni.fi.pv168.UserManagerImpl;
 import cz.muni.fi.pv168.common.DBUtils;
+import cz.muni.fi.pv168.common.ServiceFailureException;
 import java.awt.Color;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -44,7 +47,8 @@ public class CalendarGUI extends javax.swing.JFrame {
     }
     
     
-     private class FindAllEventsWorker extends SwingWorker<List<Event>, Integer> {
+
+    private class FindAllEventsWorker extends SwingWorker<List<Event>, Integer> {
 
         @Override
         protected List<Event> doInBackground() throws Exception {
@@ -65,6 +69,31 @@ public class CalendarGUI extends javax.swing.JFrame {
         }
     }
     
+    //TODO
+//    private class DeleteEventWorker extends SwingWorker<int[], Void> {
+//
+//        @Override
+//        protected int[] doInBackground() {
+//            int[] selected = JTableEvents.getSelectedRows();
+//            List<Event> toDeleteEvents = new ArrayList<>();
+//            if (selected.length >= 0) {
+//                for (int selectedRow : selected) {
+//                    Event event = eventModel.getEvent(selectedRow);
+//                    try {
+//                        eventManager.deleteEvent(event);
+//                        //toDeleteEvents.add(selectedRow);
+//                    }catch (Exception ex) {
+//                        //log.error("Cannot delete property." + ex);
+//                        throw new ServiceFailureException(event.toString());
+//                        //JOptionPane.showMessageDialog(null, rb.getString("cannot-delete-property"));
+//                    }
+//                }
+//                //return convert(toDeleteRows);
+//            }
+//            return null;
+//        }
+    
+    
     public class UserComboBoxWorker extends SwingWorker<List<User>, Integer> {
 
         @Override
@@ -78,7 +107,7 @@ public class CalendarGUI extends javax.swing.JFrame {
                 List<User> users = get();
                 usersComboBoxModel.removeAllElements();
                 for (User user : users) {
-                    usersComboBoxModel.addElement(user);
+                    usersComboBoxModel.addElement(user.getEmail());
                 }
             } catch (ExecutionException ex) {
                 log.error("Exception thrown in doInBackground of UserComboBoxWorker: " + ex.getMessage());
@@ -93,10 +122,15 @@ public class CalendarGUI extends javax.swing.JFrame {
      * Creates new form CalendarGUI
      */
     public CalendarGUI() throws SQLException, IOException {
+        
         initComponents();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.getContentPane().setBackground( new Color(187,255,50));
-        this.ds = DBUtils.initDB();
+        DBUtils.setDataSource();
+        DBUtils.createDB();
+        DBUtils.insertIntoDB();
+        this.ds = DBUtils.getDataSource();
+        
         eventManager = new EventManagerImpl(ds);
         userManager = new UserManagerImpl(ds);
         log.debug("data source is " + ds.equals(null));
@@ -104,6 +138,10 @@ public class CalendarGUI extends javax.swing.JFrame {
         eventModel = (EventTableModel)JTableEvents.getModel();
         findAllEventsWorker = new FindAllEventsWorker();
         findAllEventsWorker.execute();
+        
+        usersComboBoxModel = (DefaultComboBoxModel) jComboBoxUsers.getModel();
+        userComboBoxWorker = new UserComboBoxWorker();
+        userComboBoxWorker.execute();
         
     }
 

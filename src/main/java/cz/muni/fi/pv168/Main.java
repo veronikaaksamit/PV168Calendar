@@ -22,8 +22,10 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 public class Main {
 
     public static void main(String[] args) throws IOException, SQLException{
-
-        DataSource ds = DBUtils.initDB();
+        DBUtils.setDataSource();
+        DataSource ds = DBUtils.getDataSource();
+        DBUtils.createDB();
+        DBUtils.insertIntoDB();
 
         UserManager userManager = new UserManagerImpl(ds);
 
@@ -60,12 +62,9 @@ public class Main {
         for (Event e: events) {
             System.out.println(e.toString());
         }
+        DBUtils.deleteDB();
     }
-    public static DataSource createMemoryDatabase() throws IOException, SQLException {
-        DataSource ds = DBUtils.initDB();
-        
-        return ds;
-    }
+    
     
     /*public static DataSource createMemoryDatabase() throws IOException, SQLException{
         DataSource ds = DBUtils.initDB();

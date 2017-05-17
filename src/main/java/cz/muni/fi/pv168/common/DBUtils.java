@@ -22,9 +22,13 @@ import java.util.logging.Logger;
  */
 public class DBUtils {
 
-
     private static final Logger logger = Logger.getLogger(DBUtils.class.getName());
+    private static BasicDataSource ds;
 
+    public static BasicDataSource getDataSource() {
+        return ds;
+    }
+    
     /**
      * Closes connection and logs possible error.
      *
@@ -55,30 +59,55 @@ public class DBUtils {
         }
     }
 
-    public static DataSource initDB() throws SQLException, IOException{
+    public static DataSource setDataSource() throws SQLException, IOException{
         Properties dbConf = new Properties();
         dbConf.load(Main.class.getResourceAsStream("/dbConf.properties"));
-
-        BasicDataSource ds = new BasicDataSource();
-        
+        ds = new BasicDataSource();
         
         ds.setUrl(dbConf.getProperty("jdbc.url"));
         ds.setUsername(dbConf.getProperty("jdbc.user"));
         ds.setPassword(dbConf.getProperty("jdbc.password"));
         
-        //DBUtils.executeSqlScript(ds, Main.class.getResourceAsStream("/dropTables.sql"));
-        
-
-        DBUtils.executeSqlScript(ds, Main.class.getResourceAsStream("/createTables.sql"));
-        
-        DBUtils.executeSqlScript(ds, Main.class.getResourceAsStream("/testData.sql"));
         return ds;
     }
-    private static String[] readSqlStatements(InputStream inputStream) {
+    
+    public static void createDB() {
+        try {
+            DBUtils.executeSqlScript(ds, Main.class.getResource("/createTables.sql"));
+        } catch (SQLException ex) {
+            // show JOptionPane.showMessageDialog some error
+            //logger.error("Error while creating a database from SQL script " + Main.class.getResource("/createTables.sql")
+               //         + "Exception: " + ex.getCause());
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public static void insertIntoDB() {
+        try {
+            DBUtils.executeSqlScript(ds, Main.class.getResource("/testData.sql"));
+        } catch (SQLException ex) {
+             //show JOptionPane.showMessageDialog some error
+           // log.error("Error while inserting test data in dabaase from SQL script "+ Main.class.getResource("/insertValues.sql")
+             //           + "Exception: " + ex.getCause());
+             System.out.println(ex.getMessage());
+        }
+    }
+    
+    public static void deleteDB() {
+        try {
+            // we need to create dropTables.sql file
+            DBUtils.executeSqlScript(ds, Main.class.getResource("/dropTables.sql"));
+        } catch (SQLException ex) {
+            //log.error("Error while dropping database schema "+ Main.class.getResource("/dropTables.sql") + "Exception: "
+              //          + ex.getCause());
+        }
+    } 
+    
+    private static String[] readSqlStatements(URL url) {
         try {
             char buffer[] = new char[256];
             StringBuilder result = new StringBuilder();
-            InputStreamReader reader = new InputStreamReader(inputStream, "UTF-8");
+            InputStreamReader reader = new InputStreamReader(url.openStream(), "UTF-8");
             while (true) {
                 int count = reader.read(buffer);
                 if (count < 0) {
@@ -92,19 +121,13 @@ public class DBUtils {
         }
     }
 
-    public static void executeSqlScript(DataSource ds, InputStream inputStream) throws SQLException{
-        Connection conn = ds.getConnection();
-        try {
-            conn = ds.getConnection();
-            for (String sqlStatement : readSqlStatements(inputStream)) {
+    public static void executeSqlScript(DataSource ds, URL url) throws SQLException{
+        try ( Connection conn = ds.getConnection()){
+            for (String sqlStatement : readSqlStatements(url)) {
                 if (!sqlStatement.trim().isEmpty()) {
                     conn.prepareStatement(sqlStatement).executeUpdate();
                 }
             }
-        }
-        finally
-        {
-            closeQuietly(conn);
         }
     }
 
