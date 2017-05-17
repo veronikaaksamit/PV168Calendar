@@ -23,8 +23,7 @@ import java.util.logging.Logger;
 public class DBUtils {
 
 
-    private static final Logger logger = Logger.getLogger(
-            DBUtils.class.getName());
+    private static final Logger logger = Logger.getLogger(DBUtils.class.getName());
 
     /**
      * Closes connection and logs possible error.
@@ -66,8 +65,14 @@ public class DBUtils {
         ds.setUrl(dbConf.getProperty("jdbc.url"));
         ds.setUsername(dbConf.getProperty("jdbc.user"));
         ds.setPassword(dbConf.getProperty("jdbc.password"));
+        
+        try{
+            DBUtils.executeSqlScript(ds, Main.class.getResource("/dropTables.sql"));
+        }
+        catch(SQLException ex){
+            logger.log(Level.SEVERE.INFO, "SQLException, maybe the database was not created yet" + ex.getMessage());
+        }
 
-        DBUtils.executeSqlScript(ds, Main.class.getResource("/dropTables.sql"));
         DBUtils.executeSqlScript(ds, Main.class.getResource("/createTables.sql"));
         
         DBUtils.executeSqlScript(ds, Main.class.getResource("/testData.sql"));
