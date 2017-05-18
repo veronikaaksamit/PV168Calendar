@@ -297,6 +297,11 @@ public class CalendarGUI extends javax.swing.JFrame {
         jLabelSelectUser.setFocusable(false);
 
         jTableEvents.setModel(new EventTableModel());
+        jTableEvents.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jTableEventsMouseReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTableEvents);
         if (jTableEvents.getColumnModel().getColumnCount() > 0) {
             jTableEvents.getColumnModel().getColumn(1).setResizable(false);
@@ -333,6 +338,7 @@ public class CalendarGUI extends javax.swing.JFrame {
             }
         });
 
+        jButtonEditEvent.setEnabled(false);
         jButtonEditEvent.setText("Edit event");
         jButtonEditEvent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -340,6 +346,7 @@ public class CalendarGUI extends javax.swing.JFrame {
             }
         });
 
+        jButtonDeleteEvent.setEnabled(false);
         jButtonDeleteEvent.setText("Delete event");
         jButtonDeleteEvent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -430,6 +437,7 @@ public class CalendarGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonDeleteUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDeleteUserMouseClicked
+        jButtonEditEvent.setEnabled(false);
         jButtonDeleteUser.setEnabled(false);
         deleteUserWorker = new DeleteUserWorker();
         deleteUserWorker.execute();
@@ -437,14 +445,16 @@ public class CalendarGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonDeleteUserMouseClicked
 
     private void jButtonSelectAllUsersMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSelectAllUsersMouseReleased
+        jButtonEditEvent.setEnabled(false);
+        jButtonDeleteEvent.setEnabled(false);
         jButtonSelectAllUsers.setEnabled(false);
-        jButtonDeleteEvent.setEnabled(true);
         findAllEventsWorker = new FindAllEventsWorker();
         findAllEventsWorker.execute();
         
     }//GEN-LAST:event_jButtonSelectAllUsersMouseReleased
 
     private void jButtonSelectEventsByUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSelectEventsByUserMouseClicked
+        jButtonEditEvent.setEnabled(false);
         jButtonSelectEventsByUser.setEnabled(false);
         jButtonSelectAllUsers.setEnabled(true);
         findEventByUserWorker = new FindEventByUserWorker();
@@ -453,10 +463,10 @@ public class CalendarGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSelectEventsByUserMouseClicked
 
     private void jButtonDeleteEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteEventActionPerformed
+        jButtonEditEvent.setEnabled(false);
         jButtonDeleteEvent.setEnabled(false);
         deleteEventWorker = new DeleteEventWorker();
         deleteEventWorker.execute();
-        jButtonDeleteEvent.setEnabled(true);
     }//GEN-LAST:event_jButtonDeleteEventActionPerformed
 
     private void jButtonAddEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddEventActionPerformed
@@ -496,6 +506,18 @@ public class CalendarGUI extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_jButtonEditEventActionPerformed
+
+    private void jTableEventsMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableEventsMouseReleased
+        if(jTableEvents.getSelectedRowCount()!= 1){
+            jButtonEditEvent.setEnabled(false);
+        }else{
+            jButtonEditEvent.setEnabled(true);
+        }
+        if(jTableEvents.getSelectedRowCount()> 0){
+            jButtonDeleteEvent.setEnabled(true);
+        }
+    
+    }//GEN-LAST:event_jTableEventsMouseReleased
 
     /**
      * @param args the command line arguments
