@@ -226,15 +226,7 @@ public class FilterForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCancelMouseClicked
 
     private void jButtonOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonOKMouseClicked
-        if(this.action== "add"){
-            addUserWorker = new AddUserWorker();
-            addUserWorker.execute();
-        }
-        if(this.action == "update"){
-            updateUserWorker = new UpdateUserWorker();
-            updateUserWorker.execute();
-        }
-        context.setEnabled(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonOKMouseClicked
 
     /**

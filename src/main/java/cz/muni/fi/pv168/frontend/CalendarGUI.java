@@ -303,6 +303,7 @@ public class CalendarGUI extends javax.swing.JFrame {
         jButtonSelectAllUsers = new javax.swing.JButton();
         jComboBoxUsers = new javax.swing.JComboBox<>();
         jButtonSelectEventsByUser = new javax.swing.JButton();
+        jButtonFilter = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Calendar");
@@ -378,6 +379,11 @@ public class CalendarGUI extends javax.swing.JFrame {
                 jButtonSelectAllUsersMouseReleased(evt);
             }
         });
+        jButtonSelectAllUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSelectAllUsersActionPerformed(evt);
+            }
+        });
 
         jComboBoxUsers.setModel(getUsersComboBox());
         userComboBoxWorker = new UserComboBoxWorker();
@@ -390,36 +396,44 @@ public class CalendarGUI extends javax.swing.JFrame {
             }
         });
 
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("texts"); // NOI18N
+        jButtonFilter.setText(bundle.getString("Filter")); // NOI18N
+        jButtonFilter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonFilterMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButtonSelectAllUsers)
-                        .addGap(62, 62, 62)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonFilter)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonAddEvent)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonEditEvent)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonDeleteEvent))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabelSelectUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jComboBoxUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonSelectEventsByUser)
-                            .addGap(18, 18, 18)
-                            .addComponent(jButtonEditUser)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jButtonCreateUser)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jButtonDeleteUser))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelSelectUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonSelectEventsByUser)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonEditUser)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonCreateUser)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonDeleteUser))
+                    .addComponent(jScrollPane2))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -442,7 +456,8 @@ public class CalendarGUI extends javax.swing.JFrame {
                     .addComponent(jButtonAddEvent)
                     .addComponent(jButtonEditEvent)
                     .addComponent(jButtonDeleteEvent)
-                    .addComponent(jButtonSelectAllUsers))
+                    .addComponent(jButtonSelectAllUsers)
+                    .addComponent(jButtonFilter))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
@@ -536,6 +551,19 @@ public class CalendarGUI extends javax.swing.JFrame {
     
     }//GEN-LAST:event_jTableEventsMouseReleased
 
+    private void jButtonSelectAllUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSelectAllUsersActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonSelectAllUsersActionPerformed
+
+    private void jButtonFilterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonFilterMouseClicked
+        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new EventForm(CalendarGUI.this, null, -1, "add").setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_jButtonFilterMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -584,6 +612,7 @@ public class CalendarGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButtonDeleteUser;
     private javax.swing.JButton jButtonEditEvent;
     private javax.swing.JButton jButtonEditUser;
+    private javax.swing.JButton jButtonFilter;
     private javax.swing.JButton jButtonSelectAllUsers;
     private javax.swing.JButton jButtonSelectEventsByUser;
     private javax.swing.JComboBox<String> jComboBoxUsers;

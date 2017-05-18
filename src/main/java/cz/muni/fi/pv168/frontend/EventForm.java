@@ -9,6 +9,7 @@ import cz.muni.fi.pv168.Category;
 import cz.muni.fi.pv168.Event;
 import cz.muni.fi.pv168.User;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
