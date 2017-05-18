@@ -241,6 +241,11 @@ public class CalendarGUI extends javax.swing.JFrame {
         jButtonCreateUser.setText("Create user");
 
         jButtonAddEvent.setText("Add event");
+        jButtonAddEvent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddEventActionPerformed(evt);
+            }
+        });
 
         jButtonEditEvent.setText("Edit event");
 
@@ -362,6 +367,15 @@ public class CalendarGUI extends javax.swing.JFrame {
         deleteEventWorker.execute();
         jButtonDeleteEvent.setEnabled(true);
     }//GEN-LAST:event_jButtonDeleteEventActionPerformed
+
+    private void jButtonAddEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddEventActionPerformed
+       java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                int selectedRow = jTableEvents.getSelectedRow();
+                new EventForm(CalendarGUI.this, eventModel.getEvent(selectedRow), selectedRow, "update");
+            }
+        });
+    }//GEN-LAST:event_jButtonAddEventActionPerformed
 
     /**
      * @param args the command line arguments

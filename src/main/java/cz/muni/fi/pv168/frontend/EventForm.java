@@ -5,6 +5,7 @@
  */
 package cz.muni.fi.pv168.frontend;
 
+import cz.muni.fi.pv168.Event;
 import cz.muni.fi.pv168.common.DateTimePicker;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -26,6 +27,38 @@ public class EventForm extends javax.swing.JFrame {
 
     private String mode;
     private long eventId;
+    private CalendarGUI context;
+    private Event event;
+    
+    /**
+     * Creates new form AddWine
+     */
+    public EventForm(CalendarGUI context, Event event, int rowIndex, String action) {
+        initComponents();
+       
+        jComboBox1.setModel(wineSampleCharacterComboBoxModel);
+        jComboBox2.setModel(wineSampleColorComboBoxModel);
+        jComboBox3.setModel(wineSampleYearComboBoxModel);
+        
+        this.context = context;
+        this.event = event;
+        this.rowIndex = rowIndex;
+        this.action = action;
+        this.wineSampleModel = context.getWineSampleModel();
+        jButton1.setText(bundle.getString(action));
+        
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        
+        if (wineSample != null) {
+            jTextField1.setText(wineSample.getVintnerFirstName());
+            jTextField2.setText(wineSample.getVintnerLastName());
+            jTextField3.setText(wineSample.getVariety());
+            jComboBox1.setSelectedItem(wineSample.getCharacter());
+            jComboBox2.setSelectedItem(wineSample.getColor());
+            jComboBox3.setSelectedItem(wineSample.getYear());
+        }
+        this.setVisible(true);
+    }
     /**
      * Creates new form EventForm
      */
