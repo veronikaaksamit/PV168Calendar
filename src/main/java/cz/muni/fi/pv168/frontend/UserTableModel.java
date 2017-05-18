@@ -23,6 +23,7 @@ public class UserTableModel extends AbstractTableModel {
     final static Logger log = LoggerFactory.getLogger(UserTableModel.class);
     private List<User> users = new ArrayList<User>();
     
+    
     @Override
     public int getRowCount() {
         return users.size();
@@ -31,6 +32,10 @@ public class UserTableModel extends AbstractTableModel {
     @Override
     public int getColumnCount() {
         return 2;
+    }
+    
+    public void clearTable() {
+        users = new ArrayList<User>();
     }
     
     public User getUser(int index) {

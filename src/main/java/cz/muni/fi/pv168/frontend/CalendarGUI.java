@@ -420,7 +420,7 @@ public class CalendarGUI extends javax.swing.JFrame {
                             .addComponent(jButtonCreateUser)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(jButtonDeleteUser))))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -443,7 +443,7 @@ public class CalendarGUI extends javax.swing.JFrame {
                     .addComponent(jButtonEditEvent)
                     .addComponent(jButtonDeleteEvent)
                     .addComponent(jButtonSelectAllUsers))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jButtonSelectAllUsers.getAccessibleContext().setAccessibleName("jButtonListEvents");
