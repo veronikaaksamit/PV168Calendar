@@ -70,8 +70,10 @@ public class EventForm extends javax.swing.JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
         if (event != null) {
+            Long id = event.getUserId();
             
-            jComboBoxUsersInEventForm.setSelectedItem(jComboBoxUsersInEventForm.getSelectedItem());
+            User u = context.getUserTableModel().getUserById(id);
+            jComboBoxUsersInEventForm.setSelectedItem(u.getEmail());
             jTextFieldFullname.setText(event.getEventName());
             jComboBoxCategory.setSelectedItem(event.getCategory());
             jTextFieldDescription.setText(event.getDescription());

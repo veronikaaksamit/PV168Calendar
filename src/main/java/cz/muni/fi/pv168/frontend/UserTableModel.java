@@ -45,6 +45,13 @@ public class UserTableModel extends AbstractTableModel {
         return null;
     }
     
+    public User getUserById(Long id) {
+        for(User u: users){
+            if(u.getId().equals(id))
+                return u;
+        }
+        return null;
+    }
     private void deleteUser(int index){
         users.remove(index);
         fireTableRowsDeleted(index, index);
@@ -95,5 +102,12 @@ public class UserTableModel extends AbstractTableModel {
         users.add(userToAdd);
         fireTableDataChanged();
     }
+     
+     public void updateUser(User user){
+         for(int i= 0; i < users.size(); i++){
+            if(users.get(i).getId().equals(user.getId()))
+                users.set(i, user);
+        } 
+     }
     
 }

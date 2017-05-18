@@ -86,6 +86,7 @@ public class UserForm extends javax.swing.JFrame {
              try{
                  User user = get();
                  context.getjComboBoxUsers().addItem(user.getEmail());
+                 context.getUserTableModel().addUser(user);
                  UserForm.this.dispose();
             }catch(ExecutionException ex) {
                 log.error("Exception was thrown in AddUserWorker in method doInBackGround " + ex.getCause());
@@ -109,7 +110,9 @@ public class UserForm extends javax.swing.JFrame {
         protected void done(){
              try{
                  User user = get();
-                 context.getjComboBoxUsers().setSelectedItem(user.getEmail());
+                 context.getjComboBoxUsers().removeItem(context.getjComboBoxUsers().getSelectedItem());
+                 context.getjComboBoxUsers().addItem(user.getEmail());
+                 context.getUserTableModel().updateUser(user);
                  UserForm.this.dispose();
             }catch(ExecutionException ex) {
                 log.error("Exception was thrown in AddUserWorker in method doInBackGround " + ex.getCause());
