@@ -33,9 +33,10 @@ public class EventForm extends javax.swing.JFrame {
     private Event event;
     private int rowIndex;
     private String action;
+    private EventTableModel eventTableModel;
     
     /**
-     * Creates new form AddWine
+     * Creates new form EventForm 
      */
     public EventForm(CalendarGUI context, Event event, int rowIndex, String action) {
         initComponents();
@@ -44,6 +45,7 @@ public class EventForm extends javax.swing.JFrame {
         this.event = event;
         this.rowIndex = rowIndex;
         this.action = action;
+        this.eventTableModel = context.getEventTableModel();
         jButtonCancel.setText(rb.getString("cancel"));
         
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

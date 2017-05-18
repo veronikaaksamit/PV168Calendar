@@ -162,6 +162,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Edit user"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEditUserActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonDeleteUser">
       <Properties>
@@ -176,6 +179,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Create user"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCreateUserActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonAddEvent">
       <Properties>
@@ -189,6 +195,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Edit event"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEditEventActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonDeleteEvent">
       <Properties>

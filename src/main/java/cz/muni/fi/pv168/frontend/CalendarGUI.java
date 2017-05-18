@@ -35,14 +35,19 @@ public class CalendarGUI extends javax.swing.JFrame {
     private EventManager eventManager;
     
     private EventTableModel eventModel;
+    private User userToEdit;
     
     private DeleteEventWorker deleteEventWorker;
     private FindAllEventsWorker findAllEventsWorker;
     private FindEventByUserWorker findEventByUserWorker;
     private UserComboBoxWorker userComboBoxWorker;
+    private FindUserByEmailWorker findUserByEmailWorker;
     
     private DefaultComboBoxModel usersComboBoxModel = new DefaultComboBoxModel();
     
+    public EventTableModel getEventTableModel(){
+        return eventModel;
+    }
     
     private DefaultComboBoxModel getUsersComboBox(){
         return usersComboBoxModel;
@@ -54,6 +59,28 @@ public class CalendarGUI extends javax.swing.JFrame {
             result[i] = rows.get(i);
         }
         return result;
+    }
+    
+    private class FindUserByEmailWorker extends SwingWorker<User, Integer>{
+        
+        @Override
+        protected User doInBackground() throws Exception {
+            String email = (String) jComboBoxUsers.getSelectedItem();
+            return userManager.getUserByEmail(email);
+        }
+        
+        @Override
+        protected void done(){
+             try{
+                log.debug("Getting user by email ");
+                userToEdit = get();
+            }catch(ExecutionException ex) {
+                log.error("Exception was thrown in FindUserByEmailWorker in method doInBackGround " + ex.getCause());
+            } catch (InterruptedException ex) {
+                log.error("Method doInBackground has been interrupted in FindUserByEmailWorker " + ex.getCause());
+                throw new RuntimeException("Operation interrupted in FindUserByEmailWorker");
+            }
+        }
     }
     
     private class FindEventByUserWorker extends SwingWorker<List<Event>, Integer>{
@@ -229,6 +256,11 @@ public class CalendarGUI extends javax.swing.JFrame {
         }
 
         jButtonEditUser.setText("Edit user");
+        jButtonEditUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditUserActionPerformed(evt);
+            }
+        });
 
         jButtonDeleteUser.setText("Delete user");
         jButtonDeleteUser.setName(""); // NOI18N
@@ -239,6 +271,11 @@ public class CalendarGUI extends javax.swing.JFrame {
         });
 
         jButtonCreateUser.setText("Create user");
+        jButtonCreateUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCreateUserActionPerformed(evt);
+            }
+        });
 
         jButtonAddEvent.setText("Add event");
         jButtonAddEvent.addActionListener(new java.awt.event.ActionListener() {
@@ -248,6 +285,11 @@ public class CalendarGUI extends javax.swing.JFrame {
         });
 
         jButtonEditEvent.setText("Edit event");
+        jButtonEditEvent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditEventActionPerformed(evt);
+            }
+        });
 
         jButtonDeleteEvent.setText("Delete event");
         jButtonDeleteEvent.addActionListener(new java.awt.event.ActionListener() {
@@ -371,11 +413,40 @@ public class CalendarGUI extends javax.swing.JFrame {
     private void jButtonAddEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddEventActionPerformed
        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                int selectedRow = jTableEvents.getSelectedRow();
-                new EventForm(CalendarGUI.this, eventModel.getEvent(selectedRow), selectedRow, "update");
+                new EventForm(CalendarGUI.this, null, -1, "add").setVisible(true);
             }
         });
     }//GEN-LAST:event_jButtonAddEventActionPerformed
+
+    private void jButtonCreateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateUserActionPerformed
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new UserForm(CalendarGUI.this, null, -1, "add").setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_jButtonCreateUserActionPerformed
+
+    private void jButtonEditUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditUserActionPerformed
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                int selectedRow = jComboBoxUsers.getSelectedIndex();
+                findUserByEmailWorker = new FindUserByEmailWorker();
+                findUserByEmailWorker.execute();
+                new UserForm(CalendarGUI.this, userToEdit , selectedRow, "update");
+            }
+        });
+    }//GEN-LAST:event_jButtonEditUserActionPerformed
+
+    private void jButtonEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditEventActionPerformed
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                int selectedRow = jTableEvents.getSelectedRow();
+                if(selectedRow > 0){
+                    new EventForm(CalendarGUI.this, eventModel.getEvent(selectedRow), selectedRow, "update");
+                }                
+            }
+        });
+    }//GEN-LAST:event_jButtonEditEventActionPerformed
 
     /**
      * @param args the command line arguments
