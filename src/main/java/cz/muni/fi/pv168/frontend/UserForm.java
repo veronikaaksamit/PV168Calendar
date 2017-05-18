@@ -8,6 +8,9 @@ package cz.muni.fi.pv168.frontend;
 import cz.muni.fi.pv168.User;
 import cz.muni.fi.pv168.frontend.CalendarGUI.FindUserByEmailWorker;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +29,84 @@ public class UserForm extends javax.swing.JFrame {
     private String selectedEmail;
     private String action;
     
+    private AddUserWorker addUserWorker;
+    private UpdateUserWorker updateUserWorker;
     
+    public class AddUserWorker extends SwingWorker<User, Integer>{
+        
+        @Override
+        protected User doInBackground() throws Exception {
+            user = getUserFromForm();
+            context.getUserManager().createUser(user);
+            return user;
+        }
+        
+        @Override
+        protected void done(){
+             try{
+                 User user = get();
+                 context.getjComboBoxUsers().addItem(user.getEmail());
+                 UserForm.this.dispose();
+            }catch(ExecutionException ex) {
+                log.error("Exception was thrown in AddUserWorker in method doInBackGround " + ex.getCause());
+            } catch (InterruptedException ex) {
+                log.error("Method doInBackground has been interrupted in AddUserWorker " + ex.getCause());
+                throw new RuntimeException("Operation interrupted in AddUserWorker");
+            }
+        }
+    }
+    
+    public class UpdateUserWorker extends SwingWorker<User, Integer>{
+        
+        @Override
+        protected User doInBackground() throws Exception {
+            user = getUserFromForm();
+            context.getUserManager().updateUser(user);
+            return user;
+        }
+        
+        @Override
+        protected void done(){
+             try{
+                 User user = get();
+                 context.getjComboBoxUsers().setSelectedItem(user.getEmail());
+                 UserForm.this.dispose();
+            }catch(ExecutionException ex) {
+                log.error("Exception was thrown in AddUserWorker in method doInBackGround " + ex.getCause());
+            } catch (InterruptedException ex) {
+                log.error("Method doInBackground has been interrupted in AddUserWorker " + ex.getCause());
+                throw new RuntimeException("Operation interrupted in AddUserWorker");
+            }
+        }
+    }
+     
+     private User getUserFromForm(){
+         String name = jTextFieldName.getText();
+         if(name == null || name.length() < 3){
+             warningMessageBox(rb.getString("name-null"));
+             return null;
+         }
+         
+         String email= jTextFieldEmail.getText();
+         if(email == null || email.length() < 3 || !email.contains("@") ){
+             warningMessageBox(rb.getString("email-not-valid"));   
+             return null;
+         }
+         
+         if(this.user == null){
+             this.user = new User();
+         }
+         
+         this.user.setEmail(email);
+         this.user.setFullName(name);
+         
+         return this.user;
+     }
+    
+     private void warningMessageBox(String message) {
+        log.debug("Showing warning message box with message: " + message);
+        JOptionPane.showMessageDialog(rootPane, message, null, JOptionPane.INFORMATION_MESSAGE);
+    }
     /**
      * Creates new form UserForm
      */
@@ -45,16 +125,19 @@ public class UserForm extends javax.swing.JFrame {
      */
     public UserForm(CalendarGUI context, User user, String selectedEmail, String act) {
         initComponents();
-        
+        context.setEnabled(false);
         this.context = context;
         this.selectedEmail = selectedEmail;
         this.action = act;
         jButtonCancel.setText(rb.getString("cancel"));
         
-        log.debug("UserForm contructor getting user by email " + selectedEmail);
-        this.user = context.getUserManager().getUserByEmail(selectedEmail);
         
-        log.debug("UserForm got user by email");
+        if(selectedEmail != null && !selectedEmail.isEmpty()){   
+            log.debug("UserForm contructor getting user by email " + selectedEmail);
+            this.user = context.getUserManager().getUserByEmail(selectedEmail);
+            log.debug("UserForm got user by email");
+        }
+        
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
         if (this.user != null) {
@@ -82,6 +165,11 @@ public class UserForm extends javax.swing.JFrame {
         jTextFieldEmail = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jButtonOK.setText("Ok");
         jButtonOK.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -150,13 +238,24 @@ public class UserForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonOKMouseClicked
-        // TODO add your handling code here:
-        this.dispose();
+        if(this.action== "add"){
+            addUserWorker = new AddUserWorker();
+            addUserWorker.execute();
+        }
+        if(this.action == "update"){
+            updateUserWorker = new UpdateUserWorker();
+            updateUserWorker.execute();
+        }
+        context.setEnabled(true);
     }//GEN-LAST:event_jButtonOKMouseClicked
 
     private void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
         this.dispose();
     }//GEN-LAST:event_jButtonCancelMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        context.setEnabled(true);
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments

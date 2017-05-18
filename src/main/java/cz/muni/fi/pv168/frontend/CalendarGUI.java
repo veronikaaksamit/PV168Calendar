@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import javax.sql.DataSource;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.SwingWorker;
 import org.slf4j.*;
 
@@ -49,6 +50,10 @@ public class CalendarGUI extends javax.swing.JFrame {
     private FindUserByEmailWorker findUserByEmailWorker;
     
     private DefaultComboBoxModel usersComboBoxModel = new DefaultComboBoxModel();
+
+    public JComboBox<String> getjComboBoxUsers() {
+        return jComboBoxUsers;
+    }
     
     
     public EventTableModel getEventTableModel(){
