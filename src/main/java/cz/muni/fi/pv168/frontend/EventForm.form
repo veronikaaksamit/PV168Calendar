@@ -28,29 +28,29 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="namelabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelFullname" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="eventLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="descLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="categoryLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelDescription" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelCategory" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="okButton" min="-2" pref="71" max="-2" attributes="0"/>
+                              <Component id="jButtonOK" min="-2" pref="71" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="cancelButton" min="-2" pref="71" max="-2" attributes="0"/>
+                              <Component id="jButtonCancel" min="-2" pref="71" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="nameTextField" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="descTextField" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="categoryComboBox" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jTextFieldFullname" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jTextFieldDescription" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jComboBoxCategory" alignment="0" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="endDatePanel" min="-2" max="-2" attributes="0"/>
-                                          <Component id="startDatePanel" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jPanelEndDate" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jPanelStartDate" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -60,8 +60,8 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="startDatelabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="EndDateLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelStartDate" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelEndDate" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -76,56 +76,56 @@
               <Component id="eventLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="namelabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="nameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelFullname" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldFullname" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="descLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="descTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelDescription" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldDescription" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="categoryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="categoryComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelCategory" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jComboBoxCategory" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="startDatelabel" min="-2" max="-2" attributes="0"/>
-                  <Component id="startDatePanel" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelStartDate" min="-2" max="-2" attributes="0"/>
+                  <Component id="jPanelStartDate" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="EndDateLabel" min="-2" max="-2" attributes="0"/>
-                  <Component id="endDatePanel" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabelEndDate" min="-2" max="-2" attributes="0"/>
+                  <Component id="jPanelEndDate" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="53" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="okButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonOK" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonCancel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="okButton">
+    <Component class="javax.swing.JButton" name="jButtonOK">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ok"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="okButtonMouseClicked"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonOKMouseClicked"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="cancelButton">
+    <Component class="javax.swing.JButton" name="jButtonCancel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cancel"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cancelButtonMouseClicked"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonCancelMouseClicked"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JComboBox" name="categoryComboBox">
+    <Component class="javax.swing.JComboBox" name="jComboBoxCategory">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">
@@ -140,12 +140,12 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="startDatelabel">
+    <Component class="javax.swing.JLabel" name="jLabelStartDate">
       <Properties>
         <Property name="text" type="java.lang.String" value="Start Date:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="EndDateLabel">
+    <Component class="javax.swing.JLabel" name="jLabelEndDate">
       <Properties>
         <Property name="text" type="java.lang.String" value="End Date:"/>
       </Properties>
@@ -158,26 +158,26 @@
         <Property name="text" type="java.lang.String" value="Event"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="namelabel">
+    <Component class="javax.swing.JLabel" name="jLabelFullname">
       <Properties>
         <Property name="text" type="java.lang.String" value="Name:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="descLabel">
+    <Component class="javax.swing.JLabel" name="jLabelDescription">
       <Properties>
         <Property name="text" type="java.lang.String" value="Description:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="nameTextField">
+    <Component class="javax.swing.JTextField" name="jTextFieldFullname">
     </Component>
-    <Component class="javax.swing.JTextField" name="descTextField">
+    <Component class="javax.swing.JTextField" name="jTextFieldDescription">
     </Component>
-    <Component class="javax.swing.JLabel" name="categoryLabel">
+    <Component class="javax.swing.JLabel" name="jLabelCategory">
       <Properties>
         <Property name="text" type="java.lang.String" value="Category:"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JPanel" name="startDatePanel">
+    <Container class="javax.swing.JPanel" name="jPanelStartDate">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
@@ -186,7 +186,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="Date startDate = new Date();&#xa;JXDatePicker startDateDtp = new JXDatePicker();&#xa;startDateDtp.setDate(startDate);&#xa;startDateDtp.setBounds(0, 0, 200, 30);&#xa;startDatePanel.add(startDateDtp);&#xa;&#xa;SpinnerDateModel startDateSm = new SpinnerDateModel(startDate, null, null, Calendar.MINUTE);&#xa;JSpinner startDateSpinner = new JSpinner(startDateSm);&#xa;JSpinner.DateEditor startDateDe = new JSpinner.DateEditor(startDateSpinner, &quot;HH:mm&quot;);&#xa;startDateDe.getTextField().setEditable( false );&#xa;startDateSpinner.setEditor(startDateDe);&#xa;startDateSpinner.setBounds(210, 0, 100, 30);&#xa;startDatePanel.add(startDateSpinner);"/>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="Date startDate = new Date();&#xa;JXDatePicker startDateDtp = new JXDatePicker();&#xa;startDateDtp.setDate(startDate);&#xa;startDateDtp.setBounds(0, 0, 200, 30);&#xa;jPanelStartDate.add(startDateDtp);&#xa;&#xa;SpinnerDateModel startDateSm = new SpinnerDateModel(startDate, null, null, Calendar.MINUTE);&#xa;JSpinner startDateSpinner = new JSpinner(startDateSm);&#xa;JSpinner.DateEditor startDateDe = new JSpinner.DateEditor(startDateSpinner, &quot;HH:mm&quot;);&#xa;startDateDe.getTextField().setEditable( false );&#xa;startDateSpinner.setEditor(startDateDe);&#xa;startDateSpinner.setBounds(210, 0, 100, 30);&#xa;jPanelStartDate.add(startDateSpinner);"/>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel()"/>
       </AuxValues>
 
@@ -203,7 +203,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="javax.swing.JPanel" name="endDatePanel">
+    <Container class="javax.swing.JPanel" name="jPanelEndDate">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
@@ -212,7 +212,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="Date endDate = new Date();&#xa;Calendar cal = Calendar.getInstance();&#xa;cal.setTime(endDate);&#xa;cal.add(Calendar.HOUR_OF_DAY, 1);&#xa;endDate = cal.getTime(); &#xa;&#xa;JXDatePicker endDateDtp = new JXDatePicker();&#xa;endDateDtp.setDate(endDate);&#xa;endDateDtp.setBounds(0, 0, 200, 30);&#xa;endDatePanel.add(endDateDtp);&#xa;&#xa;SpinnerDateModel endDateSm = new SpinnerDateModel(endDate, null, null, Calendar.MINUTE);&#xa;JSpinner endDateSpinner = new JSpinner(endDateSm);&#xa;JSpinner.DateEditor endDateDe = new JSpinner.DateEditor(endDateSpinner, &quot;HH:mm&quot;);&#xa;endDateDe.getTextField().setEditable( false );&#xa;endDateSpinner.setEditor(endDateDe);&#xa;endDateSpinner.setBounds(210, 0, 100, 30);&#xa;endDatePanel.add(endDateSpinner);"/>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="Date endDate = new Date();&#xa;Calendar cal = Calendar.getInstance();&#xa;cal.setTime(endDate);&#xa;cal.add(Calendar.HOUR_OF_DAY, 1);&#xa;endDate = cal.getTime(); &#xa;&#xa;JXDatePicker endDateDtp = new JXDatePicker();&#xa;endDateDtp.setDate(endDate);&#xa;endDateDtp.setBounds(0, 0, 200, 30);&#xa;jPanelEndDate.add(endDateDtp);&#xa;&#xa;SpinnerDateModel endDateSm = new SpinnerDateModel(endDate, null, null, Calendar.MINUTE);&#xa;JSpinner endDateSpinner = new JSpinner(endDateSm);&#xa;JSpinner.DateEditor endDateDe = new JSpinner.DateEditor(endDateSpinner, &quot;HH:mm&quot;);&#xa;endDateDe.getTextField().setEditable( false );&#xa;endDateSpinner.setEditor(endDateDe);&#xa;endDateSpinner.setBounds(210, 0, 100, 30);&#xa;jPanelEndDate.add(endDateSpinner);"/>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel()"/>
       </AuxValues>
 

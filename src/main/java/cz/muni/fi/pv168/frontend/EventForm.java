@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.ResourceBundle;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
@@ -25,37 +26,35 @@ import org.jdesktop.swingx.JXDatePicker;
  */
 public class EventForm extends javax.swing.JFrame {
 
+    private ResourceBundle rb = ResourceBundle.getBundle("texts");
     private String mode;
     private long eventId;
     private CalendarGUI context;
     private Event event;
+    private int rowIndex;
+    private String action;
     
     /**
      * Creates new form AddWine
      */
     public EventForm(CalendarGUI context, Event event, int rowIndex, String action) {
         initComponents();
-       
-        jComboBox1.setModel(wineSampleCharacterComboBoxModel);
-        jComboBox2.setModel(wineSampleColorComboBoxModel);
-        jComboBox3.setModel(wineSampleYearComboBoxModel);
         
         this.context = context;
         this.event = event;
         this.rowIndex = rowIndex;
         this.action = action;
-        this.wineSampleModel = context.getWineSampleModel();
-        jButton1.setText(bundle.getString(action));
+        jButtonCancel.setText(rb.getString("cancel"));
         
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
-        if (wineSample != null) {
-            jTextField1.setText(wineSample.getVintnerFirstName());
-            jTextField2.setText(wineSample.getVintnerLastName());
-            jTextField3.setText(wineSample.getVariety());
-            jComboBox1.setSelectedItem(wineSample.getCharacter());
-            jComboBox2.setSelectedItem(wineSample.getColor());
-            jComboBox3.setSelectedItem(wineSample.getYear());
+        if (event != null) {
+            jTextFieldFullname.setText(event.getEventName());
+            jComboBoxCategory.setSelectedItem(event.getCategory());
+            jTextFieldDescription.setText(event.getDescription());
+            //TODO setDate
+            //jPanelStartDate.setText();
+            //jPanelEndDate.setText();
         }
         this.setVisible(true);
     }
@@ -81,74 +80,74 @@ public class EventForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        okButton = new javax.swing.JButton();
-        cancelButton = new javax.swing.JButton();
-        categoryComboBox = new javax.swing.JComboBox<>();
-        startDatelabel = new javax.swing.JLabel();
-        EndDateLabel = new javax.swing.JLabel();
+        jButtonOK = new javax.swing.JButton();
+        jButtonCancel = new javax.swing.JButton();
+        jComboBoxCategory = new javax.swing.JComboBox<>();
+        jLabelStartDate = new javax.swing.JLabel();
+        jLabelEndDate = new javax.swing.JLabel();
         eventLabel = new javax.swing.JLabel();
-        namelabel = new javax.swing.JLabel();
-        descLabel = new javax.swing.JLabel();
-        nameTextField = new javax.swing.JTextField();
-        descTextField = new javax.swing.JTextField();
-        categoryLabel = new javax.swing.JLabel();
-        startDatePanel = new javax.swing.JPanel();
-        endDatePanel = new javax.swing.JPanel();
+        jLabelFullname = new javax.swing.JLabel();
+        jLabelDescription = new javax.swing.JLabel();
+        jTextFieldFullname = new javax.swing.JTextField();
+        jTextFieldDescription = new javax.swing.JTextField();
+        jLabelCategory = new javax.swing.JLabel();
+        jPanelStartDate = new javax.swing.JPanel();
+        jPanelEndDate = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        okButton.setText("Ok");
-        okButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButtonOK.setText("Ok");
+        jButtonOK.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                okButtonMouseClicked(evt);
+                jButtonOKMouseClicked(evt);
             }
         });
 
-        cancelButton.setText("Cancel");
-        cancelButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButtonCancel.setText("Cancel");
+        jButtonCancel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cancelButtonMouseClicked(evt);
+                jButtonCancelMouseClicked(evt);
             }
         });
 
-        categoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        startDatelabel.setText("Start Date:");
+        jLabelStartDate.setText("Start Date:");
 
-        EndDateLabel.setText("End Date:");
+        jLabelEndDate.setText("End Date:");
 
         eventLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         eventLabel.setText("Event");
 
-        namelabel.setText("Name:");
+        jLabelFullname.setText("Name:");
 
-        descLabel.setText("Description:");
+        jLabelDescription.setText("Description:");
 
-        categoryLabel.setText("Category:");
+        jLabelCategory.setText("Category:");
 
-        startDatePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanelStartDate.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        javax.swing.GroupLayout startDatePanelLayout = new javax.swing.GroupLayout(startDatePanel);
-        startDatePanel.setLayout(startDatePanelLayout);
-        startDatePanelLayout.setHorizontalGroup(
-            startDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jPanelStartDateLayout = new javax.swing.GroupLayout(jPanelStartDate);
+        jPanelStartDate.setLayout(jPanelStartDateLayout);
+        jPanelStartDateLayout.setHorizontalGroup(
+            jPanelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 578, Short.MAX_VALUE)
         );
-        startDatePanelLayout.setVerticalGroup(
-            startDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanelStartDateLayout.setVerticalGroup(
+            jPanelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 30, Short.MAX_VALUE)
         );
 
-        endDatePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanelEndDate.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        javax.swing.GroupLayout endDatePanelLayout = new javax.swing.GroupLayout(endDatePanel);
-        endDatePanel.setLayout(endDatePanelLayout);
-        endDatePanelLayout.setHorizontalGroup(
-            endDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jPanelEndDateLayout = new javax.swing.GroupLayout(jPanelEndDate);
+        jPanelEndDate.setLayout(jPanelEndDateLayout);
+        jPanelEndDateLayout.setHorizontalGroup(
+            jPanelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 578, Short.MAX_VALUE)
         );
-        endDatePanelLayout.setVerticalGroup(
-            endDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanelEndDateLayout.setVerticalGroup(
+            jPanelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 30, Short.MAX_VALUE)
         );
 
@@ -161,32 +160,32 @@ public class EventForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(namelabel)
+                            .addComponent(jLabelFullname)
                             .addComponent(eventLabel)
-                            .addComponent(descLabel)
-                            .addComponent(categoryLabel))
+                            .addComponent(jLabelDescription)
+                            .addComponent(jLabelCategory))
                         .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(38, 38, 38))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(nameTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(descTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(categoryComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldFullname, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldDescription, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBoxCategory, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(0, 0, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(endDatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(startDatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(jPanelEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jPanelStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(24, 24, 24))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(startDatelabel)
-                            .addComponent(EndDateLabel))
+                            .addComponent(jLabelStartDate)
+                            .addComponent(jLabelEndDate))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -196,35 +195,35 @@ public class EventForm extends javax.swing.JFrame {
                 .addComponent(eventLabel)
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(namelabel)
-                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelFullname)
+                    .addComponent(jTextFieldFullname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(descLabel)
-                    .addComponent(descTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelDescription)
+                    .addComponent(jTextFieldDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(categoryLabel)
-                    .addComponent(categoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelCategory)
+                    .addComponent(jComboBoxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(startDatelabel)
-                    .addComponent(startDatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelStartDate)
+                    .addComponent(jPanelStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(EndDateLabel)
-                    .addComponent(endDatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelEndDate)
+                    .addComponent(jPanelEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(okButton)
-                    .addComponent(cancelButton)))
+                    .addComponent(jButtonOK)
+                    .addComponent(jButtonCancel)))
         );
 
         Date startDate = new Date();
         JXDatePicker startDateDtp = new JXDatePicker();
         startDateDtp.setDate(startDate);
         startDateDtp.setBounds(0, 0, 200, 30);
-        startDatePanel.add(startDateDtp);
+        jPanelStartDate.add(startDateDtp);
 
         SpinnerDateModel startDateSm = new SpinnerDateModel(startDate, null, null, Calendar.MINUTE);
         JSpinner startDateSpinner = new JSpinner(startDateSm);
@@ -232,7 +231,7 @@ public class EventForm extends javax.swing.JFrame {
         startDateDe.getTextField().setEditable( false );
         startDateSpinner.setEditor(startDateDe);
         startDateSpinner.setBounds(210, 0, 100, 30);
-        startDatePanel.add(startDateSpinner);
+        jPanelStartDate.add(startDateSpinner);
         Date endDate = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(endDate);
@@ -242,7 +241,7 @@ public class EventForm extends javax.swing.JFrame {
         JXDatePicker endDateDtp = new JXDatePicker();
         endDateDtp.setDate(endDate);
         endDateDtp.setBounds(0, 0, 200, 30);
-        endDatePanel.add(endDateDtp);
+        jPanelEndDate.add(endDateDtp);
 
         SpinnerDateModel endDateSm = new SpinnerDateModel(endDate, null, null, Calendar.MINUTE);
         JSpinner endDateSpinner = new JSpinner(endDateSm);
@@ -250,20 +249,20 @@ public class EventForm extends javax.swing.JFrame {
         endDateDe.getTextField().setEditable( false );
         endDateSpinner.setEditor(endDateDe);
         endDateSpinner.setBounds(210, 0, 100, 30);
-        endDatePanel.add(endDateSpinner);
+        jPanelEndDate.add(endDateSpinner);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cancelButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelButtonMouseClicked
+    private void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
         // TODO add your handling code here:
       this.dispose();
-    }//GEN-LAST:event_cancelButtonMouseClicked
+    }//GEN-LAST:event_jButtonCancelMouseClicked
 
-    private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
+    private void jButtonOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonOKMouseClicked
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_okButtonMouseClicked
+    }//GEN-LAST:event_jButtonOKMouseClicked
 
     /**
      * @param args the command line arguments
@@ -301,18 +300,18 @@ public class EventForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel EndDateLabel;
-    private javax.swing.JButton cancelButton;
-    private javax.swing.JComboBox<String> categoryComboBox;
-    private javax.swing.JLabel categoryLabel;
-    private javax.swing.JLabel descLabel;
-    private javax.swing.JTextField descTextField;
-    private javax.swing.JPanel endDatePanel;
     private javax.swing.JLabel eventLabel;
-    private javax.swing.JTextField nameTextField;
-    private javax.swing.JLabel namelabel;
-    private javax.swing.JButton okButton;
-    private javax.swing.JPanel startDatePanel;
-    private javax.swing.JLabel startDatelabel;
+    private javax.swing.JButton jButtonCancel;
+    private javax.swing.JButton jButtonOK;
+    private javax.swing.JComboBox<String> jComboBoxCategory;
+    private javax.swing.JLabel jLabelCategory;
+    private javax.swing.JLabel jLabelDescription;
+    private javax.swing.JLabel jLabelEndDate;
+    private javax.swing.JLabel jLabelFullname;
+    private javax.swing.JLabel jLabelStartDate;
+    private javax.swing.JPanel jPanelEndDate;
+    private javax.swing.JPanel jPanelStartDate;
+    private javax.swing.JTextField jTextFieldDescription;
+    private javax.swing.JTextField jTextFieldFullname;
     // End of variables declaration//GEN-END:variables
 }
