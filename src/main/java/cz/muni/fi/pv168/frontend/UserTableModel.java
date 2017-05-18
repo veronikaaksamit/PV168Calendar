@@ -5,7 +5,7 @@
  */
 package cz.muni.fi.pv168.frontend;
 
-import cz.muni.fi.pv168.Event;
+import cz.muni.fi.pv168.User;
 import cz.muni.fi.pv168.common.DBUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,51 +18,55 @@ import org.slf4j.LoggerFactory;
  *
  * @author veronika
  */
-public class EventTableModel extends AbstractTableModel {
+public class UserTableModel extends AbstractTableModel {
 
-    final static Logger log = LoggerFactory.getLogger(EventTableModel.class);
-    private List<Event> events = new ArrayList<Event>();
+    final static Logger log = LoggerFactory.getLogger(UserTableModel.class);
+    private List<User> users = new ArrayList<User>();
     
     @Override
     public int getRowCount() {
-        return events.size();
+        return users.size();
     }
 
     @Override
     public int getColumnCount() {
-        return 5;
+        return 2;
     }
     
-    public Event getEvent(int index) {
-        return events.get(index);
+    public User getUser(int index) {
+        return users.get(index);
     }
     
-    private void deleteEvent(int index){
-        events.remove(index);
+    public User getUserByEmail(String email) {
+        for(User u: users){
+            if(u.getEmail().equals(email))
+                return u;
+        }
+        return null;
+    }
+    
+    private void deleteUser(int index){
+        users.remove(index);
         fireTableRowsDeleted(index, index);
     }
     
-    public void deleteEvents(int[] indices){
+    public void deleteUsers(int[] indices){
         Integer[] rowsToDelete = DBUtils.getSortedDesc(indices);
         for(int i: rowsToDelete){
-            deleteEvent(i);
+            deleteUser(i);
         }
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Event event = events.get(rowIndex);
+        User user = users.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return event.getEventName();
+                return user.getFullName();
             case 1:
-                return event.getCategory();
+                return user.getEmail();
             case 2:
-                return event.getStartDate().toLocalDate() + " " + event.getStartDate().toLocalTime();
-            case 3:
-                return event.getEndDate().toLocalDate() + " " + event.getEndDate().toLocalTime();
-            case 4:
-                return event.getDescription();
+                return user.getId();
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
@@ -74,27 +78,21 @@ public class EventTableModel extends AbstractTableModel {
         ResourceBundle rb = ResourceBundle.getBundle("texts");
         switch (columnIndex) {
             case 0:
-                return rb.getString("event-name");
+                return rb.getString("fullname");
             case 1:
-                return rb.getString("category");
-            case 2:
-                return rb.getString("start-date");
-            case 3:
-                return rb.getString("end-date");
-            case 4:
-                return rb.getString("description");
+                return rb.getString("email");
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
     }
     
-     public void setEvents(List<Event> eventsToAdd) {
-        events = eventsToAdd;
+     public void setUsers(List<User> usersToAdd) {
+        users = usersToAdd;
         fireTableDataChanged();
     }
      
-     public void addEvent(Event eventToAdd) {
-        events.add(eventToAdd);
+     public void addUser(User userToAdd) {
+        users.add(userToAdd);
         fireTableDataChanged();
     }
     

@@ -35,9 +35,7 @@ public class CalendarGUI extends javax.swing.JFrame {
     
     private UserManager userManager;
 
-    public UserManager getUserManager() {
-        return userManager;
-    }
+    
     private EventManager eventManager;
     
     private EventTableModel eventModel;
@@ -52,9 +50,26 @@ public class CalendarGUI extends javax.swing.JFrame {
     private DeleteUserWorker deleteUserWorker;
     
     private DefaultComboBoxModel usersComboBoxModel = new DefaultComboBoxModel();
+    private UserTableModel userTableModel;
+
+    public UserTableModel getUserTableModel() {
+        return userTableModel;
+    }
 
     public JComboBox<String> getjComboBoxUsers() {
         return jComboBoxUsers;
+    }
+    
+    public UserManager getUserManager() {
+        return userManager;
+    }
+
+    public EventTableModel getEventModel() {
+        return eventModel;
+    }
+
+    public EventManager getEventManager() {
+        return eventManager;
     }
     
     
@@ -194,6 +209,7 @@ public class CalendarGUI extends javax.swing.JFrame {
                 
                 List<User> users = get();
                 log.debug("Getted all users");
+                userTableModel.setUsers(users);
                 usersComboBoxModel.removeAllElements();
                 log.debug("Removed all elements from usersComboBoxModel");
                 for (User user : users) {
@@ -259,6 +275,7 @@ public class CalendarGUI extends javax.swing.JFrame {
         findAllEventsWorker = new FindAllEventsWorker();
         findAllEventsWorker.execute();
         
+        userTableModel = new UserTableModel();
         userComboBoxWorker = new UserComboBoxWorker();
         usersComboBoxModel = (DefaultComboBoxModel) jComboBoxUsers.getModel();
         userComboBoxWorker.execute();
