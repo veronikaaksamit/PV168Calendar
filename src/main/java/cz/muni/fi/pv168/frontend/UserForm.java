@@ -6,7 +6,10 @@
 package cz.muni.fi.pv168.frontend;
 
 import cz.muni.fi.pv168.User;
+import cz.muni.fi.pv168.frontend.CalendarGUI.FindUserByEmailWorker;
 import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -14,12 +17,13 @@ import java.util.ResourceBundle;
  */
 public class UserForm extends javax.swing.JFrame {
 
+    private final static Logger log = LoggerFactory.getLogger(UserForm.class);
     private ResourceBundle rb = ResourceBundle.getBundle("texts");
     private String mode;
     private long userId;
     private CalendarGUI context;
     private User user;
-    private int rowIndex;
+    private String selectedEmail;
     private String action;
     
     
@@ -39,18 +43,23 @@ public class UserForm extends javax.swing.JFrame {
     /**
      * Creates new form UserForm 
      */
-    public UserForm(CalendarGUI context, User user, int selectedRow, String update) {
+    public UserForm(CalendarGUI context, User user, String selectedEmail, String act) {
+        initComponents();
+        
         this.context = context;
-        this.user = user;
-        this.rowIndex = rowIndex;
-        this.action = action;
+        this.selectedEmail = selectedEmail;
+        this.action = act;
         jButtonCancel.setText(rb.getString("cancel"));
         
+        log.debug("UserForm contructor getting user by email " + selectedEmail);
+        this.user = context.getUserManager().getUserByEmail(selectedEmail);
+        
+        log.debug("UserForm got user by email");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
-        if (user != null) {
-            jTextFieldName.setText(user.getFullName());
-            jTextFieldEmail.setText(user.getEmail());
+        if (this.user != null) {
+            jTextFieldName.setText(this.user.getFullName());
+            jTextFieldEmail.setText(this.user.getEmail());
         }
         this.setVisible(true);
     }

@@ -170,7 +170,7 @@ public class EventManagerImpl implements EventManager {
             log.error("SQLException thrown in lisAllEvents EventManger" + ex.getMessage());
             ex.printStackTrace();
         }
-        return null;
+        return new ArrayList<Event>();
     }
 
     @Override

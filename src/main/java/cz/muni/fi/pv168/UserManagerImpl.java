@@ -164,13 +164,14 @@ public class UserManagerImpl implements UserManager {
         log.debug("Getting all users");
         try(Connection conn = dataSource.getConnection()) {
             try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM USERS")) {
+                log.debug("Select users has proceeded");
                 return getUserListFromQuery(ps);
             }
         } catch (SQLException ex) {
             log.error("Could not get all users ...SqlException " + ex.getMessage());
             ex.printStackTrace();
         }
-        return null;
+        return new ArrayList<User>();
     }
 
     private User getUserFromQuery(PreparedStatement ps) throws SQLException{

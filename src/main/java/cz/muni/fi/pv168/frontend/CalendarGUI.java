@@ -32,10 +32,15 @@ public class CalendarGUI extends javax.swing.JFrame {
     private ResourceBundle rb = ResourceBundle.getBundle("texts");
     
     private UserManager userManager;
+
+    public UserManager getUserManager() {
+        return userManager;
+    }
     private EventManager eventManager;
     
     private EventTableModel eventModel;
     private User userToEdit;
+
     
     private DeleteEventWorker deleteEventWorker;
     private FindAllEventsWorker findAllEventsWorker;
@@ -44,6 +49,7 @@ public class CalendarGUI extends javax.swing.JFrame {
     private FindUserByEmailWorker findUserByEmailWorker;
     
     private DefaultComboBoxModel usersComboBoxModel = new DefaultComboBoxModel();
+    
     
     public EventTableModel getEventTableModel(){
         return eventModel;
@@ -61,7 +67,7 @@ public class CalendarGUI extends javax.swing.JFrame {
         return result;
     }
     
-    private class FindUserByEmailWorker extends SwingWorker<User, Integer>{
+    public class FindUserByEmailWorker extends SwingWorker<User, Integer>{
         
         @Override
         protected User doInBackground() throws Exception {
@@ -178,15 +184,18 @@ public class CalendarGUI extends javax.swing.JFrame {
         @Override
         protected void done() {
             try {
+                
                 List<User> users = get();
+                log.debug("Getted all users");
                 usersComboBoxModel.removeAllElements();
+                log.debug("Removed all elements from usersComboBoxModel");
                 for (User user : users) {
                     usersComboBoxModel.addElement(user.getEmail());
                 }
             } catch (ExecutionException ex) {
                 log.error("Exception thrown in doInBackground of UserComboBoxWorker: " + ex.getMessage());
             } catch (InterruptedException ex) {
-                log.error("doInBackground of OUserComboBoxWorker interrupted: " + ex.getMessage());
+                log.error("doInBackground of UserComboBoxWorker interrupted: " + ex.getMessage());
                 throw new RuntimeException("Operation interrupted.. UserComboBoxWorker");
             }
         }
@@ -211,9 +220,10 @@ public class CalendarGUI extends javax.swing.JFrame {
         findAllEventsWorker = new FindAllEventsWorker();
         findAllEventsWorker.execute();
         
-        usersComboBoxModel = (DefaultComboBoxModel) jComboBoxUsers.getModel();
         userComboBoxWorker = new UserComboBoxWorker();
+        usersComboBoxModel = (DefaultComboBoxModel) jComboBoxUsers.getModel();
         userComboBoxWorker.execute();
+        
     }
 
     /**
@@ -421,7 +431,7 @@ public class CalendarGUI extends javax.swing.JFrame {
     private void jButtonCreateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateUserActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UserForm(CalendarGUI.this, null, -1, "add").setVisible(true);
+                new UserForm(CalendarGUI.this, null, new String(), "add").setVisible(true);
             }
         });
     }//GEN-LAST:event_jButtonCreateUserActionPerformed
@@ -429,10 +439,10 @@ public class CalendarGUI extends javax.swing.JFrame {
     private void jButtonEditUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditUserActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                int selectedRow = jComboBoxUsers.getSelectedIndex();
-                findUserByEmailWorker = new FindUserByEmailWorker();
-                findUserByEmailWorker.execute();
-                new UserForm(CalendarGUI.this, userToEdit , selectedRow, "update");
+                String selectedEmail = (String) jComboBoxUsers.getSelectedItem();
+                log.debug("jButtonEditUserActionPerformed email = " + selectedEmail);
+                //log.debug("jButtonEditUserActionPerformed email from Worker = " + userToEdit.getEmail());
+                new UserForm(CalendarGUI.this, null, selectedEmail, "update");
             }
         });
     }//GEN-LAST:event_jButtonEditUserActionPerformed
