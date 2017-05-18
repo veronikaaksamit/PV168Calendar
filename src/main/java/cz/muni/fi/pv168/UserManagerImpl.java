@@ -109,7 +109,7 @@ public class UserManagerImpl implements UserManager {
             }
         } catch (SQLException ex) {
             log.error("Could not delete user with id " + user.getId() + "SQLException " + ex.getMessage() );
-            ex.printStackTrace();
+            throw new ServiceFailureException("Could not delete user with id " + user.getId());
         }
     }
 

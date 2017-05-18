@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 import javax.sql.DataSource;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import org.slf4j.*;
 
@@ -48,6 +49,7 @@ public class CalendarGUI extends javax.swing.JFrame {
     private FindEventByUserWorker findEventByUserWorker;
     private UserComboBoxWorker userComboBoxWorker;
     private FindUserByEmailWorker findUserByEmailWorker;
+    private DeleteUserWorker deleteUserWorker;
     
     private DefaultComboBoxModel usersComboBoxModel = new DefaultComboBoxModel();
 
@@ -202,6 +204,38 @@ public class CalendarGUI extends javax.swing.JFrame {
             } catch (InterruptedException ex) {
                 log.error("doInBackground of UserComboBoxWorker interrupted: " + ex.getMessage());
                 throw new RuntimeException("Operation interrupted.. UserComboBoxWorker");
+            }
+        }
+    }
+    
+    private class DeleteUserWorker extends SwingWorker<String, Void> {
+
+        @Override
+        protected String doInBackground() {
+            String selectedEmail = (String) jComboBoxUsers.getSelectedItem();
+            log.debug("Starting deletion of user in Worker with email " +selectedEmail);
+            User userToDelete = userManager.getUserByEmail(selectedEmail);            
+            try {
+                userManager.deleteUser(userToDelete);
+            }catch (Exception ex) {
+                log.error("Cannot delete user with email " + selectedEmail + " " + ex);
+                throw new ServiceFailureException(userToDelete.toString());
+            }
+            return selectedEmail;
+        }
+        
+        @Override
+        protected void done(){
+            try{
+                String deletedEmail = get();
+                log.debug("removing user with email " + deletedEmail );
+                jComboBoxUsers.removeItem(deletedEmail);
+            }catch(ExecutionException ex) {
+                JOptionPane.showMessageDialog(rootPane, rb.getString("can-not-delete-user"));
+                log.error("Exception was thrown in  DeleteUserWorker in method doInBackGround " + ex.getCause());
+            } catch (InterruptedException ex) {
+                log.error("Method doInBackground has been interrupted in  DeleteUserWorker " + ex.getCause());
+                throw new RuntimeException("Operation interrupted in  DeleteUserWorker");
             }
         }
     }
@@ -397,8 +431,8 @@ public class CalendarGUI extends javax.swing.JFrame {
 
     private void jButtonDeleteUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDeleteUserMouseClicked
         jButtonDeleteUser.setEnabled(false);
-        deleteEventWorker = new DeleteEventWorker();
-        deleteEventWorker.execute();
+        deleteUserWorker = new DeleteUserWorker();
+        deleteUserWorker.execute();
         jButtonDeleteUser.setEnabled(true);
     }//GEN-LAST:event_jButtonDeleteUserMouseClicked
 

@@ -32,6 +32,46 @@ public class UserForm extends javax.swing.JFrame {
     private AddUserWorker addUserWorker;
     private UpdateUserWorker updateUserWorker;
     
+    /**
+     * Creates new form UserForm
+     */
+    public UserForm() {
+        initComponents();
+    }
+    
+    public UserForm(String mode, long userId) {
+        super();
+        this.mode = mode;
+        this.userId = userId;
+    }
+
+    /**
+     * Creates new form UserForm 
+     */
+    public UserForm(CalendarGUI context, User user, String selectedEmail, String act) {
+        initComponents();
+        context.setEnabled(false);
+        this.context = context;
+        this.selectedEmail = selectedEmail;
+        this.action = act;
+        jButtonCancel.setText(rb.getString("cancel"));
+        
+        
+        if(selectedEmail != null && !selectedEmail.isEmpty()){   
+            log.debug("UserForm contructor getting user by email " + selectedEmail);
+            this.user = context.getUserManager().getUserByEmail(selectedEmail);
+            log.debug("UserForm got user by email");
+        }
+        
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        
+        if (this.user != null) {
+            jTextFieldName.setText(this.user.getFullName());
+            jTextFieldEmail.setText(this.user.getEmail());
+        }
+        this.setVisible(true);
+    }
+    
     public class AddUserWorker extends SwingWorker<User, Integer>{
         
         @Override
@@ -107,45 +147,7 @@ public class UserForm extends javax.swing.JFrame {
         log.debug("Showing warning message box with message: " + message);
         JOptionPane.showMessageDialog(rootPane, message, null, JOptionPane.INFORMATION_MESSAGE);
     }
-    /**
-     * Creates new form UserForm
-     */
-    public UserForm() {
-        initComponents();
-    }
     
-    public UserForm(String mode, long userId) {
-        super();
-        this.mode = mode;
-        this.userId = userId;
-    }
-
-    /**
-     * Creates new form UserForm 
-     */
-    public UserForm(CalendarGUI context, User user, String selectedEmail, String act) {
-        initComponents();
-        context.setEnabled(false);
-        this.context = context;
-        this.selectedEmail = selectedEmail;
-        this.action = act;
-        jButtonCancel.setText(rb.getString("cancel"));
-        
-        
-        if(selectedEmail != null && !selectedEmail.isEmpty()){   
-            log.debug("UserForm contructor getting user by email " + selectedEmail);
-            this.user = context.getUserManager().getUserByEmail(selectedEmail);
-            log.debug("UserForm got user by email");
-        }
-        
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
-        if (this.user != null) {
-            jTextFieldName.setText(this.user.getFullName());
-            jTextFieldEmail.setText(this.user.getEmail());
-        }
-        this.setVisible(true);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
