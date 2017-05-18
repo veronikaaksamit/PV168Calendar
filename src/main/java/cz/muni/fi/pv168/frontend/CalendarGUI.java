@@ -517,7 +517,7 @@ public class CalendarGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 int selectedRow = jTableEvents.getSelectedRow();
-                if(selectedRow > 0){
+                if(selectedRow >= 0){
                     new EventForm(CalendarGUI.this, eventModel.getEvent(selectedRow), selectedRow, "update");
                 }                
             }

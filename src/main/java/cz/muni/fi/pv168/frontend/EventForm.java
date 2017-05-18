@@ -96,23 +96,23 @@ public class EventForm extends javax.swing.JFrame {
 
             //endDateSpinner;
             //endDateDtp;
-            startDate = Date.from(event.getStartDate().atZone(ZoneId.systemDefault()).toInstant());
+            //1 startDate = Date.from(event.getStartDate().atZone(ZoneId.systemDefault()).toInstant());
 
             startDateDtp = new JXDatePicker();
             startDateDtp.setDate(startDate);
             startDateDtp.setBounds(0, 0, 200, 30);
             jPanelStartDate.add(startDateDtp);
 
-            startDateSpinner = new JSpinner(startDateSm);
+            //1 startDateSpinner = new JSpinner(startDateSm);
 
-            startDateSpinner.setEditor(startDateDe);
-            startDateSpinner.setBounds(210, 0, 100, 30);
+            //1 startDateSpinner.setEditor(startDateDe);
+            //1 startDateSpinner.setBounds(210, 0, 100, 30);
             jPanelStartDate.add(startDateSpinner);
 
 //            end time
             /////////////////////////////////////////////////////////
             endDate = Date.from(event.getEndDate().atZone(ZoneId.systemDefault()).toInstant());
-            endDateDtp.setDate(endDate);
+            //1 endDateDtp.setDate(endDate);
 
             SpinnerDateModel endDateSm = new SpinnerDateModel(endDate, null, null, Calendar.MINUTE);
             endDateSpinner = new JSpinner(endDateSm);
