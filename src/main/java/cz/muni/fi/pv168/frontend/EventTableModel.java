@@ -76,9 +76,9 @@ public class EventTableModel extends AbstractTableModel {
             case 0:
                 return rb.getString("event-name");
             case 1:
-                return rb.getString("start-date");
-            case 2:
                 return rb.getString("category");
+            case 2:
+                return rb.getString("start-date");
             case 3:
                 return rb.getString("end-date");
             case 4:

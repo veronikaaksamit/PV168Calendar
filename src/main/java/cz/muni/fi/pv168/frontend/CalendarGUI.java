@@ -100,12 +100,11 @@ public class CalendarGUI extends javax.swing.JFrame {
         }
     }
     
-    
     private class DeleteEventWorker extends SwingWorker<int[], Void> {
 
         @Override
         protected int[] doInBackground() {
-            int[] selected = JTableEvents.getSelectedRows();
+            int[] selected = jTableEvents.getSelectedRows();
             List<Integer> toDeleteEvents = new ArrayList<>();
             log.debug("Starting deletion of event in Worker " +selected.length);
             if (selected.length >= 0) {
@@ -119,7 +118,7 @@ public class CalendarGUI extends javax.swing.JFrame {
                         throw new ServiceFailureException(event.toString());
                     }
                 }
-                JTableEvents.getSelectionModel().clearSelection();
+                jTableEvents.getSelectionModel().clearSelection();
                 return convert(toDeleteEvents);
             }
             return null;
@@ -141,7 +140,6 @@ public class CalendarGUI extends javax.swing.JFrame {
             }
         }
     }
-    
     
     public class UserComboBoxWorker extends SwingWorker<List<User>, Integer> {
 
@@ -174,23 +172,21 @@ public class CalendarGUI extends javax.swing.JFrame {
         initComponents();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.getContentPane().setBackground( new Color(187,255,50));
+        
         DBUtils.setDataSource();
         DBUtils.createDB();
         DBUtils.insertIntoDB();
         this.ds = DBUtils.getDataSource();
-        
         eventManager = new EventManagerImpl(ds);
         userManager = new UserManagerImpl(ds);
-        log.debug("data source is " + ds.equals(null));
         
-        eventModel = (EventTableModel)JTableEvents.getModel();
+        eventModel = (EventTableModel)jTableEvents.getModel();
         findAllEventsWorker = new FindAllEventsWorker();
         findAllEventsWorker.execute();
         
         usersComboBoxModel = (DefaultComboBoxModel) jComboBoxUsers.getModel();
         userComboBoxWorker = new UserComboBoxWorker();
         userComboBoxWorker.execute();
-        
     }
 
     /**
@@ -202,18 +198,18 @@ public class CalendarGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        selectUserlabel = new javax.swing.JLabel();
+        jLabelSelectUser = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        JTableEvents = new javax.swing.JTable();
-        editUserButton = new javax.swing.JButton();
-        deleteUserButton = new javax.swing.JButton();
-        createUserButton = new javax.swing.JButton();
-        addEventButton = new javax.swing.JButton();
-        editEventButton = new javax.swing.JButton();
-        deleteEventButton = new javax.swing.JButton();
-        selectAllUsersButton = new javax.swing.JButton();
+        jTableEvents = new javax.swing.JTable();
+        jButtonEditUser = new javax.swing.JButton();
+        jButtonDeleteUser = new javax.swing.JButton();
+        jButtonCreateUser = new javax.swing.JButton();
+        jButtonAddEvent = new javax.swing.JButton();
+        jButtonEditEvent = new javax.swing.JButton();
+        jButtonDeleteEvent = new javax.swing.JButton();
+        jButtonSelectAllUsers = new javax.swing.JButton();
         jComboBoxUsers = new javax.swing.JComboBox<>();
-        selectByUserButton = new javax.swing.JButton();
+        jButtonSelectEventsByUser = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Calendar");
@@ -221,45 +217,45 @@ public class CalendarGUI extends javax.swing.JFrame {
         setName("Calendar"); // NOI18N
 
         //ResourceBundle resourceB = ResourceBundle.getBundle("texts");
-        selectUserlabel.setText("select-user");
-        selectUserlabel.setFocusable(false);
+        jLabelSelectUser.setText("select-user");
+        jLabelSelectUser.setFocusable(false);
 
-        JTableEvents.setModel(new EventTableModel());
-        jScrollPane2.setViewportView(JTableEvents);
-        if (JTableEvents.getColumnModel().getColumnCount() > 0) {
-            JTableEvents.getColumnModel().getColumn(1).setResizable(false);
-            JTableEvents.getColumnModel().getColumn(2).setResizable(false);
-            JTableEvents.getColumnModel().getColumn(3).setResizable(false);
+        jTableEvents.setModel(new EventTableModel());
+        jScrollPane2.setViewportView(jTableEvents);
+        if (jTableEvents.getColumnModel().getColumnCount() > 0) {
+            jTableEvents.getColumnModel().getColumn(1).setResizable(false);
+            jTableEvents.getColumnModel().getColumn(2).setResizable(false);
+            jTableEvents.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        editUserButton.setText("Edit user");
+        jButtonEditUser.setText("Edit user");
 
-        deleteUserButton.setText("Delete user");
-        deleteUserButton.setName(""); // NOI18N
-        deleteUserButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButtonDeleteUser.setText("Delete user");
+        jButtonDeleteUser.setName(""); // NOI18N
+        jButtonDeleteUser.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                deleteUserButtonMouseClicked(evt);
+                jButtonDeleteUserMouseClicked(evt);
             }
         });
 
-        createUserButton.setText("Create user");
+        jButtonCreateUser.setText("Create user");
 
-        addEventButton.setText("Add event");
+        jButtonAddEvent.setText("Add event");
 
-        editEventButton.setText("Edit event");
+        jButtonEditEvent.setText("Edit event");
 
-        deleteEventButton.setText("Delete event");
-        deleteEventButton.addActionListener(new java.awt.event.ActionListener() {
+        jButtonDeleteEvent.setText("Delete event");
+        jButtonDeleteEvent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteEventButtonActionPerformed(evt);
+                jButtonDeleteEventActionPerformed(evt);
             }
         });
 
-        selectAllUsersButton.setText("List all events");
-        selectAllUsersButton.setActionCommand("jButton");
-        selectAllUsersButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButtonSelectAllUsers.setText("List all events");
+        jButtonSelectAllUsers.setActionCommand("jButton");
+        jButtonSelectAllUsers.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                selectAllUsersButtonMouseReleased(evt);
+                jButtonSelectAllUsersMouseReleased(evt);
             }
         });
 
@@ -267,10 +263,10 @@ public class CalendarGUI extends javax.swing.JFrame {
         userComboBoxWorker = new UserComboBoxWorker();
         userComboBoxWorker.execute();
 
-        selectByUserButton.setText("Select events");
-        selectByUserButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButtonSelectEventsByUser.setText("Select events");
+        jButtonSelectEventsByUser.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                selectByUserButtonMouseClicked(evt);
+                jButtonSelectEventsByUserMouseClicked(evt);
             }
         });
 
@@ -283,27 +279,27 @@ public class CalendarGUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(selectAllUsersButton)
+                        .addComponent(jButtonSelectAllUsers)
                         .addGap(62, 62, 62)
-                        .addComponent(addEventButton)
+                        .addComponent(jButtonAddEvent)
                         .addGap(18, 18, 18)
-                        .addComponent(editEventButton)
+                        .addComponent(jButtonEditEvent)
                         .addGap(18, 18, 18)
-                        .addComponent(deleteEventButton))
+                        .addComponent(jButtonDeleteEvent))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(selectUserlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelSelectUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jComboBoxUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(selectByUserButton)
+                            .addComponent(jButtonSelectEventsByUser)
                             .addGap(18, 18, 18)
-                            .addComponent(editUserButton)
+                            .addComponent(jButtonEditUser)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(createUserButton)
+                            .addComponent(jButtonCreateUser)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(deleteUserButton))))
+                            .addComponent(jButtonDeleteUser))))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -312,60 +308,60 @@ public class CalendarGUI extends javax.swing.JFrame {
                 .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(selectUserlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelSelectUser, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jComboBoxUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(selectByUserButton))
+                        .addComponent(jButtonSelectEventsByUser))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(editUserButton)
-                        .addComponent(deleteUserButton)
-                        .addComponent(createUserButton)))
+                        .addComponent(jButtonEditUser)
+                        .addComponent(jButtonDeleteUser)
+                        .addComponent(jButtonCreateUser)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addEventButton)
-                    .addComponent(editEventButton)
-                    .addComponent(deleteEventButton)
-                    .addComponent(selectAllUsersButton))
+                    .addComponent(jButtonAddEvent)
+                    .addComponent(jButtonEditEvent)
+                    .addComponent(jButtonDeleteEvent)
+                    .addComponent(jButtonSelectAllUsers))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
-        selectAllUsersButton.getAccessibleContext().setAccessibleName("jButtonListEvents");
+        jButtonSelectAllUsers.getAccessibleContext().setAccessibleName("jButtonListEvents");
 
         getAccessibleContext().setAccessibleName("frame0");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void deleteUserButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteUserButtonMouseClicked
-        deleteUserButton.setEnabled(false);
+    private void jButtonDeleteUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDeleteUserMouseClicked
+        jButtonDeleteUser.setEnabled(false);
         deleteEventWorker = new DeleteEventWorker();
         deleteEventWorker.execute();
-        deleteUserButton.setEnabled(true);
-    }//GEN-LAST:event_deleteUserButtonMouseClicked
+        jButtonDeleteUser.setEnabled(true);
+    }//GEN-LAST:event_jButtonDeleteUserMouseClicked
 
-    private void selectAllUsersButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectAllUsersButtonMouseReleased
-        selectAllUsersButton.setEnabled(false);
-        deleteEventButton.setEnabled(true);
+    private void jButtonSelectAllUsersMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSelectAllUsersMouseReleased
+        jButtonSelectAllUsers.setEnabled(false);
+        jButtonDeleteEvent.setEnabled(true);
         findAllEventsWorker = new FindAllEventsWorker();
         findAllEventsWorker.execute();
         
-    }//GEN-LAST:event_selectAllUsersButtonMouseReleased
+    }//GEN-LAST:event_jButtonSelectAllUsersMouseReleased
 
-    private void selectByUserButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectByUserButtonMouseClicked
-        selectByUserButton.setEnabled(false);
-        selectAllUsersButton.setEnabled(true);
+    private void jButtonSelectEventsByUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSelectEventsByUserMouseClicked
+        jButtonSelectEventsByUser.setEnabled(false);
+        jButtonSelectAllUsers.setEnabled(true);
         findEventByUserWorker = new FindEventByUserWorker();
         findEventByUserWorker.execute();
-        selectByUserButton.setEnabled(true);
-    }//GEN-LAST:event_selectByUserButtonMouseClicked
+        jButtonSelectEventsByUser.setEnabled(true);
+    }//GEN-LAST:event_jButtonSelectEventsByUserMouseClicked
 
-    private void deleteEventButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteEventButtonActionPerformed
-        deleteEventButton.setEnabled(false);
+    private void jButtonDeleteEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteEventActionPerformed
+        jButtonDeleteEvent.setEnabled(false);
         deleteEventWorker = new DeleteEventWorker();
         deleteEventWorker.execute();
-        deleteEventButton.setEnabled(true);
-    }//GEN-LAST:event_deleteEventButtonActionPerformed
+        jButtonDeleteEvent.setEnabled(true);
+    }//GEN-LAST:event_jButtonDeleteEventActionPerformed
 
     /**
      * @param args the command line arguments
@@ -409,17 +405,17 @@ public class CalendarGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable JTableEvents;
-    private javax.swing.JButton addEventButton;
-    private javax.swing.JButton createUserButton;
-    private javax.swing.JButton deleteEventButton;
-    private javax.swing.JButton deleteUserButton;
-    private javax.swing.JButton editEventButton;
-    private javax.swing.JButton editUserButton;
+    private javax.swing.JButton jButtonAddEvent;
+    private javax.swing.JButton jButtonCreateUser;
+    private javax.swing.JButton jButtonDeleteEvent;
+    private javax.swing.JButton jButtonDeleteUser;
+    private javax.swing.JButton jButtonEditEvent;
+    private javax.swing.JButton jButtonEditUser;
+    private javax.swing.JButton jButtonSelectAllUsers;
+    private javax.swing.JButton jButtonSelectEventsByUser;
     private javax.swing.JComboBox<String> jComboBoxUsers;
+    private javax.swing.JLabel jLabelSelectUser;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JButton selectAllUsersButton;
-    private javax.swing.JButton selectByUserButton;
-    private javax.swing.JLabel selectUserlabel;
+    private javax.swing.JTable jTableEvents;
     // End of variables declaration//GEN-END:variables
 }

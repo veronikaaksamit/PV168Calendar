@@ -36,28 +36,28 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                      <Component id="selectAllUsersButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonSelectAllUsers" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
-                      <Component id="addEventButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonAddEvent" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="editEventButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonEditEvent" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="deleteEventButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonDeleteEvent" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="jScrollPane2" min="-2" pref="622" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="selectUserlabel" min="-2" pref="100" max="-2" attributes="0"/>
+                          <Component id="jLabelSelectUser" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jComboBoxUsers" min="-2" pref="140" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="selectByUserButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonSelectEventsByUser" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="editUserButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonEditUser" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="createUserButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonCreateUser" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="deleteUserButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonDeleteUser" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -71,24 +71,24 @@
               <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="selectUserlabel" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                      <Component id="jLabelSelectUser" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                       <Component id="jComboBoxUsers" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="selectByUserButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonSelectEventsByUser" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="editUserButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="deleteUserButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="createUserButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonEditUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonDeleteUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonCreateUser" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="363" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="addEventButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="editEventButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="deleteEventButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="selectAllUsersButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonAddEvent" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonEditEvent" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonDeleteEvent" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonSelectAllUsers" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="54" max="32767" attributes="0"/>
           </Group>
@@ -96,7 +96,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="selectUserlabel">
+    <Component class="javax.swing.JLabel" name="jLabelSelectUser">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="&quot;select-user&quot;" type="code"/>
@@ -114,7 +114,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="JTableEvents">
+        <Component class="javax.swing.JTable" name="jTableEvents">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new EventTableModel()" type="code"/>
@@ -158,44 +158,44 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="editUserButton">
+    <Component class="javax.swing.JButton" name="jButtonEditUser">
       <Properties>
         <Property name="text" type="java.lang.String" value="Edit user"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="deleteUserButton">
+    <Component class="javax.swing.JButton" name="jButtonDeleteUser">
       <Properties>
         <Property name="text" type="java.lang.String" value="Delete user"/>
         <Property name="name" type="java.lang.String" value="" noResource="true"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="deleteUserButtonMouseClicked"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonDeleteUserMouseClicked"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="createUserButton">
+    <Component class="javax.swing.JButton" name="jButtonCreateUser">
       <Properties>
         <Property name="text" type="java.lang.String" value="Create user"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="addEventButton">
+    <Component class="javax.swing.JButton" name="jButtonAddEvent">
       <Properties>
         <Property name="text" type="java.lang.String" value="Add event"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="editEventButton">
+    <Component class="javax.swing.JButton" name="jButtonEditEvent">
       <Properties>
         <Property name="text" type="java.lang.String" value="Edit event"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="deleteEventButton">
+    <Component class="javax.swing.JButton" name="jButtonDeleteEvent">
       <Properties>
         <Property name="text" type="java.lang.String" value="Delete event"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteEventButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDeleteEventActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="selectAllUsersButton">
+    <Component class="javax.swing.JButton" name="jButtonSelectAllUsers">
       <Properties>
         <Property name="text" type="java.lang.String" value="List all events"/>
         <Property name="actionCommand" type="java.lang.String" value="jButton"/>
@@ -204,7 +204,7 @@
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="jButtonListEvents"/>
       </AccessibilityProperties>
       <Events>
-        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="selectAllUsersButtonMouseReleased"/>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonSelectAllUsersMouseReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="jComboBoxUsers">
@@ -218,12 +218,12 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JButton" name="selectByUserButton">
+    <Component class="javax.swing.JButton" name="jButtonSelectEventsByUser">
       <Properties>
         <Property name="text" type="java.lang.String" value="Select events"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="selectByUserButtonMouseClicked"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonSelectEventsByUserMouseClicked"/>
       </Events>
     </Component>
   </SubComponents>
