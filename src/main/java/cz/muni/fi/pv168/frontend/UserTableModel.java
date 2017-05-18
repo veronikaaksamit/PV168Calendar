@@ -108,6 +108,7 @@ public class UserTableModel extends AbstractTableModel {
             if(users.get(i).getId().equals(user.getId()))
                 users.set(i, user);
         } 
+        fireTableDataChanged();
      }
     
 }
