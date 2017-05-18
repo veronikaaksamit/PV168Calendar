@@ -39,20 +39,21 @@ public class EventForm extends javax.swing.JFrame {
     private String action;
     private EventTableModel eventTableModel;
     private DefaultComboBoxModel categoryComboBoxModel = new DefaultComboBoxModel<>(Category.values());
-    
+
     private JXDatePicker startDateDtp;
     private JSpinner startDateSpinner;
     private JSpinner endDateSpinner;
     private JXDatePicker endDateDtp;
-    
+
     private AddEventWorker addEventWorker;
-    
+    private UpdateEventWorker updateEventWorker;
+
     /**
-     * Creates new form EventForm 
+     * Creates new form EventForm
      */
     public EventForm(CalendarGUI context, Event event, int rowIndex, String action) {
         initComponents();
-        
+
         this.context = context;
         this.event = event;
         this.rowIndex = rowIndex;
@@ -60,99 +61,202 @@ public class EventForm extends javax.swing.JFrame {
         this.eventTableModel = context.getEventTableModel();
         jButtonCancel.setText(rb.getString("cancel"));
         jComboBoxUsersInEventForm.setModel(context.getjComboBoxUsers().getModel());
-        
+
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
+
+        Date startDate = new Date();
+        startDateDtp = new JXDatePicker();
+        Date endDate = new Date();
+        endDateDtp = new JXDatePicker();
+
         if (event != null) {
             Long id = event.getUserId();
-            
+
             User u = context.getUserTableModel().getUserById(id);
             jComboBoxUsersInEventForm.setSelectedItem(u.getEmail());
             jTextFieldFullname.setText(event.getEventName());
             jComboBoxCategory.setSelectedItem(event.getCategory());
             jTextFieldDescription.setText(event.getDescription());
-            //TODO setDate
-            //jPanelStartDate.setText();
-            //jPanelEndDate.setText();
+
+            startDate = Date.from(event.getStartDate().atZone(ZoneId.systemDefault()).toInstant());
+            startDateDtp.setDate(startDate);
+
+            SpinnerDateModel startDateSm = new SpinnerDateModel(startDate, null, null, Calendar.MINUTE);
+            startDateSpinner = new JSpinner(startDateSm);
+            JSpinner.DateEditor startDateDe = new JSpinner.DateEditor(startDateSpinner, "HH:mm");
+            startDateDe.getTextField().setEditable(false);
+            startDateSpinner.setEditor(startDateDe);
+            startDateSpinner.setBounds(210, 0, 100, 30);
+
+            //endDateSpinner;
+            //endDateDtp;
+            startDate = Date.from(event.getStartDate().atZone(ZoneId.systemDefault()).toInstant());
+
+            startDateDtp = new JXDatePicker();
+            startDateDtp.setDate(startDate);
+            startDateDtp.setBounds(0, 0, 200, 30);
+            jPanelStartDate.add(startDateDtp);
+
+            startDateSpinner = new JSpinner(startDateSm);
+
+            startDateSpinner.setEditor(startDateDe);
+            startDateSpinner.setBounds(210, 0, 100, 30);
+            jPanelStartDate.add(startDateSpinner);
+
+//            end time
+            /////////////////////////////////////////////////////////
+            endDate = Date.from(event.getEndDate().atZone(ZoneId.systemDefault()).toInstant());
+            endDateDtp.setDate(endDate);
+
+            SpinnerDateModel endDateSm = new SpinnerDateModel(endDate, null, null, Calendar.MINUTE);
+            endDateSpinner = new JSpinner(endDateSm);
+            JSpinner.DateEditor endDateDe = new JSpinner.DateEditor(endDateSpinner, "HH:mm");
+            endDateDe.getTextField().setEditable(false);
+            endDateSpinner.setEditor(endDateDe);
+            endDateSpinner.setBounds(210, 0, 100, 30);
+            jPanelEndDate.add(endDateSpinner);
+
+            endDateDtp = new JXDatePicker();
+            endDateDtp.setDate(endDate);
+            endDateDtp.setBounds(0, 0, 200, 30);
+            jPanelEndDate.add(endDateDtp);
+
+        } else {
+            startDate = new Date();
+            startDateDtp = new JXDatePicker();
+            startDateDtp.setDate(startDate);
+            startDateDtp.setBounds(0, 0, 200, 30);
+            jPanelStartDate.add(startDateDtp);
+
+            SpinnerDateModel startDateSm = new SpinnerDateModel(startDate, null, null, Calendar.MINUTE);
+            startDateSpinner = new JSpinner(startDateSm);
+            JSpinner.DateEditor startDateDe = new JSpinner.DateEditor(startDateSpinner, "HH:mm");
+            startDateDe.getTextField().setEditable(false);
+            startDateSpinner.setEditor(startDateDe);
+            startDateSpinner.setBounds(210, 0, 100, 30);
+            jPanelStartDate.add(startDateSpinner);
+
+            endDate = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(endDate);
+            cal.add(Calendar.HOUR_OF_DAY, 1);
+            endDate = cal.getTime();
+
+            endDateDtp = new JXDatePicker();
+            endDateDtp.setDate(endDate);
+            endDateDtp.setBounds(0, 0, 200, 30);
+            jPanelEndDate.add(endDateDtp);
+
+            SpinnerDateModel endDateSm = new SpinnerDateModel(endDate, null, null, Calendar.MINUTE);
+            endDateSpinner = new JSpinner(endDateSm);
+            JSpinner.DateEditor endDateDe = new JSpinner.DateEditor(endDateSpinner, "HH:mm");
+            endDateDe.getTextField().setEditable(false);
+            endDateSpinner.setEditor(endDateDe);
+            endDateSpinner.setBounds(210, 0, 100, 30);
+            jPanelEndDate.add(endDateSpinner);
+
         }
         this.setVisible(true);
     }
+
     /**
      * Creates new form EventForm
      */
     public EventForm() {
         initComponents();
     }
-    
+
     public EventForm(String mode, long eventId) {
-            super();
-            this.mode = mode;
-            this.eventId = eventId;
+        super();
+        this.mode = mode;
+        this.eventId = eventId;
     }
-    
-    public class AddEventWorker extends SwingWorker<Event, Integer>{
-        
+
+    public class UpdateEventWorker extends SwingWorker<Event, Integer> {
+
+        @Override
+        protected Event doInBackground() throws Exception {
+            event = getEventFromForm();
+            context.getEventManager().updateEvent(event);
+            return event;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                Event event = get();
+                context.getEventTableModel().updateEvent(event);
+                EventForm.this.dispose();
+            } catch (ExecutionException ex) {
+                log.error("Exception was thrown in UpdateEventWorker in method doInBackGround " + ex.getCause());
+            } catch (InterruptedException ex) {
+                log.error("Method doInBackground has been interrupted in UpdateEventWorker " + ex.getCause());
+                throw new RuntimeException("Operation interrupted in UpdateEventWorker");
+            }
+        }
+    }
+
+    public class AddEventWorker extends SwingWorker<Event, Integer> {
+
         @Override
         protected Event doInBackground() throws Exception {
             event = getEventFromForm();
             context.getEventManager().createEvent(event);
             return event;
         }
-        
+
         @Override
-        protected void done(){
-             try{
-                 Event event = get();
-                 context.getEventModel().addEvent(event);
-                 log.debug("AddEventWorker added event =");
-                 EventForm.this.dispose();
-            }catch(ExecutionException ex) {
+        protected void done() {
+            try {
+                Event event = get();
+                context.getEventModel().addEvent(event);
+                log.debug("AddEventWorker added event =");
+                EventForm.this.dispose();
+            } catch (ExecutionException ex) {
                 log.error("Exception was thrown in AddEventWorker in method doInBackGround " + ex.getCause());
             } catch (InterruptedException ex) {
                 log.error("Method doInBackground has been interrupted in AddEventWorker " + ex.getCause());
                 throw new RuntimeException("Operation interrupted in AddEventWorker");
             }
-        }        
+        }
     }
-    
+
     private Event getEventFromForm() {
-        Event event = new Event();
-        
+
         String eventName = jTextFieldFullname.getText();
-        if(eventName == null || eventName.isEmpty()){
+        if (eventName == null || eventName.isEmpty()) {
             warningMessageBox(rb.getString("name-null"));
             return null;
         }
-        
-        
+
         DateTime startDate = new DateTime(startDateDtp.getDate());
         DateTime startDateTime = new DateTime(startDateSpinner.getValue());
         LocalDateTime startTime = LocalDateTime.of(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth(), startDateTime.getHourOfDay(), startDateTime.getMinuteOfHour(), startDateTime.getSecondOfMinute());
         log.debug("SpinnerDateModel: " + startDateTime);
-        
+
         DateTime endDate = new DateTime(endDateDtp.getDate());
         DateTime endDateTime = new DateTime(endDateSpinner.getValue());
         LocalDateTime endTime = LocalDateTime.of(endDate.getYear(), endDate.getMonthOfYear(), endDate.getDayOfMonth(), endDateTime.getHourOfDay(), endDateTime.getMinuteOfHour(), endDateTime.getSecondOfMinute());
         log.debug("SpinnerDateModel: " + endDateTime);
-        
+
         String description = jTextFieldDescription.getText();
-        if(description  == null){
+        if (description == null) {
             description = "";
-        }        
-        
-        User user = context.getUserTableModel().getUserByEmail((String)jComboBoxUsersInEventForm.getSelectedItem());
+        }
+
+        User user = context.getUserTableModel().getUserByEmail((String) jComboBoxUsersInEventForm.getSelectedItem());
         event.setEventName(eventName);
         event.setStartDate(startTime);
         event.setEndDate(endTime);
         event.setDescription(description);
         event.setUserId(user.getId());
-        
-        log.debug("Category is" + (Category)jComboBoxCategory.getSelectedItem());
-        event.setCategory((Category)jComboBoxCategory.getSelectedItem());
-        
+
+        log.debug("Category is" + (Category) jComboBoxCategory.getSelectedItem());
+        event.setCategory((Category) jComboBoxCategory.getSelectedItem());
+
         return event;
     }
-    
+
     private void warningMessageBox(String message) {
         log.debug("Showing warning message box with message: " + message);
         JOptionPane.showMessageDialog(rootPane, message, null, JOptionPane.INFORMATION_MESSAGE);
@@ -249,40 +353,36 @@ public class EventForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelFullname)
+                    .addComponent(jLabelDescription)
+                    .addComponent(jLabelCategory)
+                    .addComponent(jLabelUserForEvent)
+                    .addComponent(jLabelStartDate)
+                    .addComponent(jLabelEndDate)
+                    .addComponent(eventLabel))
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelFullname)
-                            .addComponent(jLabelDescription)
-                            .addComponent(jLabelCategory)
-                            .addComponent(jLabelUserForEvent))
-                        .addGap(40, 40, 40)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButtonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(38, 38, 38))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextFieldFullname, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextFieldDescription, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBoxCategory, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jPanelEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jPanelStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(24, 24, 24))
+                        .addComponent(jPanelStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTextFieldFullname, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldDescription, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxCategory, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jComboBoxUsersInEventForm, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jPanelEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(24, 24, 24))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelStartDate)
-                            .addComponent(jLabelEndDate)
-                            .addComponent(eventLabel))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jComboBoxUsersInEventForm, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,49 +419,23 @@ public class EventForm extends javax.swing.JFrame {
                     .addComponent(jButtonCancel)))
         );
 
-        Date startDate = new Date();
-        startDateDtp = new JXDatePicker();
-        startDateDtp.setDate(startDate);
-        startDateDtp.setBounds(0, 0, 200, 30);
-        jPanelStartDate.add(startDateDtp);
-
-        SpinnerDateModel startDateSm = new SpinnerDateModel(startDate, null, null, Calendar.MINUTE);
-        startDateSpinner = new JSpinner(startDateSm);
-        JSpinner.DateEditor startDateDe = new JSpinner.DateEditor(startDateSpinner, "HH:mm");
-        startDateDe.getTextField().setEditable( false );
-        startDateSpinner.setEditor(startDateDe);
-        startDateSpinner.setBounds(210, 0, 100, 30);
-        jPanelStartDate.add(startDateSpinner);
-        Date endDate = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(endDate);
-        cal.add(Calendar.HOUR_OF_DAY, 1);
-        endDate = cal.getTime();
-
-        endDateDtp = new JXDatePicker();
-        endDateDtp.setDate(endDate);
-        endDateDtp.setBounds(0, 0, 200, 30);
-        jPanelEndDate.add(endDateDtp);
-
-        SpinnerDateModel endDateSm = new SpinnerDateModel(endDate, null, null, Calendar.MINUTE);
-        endDateSpinner = new JSpinner(endDateSm);
-        JSpinner.DateEditor endDateDe = new JSpinner.DateEditor(endDateSpinner, "HH:mm");
-        endDateDe.getTextField().setEditable( false );
-        endDateSpinner.setEditor(endDateDe);
-        endDateSpinner.setBounds(210, 0, 100, 30);
-        jPanelEndDate.add(endDateSpinner);
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
         // TODO add your handling code here:
-      this.dispose();
+        this.dispose();
     }//GEN-LAST:event_jButtonCancelMouseClicked
 
     private void jButtonOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonOKMouseClicked
-        addEventWorker = new AddEventWorker();
-        addEventWorker.execute();
+        if (this.action == "add") {
+            addEventWorker = new AddEventWorker();
+            addEventWorker.execute();
+        }
+        if (this.action == "update") {
+            updateEventWorker = new UpdateEventWorker();
+            updateEventWorker.execute();
+        }
         this.dispose();
     }//GEN-LAST:event_jButtonOKMouseClicked
 

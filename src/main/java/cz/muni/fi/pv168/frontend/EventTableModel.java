@@ -97,5 +97,14 @@ public class EventTableModel extends AbstractTableModel {
         events.add(eventToAdd);
         fireTableDataChanged();
     }
+     
+     public void updateEvent(Event event){
+        for(int i= 0; i < events.size(); i++){
+            if(events.get(i).getId().equals(event.getId()))
+                events.set(i, event);
+        } 
+         
+        fireTableDataChanged();
+     }
     
 }
