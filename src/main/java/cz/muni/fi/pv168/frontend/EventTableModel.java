@@ -88,6 +88,11 @@ public class EventTableModel extends AbstractTableModel {
         }
     }
     
+    public void clearEvents() {
+        events = new ArrayList<Event>();
+        fireTableDataChanged();
+    }
+         
      public void setEvents(List<Event> eventsToAdd) {
         events = eventsToAdd;
         fireTableDataChanged();

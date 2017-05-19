@@ -6,12 +6,22 @@
 package cz.muni.fi.pv168.frontend;
 
 import cz.muni.fi.pv168.Category;
+import cz.muni.fi.pv168.Event;
+import cz.muni.fi.pv168.User;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
+import javax.swing.SwingWorker;
 import org.jdesktop.swingx.JXDatePicker;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -20,6 +30,11 @@ import org.jdesktop.swingx.JXDatePicker;
  */
 public class FilterForm extends javax.swing.JFrame {
 
+    private final static Logger log = LoggerFactory.getLogger(UserForm.class);
+    private ResourceBundle rb = ResourceBundle.getBundle("texts");
+    private CalendarGUI context;
+    private User user;
+    private String action;
     
     private DefaultComboBoxModel categoryComboBoxModel = new DefaultComboBoxModel<>(Category.values());
     
@@ -34,6 +49,20 @@ public class FilterForm extends javax.swing.JFrame {
         initComponents();
     }
 
+    public FilterForm(CalendarGUI context, String selectedEmail) {
+        initComponents();
+        context.setEnabled(false);
+        this.context = context;
+                
+        if(selectedEmail != null && !selectedEmail.isEmpty()){   
+            log.debug("FilterForm contructor getting user by email " + selectedEmail);
+            this.user = context.getUserManager().getUserByEmail(selectedEmail);
+            log.debug("FilterForm got user by email");
+        }
+        
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setVisible(true);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,31 +73,30 @@ public class FilterForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabelFilteryBy = new javax.swing.JLabel();
-        jLabelFilterByName = new javax.swing.JLabel();
         jTextFieldFilterByName = new javax.swing.JTextField();
-        jLabelCategory = new javax.swing.JLabel();
         jComboBoxCategory = new javax.swing.JComboBox<>();
-        jLabelCategory1 = new javax.swing.JLabel();
         jPanelStartDate = new javax.swing.JPanel();
         jPanelEndDate = new javax.swing.JPanel();
         jLabelCategory2 = new javax.swing.JLabel();
         jLabelCategory3 = new javax.swing.JLabel();
         jButtonCancel = new javax.swing.JButton();
         jButtonOK = new javax.swing.JButton();
+        jCheckBoxName = new javax.swing.JCheckBox();
+        jCheckBoxCategory = new javax.swing.JCheckBox();
+        jCheckBoxDate = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jLabelFilteryBy.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("texts"); // NOI18N
         jLabelFilteryBy.setText(bundle.getString("FilterBy")); // NOI18N
 
-        jLabelFilterByName.setText(bundle.getString("Name")); // NOI18N
-
-        jLabelCategory.setText(bundle.getString("Category")); // NOI18N
-
         jComboBoxCategory.setModel(categoryComboBoxModel);
-
-        jLabelCategory1.setText(bundle.getString("Date")); // NOI18N
 
         jPanelStartDate.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -76,7 +104,7 @@ public class FilterForm extends javax.swing.JFrame {
         jPanelStartDate.setLayout(jPanelStartDateLayout);
         jPanelStartDateLayout.setHorizontalGroup(
             jPanelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 321, Short.MAX_VALUE)
         );
         jPanelStartDateLayout.setVerticalGroup(
             jPanelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,39 +142,41 @@ public class FilterForm extends javax.swing.JFrame {
             }
         });
 
+        jCheckBoxName.setText(bundle.getString("Name")); // NOI18N
+
+        jCheckBoxCategory.setText(bundle.getString("Category")); // NOI18N
+
+        jCheckBoxDate.setText(bundle.getString("Date")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabelFilteryBy))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBoxName)
+                            .addComponent(jCheckBoxCategory)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jCheckBoxDate)
+                                .addGap(25, 25, 25)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelCategory3)
+                                    .addComponent(jLabelCategory2))))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jComboBoxCategory, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanelEndDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanelStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextFieldFilterByName))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelFilterByName)
-                                    .addComponent(jLabelCategory))
-                                .addGap(43, 43, 43)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextFieldFilterByName)
-                                    .addComponent(jComboBoxCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelCategory1)
-                                .addGap(20, 20, 20)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelCategory2)
-                                    .addComponent(jLabelCategory3))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jPanelStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanelEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(78, Short.MAX_VALUE))
+                        .addComponent(jLabelFilteryBy)
+                        .addGap(58, 58, 58))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 349, Short.MAX_VALUE)
                 .addComponent(jButtonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -157,24 +187,23 @@ public class FilterForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addComponent(jLabelFilteryBy)
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldFilterByName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBoxName))
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBoxCategory))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelFilterByName)
-                            .addComponent(jTextFieldFilterByName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelCategory)
-                            .addComponent(jComboBoxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jCheckBoxDate))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(44, 44, 44)
-                                .addComponent(jLabelCategory2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addComponent(jLabelCategory1))))
-                    .addComponent(jPanelStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanelStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelCategory2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanelEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -226,8 +255,17 @@ public class FilterForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCancelMouseClicked
 
     private void jButtonOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonOKMouseClicked
+        
+        FilterEventsrWorker worker = new FilterEventsrWorker();
+        worker.execute();
         this.dispose();
     }//GEN-LAST:event_jButtonOKMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        context.setEnabled(true);
+    }//GEN-LAST:event_formWindowClosed
+
 
     /**
      * @param args the command line arguments
@@ -267,15 +305,68 @@ public class FilterForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonOK;
+    private javax.swing.JCheckBox jCheckBoxCategory;
+    private javax.swing.JCheckBox jCheckBoxDate;
+    private javax.swing.JCheckBox jCheckBoxName;
     private javax.swing.JComboBox<String> jComboBoxCategory;
-    private javax.swing.JLabel jLabelCategory;
-    private javax.swing.JLabel jLabelCategory1;
     private javax.swing.JLabel jLabelCategory2;
     private javax.swing.JLabel jLabelCategory3;
-    private javax.swing.JLabel jLabelFilterByName;
     private javax.swing.JLabel jLabelFilteryBy;
     private javax.swing.JPanel jPanelEndDate;
     private javax.swing.JPanel jPanelStartDate;
     private javax.swing.JTextField jTextFieldFilterByName;
     // End of variables declaration//GEN-END:variables
+
+public class FilterEventsrWorker extends SwingWorker<List<Event>, Integer>{
+        
+        @Override
+        protected List<Event> doInBackground() throws Exception {
+            
+            List<Event> eventList;
+            if(user != null) {
+                eventList = context.getEventManager().listUserEvents(user.getId());
+            } else {
+                eventList = context.getEventManager().listAllEvents();
+            }
+            
+            if(jCheckBoxName.isSelected()) {
+                eventList = context.getEventManager().filterEventByName(eventList, jTextFieldFilterByName.getText());
+            }
+            if(jCheckBoxCategory.isSelected()) {
+                eventList = context.getEventManager().filterEventByCategory(eventList,  (Category) jComboBoxCategory.getSelectedItem());
+            }
+            if(jCheckBoxDate.isSelected()) {
+                DateTime startDate = new DateTime(startDateDtp.getDate());
+                DateTime startDateTime = new DateTime(startDateSpinner.getValue());
+                LocalDateTime startTime = LocalDateTime.of(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth(), startDateTime.getHourOfDay(), startDateTime.getMinuteOfHour(), startDateTime.getSecondOfMinute());
+                log.debug("SpinnerDateModel: " + startDateTime);
+
+                DateTime endDate = new DateTime(endDateDtp.getDate());
+                DateTime endDateTime = new DateTime(endDateSpinner.getValue());
+                LocalDateTime endTime = LocalDateTime.of(endDate.getYear(), endDate.getMonthOfYear(), endDate.getDayOfMonth(), endDateTime.getHourOfDay(), endDateTime.getMinuteOfHour(), endDateTime.getSecondOfMinute());
+                log.debug("SpinnerDateModel: " + endDateTime);
+                
+                eventList = context.getEventManager().filterEventByDate(eventList, startTime, endTime);
+
+                //todo
+            }
+           return eventList;
+        }
+        
+        @Override
+        protected void done(){
+             try{
+                 List<Event> filteredEventList = get();
+
+                 context.getEventTableModel().clearEvents();
+                 context.getEventTableModel().setEvents(filteredEventList);
+                 
+            }catch(ExecutionException ex) {
+                log.error("Exception was thrown in FilterEventsrWorker in method doInBackGround " + ex.getCause());
+            } catch (InterruptedException ex) {
+                log.error("Method doInBackground has been interrupted in FilterEventsrWorker " + ex.getCause());
+                throw new RuntimeException("Operation interrupted in FilterEventsrWorker");
+            }
+        }
+    }
 }

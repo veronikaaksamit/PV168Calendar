@@ -34,9 +34,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jButtonSelectAllUsers" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Component id="jButtonFilter" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jButtonAddEvent" min="-2" max="-2" attributes="0"/>
@@ -45,7 +43,8 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jButtonDeleteEvent" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
                       <Component id="jLabelSelectUser" min="-2" pref="100" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jComboBoxUsers" min="-2" pref="140" max="-2" attributes="0"/>
@@ -58,9 +57,8 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jButtonDeleteUser" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="53" max="32767" attributes="0"/>
+              <EmptySpace pref="64" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -87,10 +85,9 @@
                   <Component id="jButtonAddEvent" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonEditEvent" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonDeleteEvent" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButtonSelectAllUsers" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonFilter" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="27" max="32767" attributes="0"/>
+              <EmptySpace pref="43" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -216,19 +213,6 @@
         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jButtonDeleteEvent.setEnabled(false);"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JButton" name="jButtonSelectAllUsers">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="List all events"/>
-        <Property name="actionCommand" type="java.lang.String" value="jButton"/>
-      </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="jButtonListEvents"/>
-      </AccessibilityProperties>
-      <Events>
-        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonSelectAllUsersMouseReleased"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSelectAllUsersActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JComboBox" name="jComboBoxUsers">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
@@ -256,6 +240,7 @@
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonFilterMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonFilterActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

@@ -217,7 +217,7 @@ public class EventManagerImpl implements EventManager {
     public List<Event> filterEventByName(List<Event> list, String eventName) {
         List<Event> events = new ArrayList<>();
         for (Event e: list) {
-            if(e.getEventName().equals(eventName)){
+            if(e.getEventName().toLowerCase().contains(eventName.toLowerCase())){
                 events.add(e);
             }
         }

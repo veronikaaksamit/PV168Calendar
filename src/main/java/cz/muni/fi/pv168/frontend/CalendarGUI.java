@@ -116,7 +116,12 @@ public class CalendarGUI extends javax.swing.JFrame {
         @Override
         protected List<Event> doInBackground() throws Exception {
             User u = userManager.getUserByEmail(jComboBoxUsers.getSelectedItem().toString());
-            return eventManager.listUserEvents(u.getId());
+            if(u != null) {
+                return eventManager.listUserEvents(u.getId());
+            } else {
+                return eventManager.listAllEvents();
+            }
+
         }
         
         @Override
@@ -212,6 +217,7 @@ public class CalendarGUI extends javax.swing.JFrame {
                 userTableModel.setUsers(users);
                 usersComboBoxModel.removeAllElements();
                 log.debug("Removed all elements from usersComboBoxModel");
+                usersComboBoxModel.addElement(rb.getString("select-user"));
                 for (User user : users) {
                     usersComboBoxModel.addElement(user.getEmail());
                 }
@@ -300,7 +306,6 @@ public class CalendarGUI extends javax.swing.JFrame {
         jButtonAddEvent = new javax.swing.JButton();
         jButtonEditEvent = new javax.swing.JButton();
         jButtonDeleteEvent = new javax.swing.JButton();
-        jButtonSelectAllUsers = new javax.swing.JButton();
         jComboBoxUsers = new javax.swing.JComboBox<>();
         jButtonSelectEventsByUser = new javax.swing.JButton();
         jButtonFilter = new javax.swing.JButton();
@@ -372,19 +377,6 @@ public class CalendarGUI extends javax.swing.JFrame {
             }
         });
 
-        jButtonSelectAllUsers.setText("List all events");
-        jButtonSelectAllUsers.setActionCommand("jButton");
-        jButtonSelectAllUsers.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jButtonSelectAllUsersMouseReleased(evt);
-            }
-        });
-        jButtonSelectAllUsers.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSelectAllUsersActionPerformed(evt);
-            }
-        });
-
         jComboBoxUsers.setModel(getUsersComboBox());
         userComboBoxWorker = new UserComboBoxWorker();
         userComboBoxWorker.execute();
@@ -403,6 +395,11 @@ public class CalendarGUI extends javax.swing.JFrame {
                 jButtonFilterMouseClicked(evt);
             }
         });
+        jButtonFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFilterActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -411,9 +408,7 @@ public class CalendarGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButtonSelectAllUsers)
-                        .addGap(18, 18, 18)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonFilter)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonAddEvent)
@@ -421,7 +416,8 @@ public class CalendarGUI extends javax.swing.JFrame {
                         .addComponent(jButtonEditEvent)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonDeleteEvent))
-                    .addGroup(layout.createSequentialGroup()
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabelSelectUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBoxUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -432,9 +428,8 @@ public class CalendarGUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButtonCreateUser)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonDeleteUser))
-                    .addComponent(jScrollPane2))
-                .addContainerGap(53, Short.MAX_VALUE))
+                        .addComponent(jButtonDeleteUser)))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -456,12 +451,9 @@ public class CalendarGUI extends javax.swing.JFrame {
                     .addComponent(jButtonAddEvent)
                     .addComponent(jButtonEditEvent)
                     .addComponent(jButtonDeleteEvent)
-                    .addComponent(jButtonSelectAllUsers)
                     .addComponent(jButtonFilter))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
-
-        jButtonSelectAllUsers.getAccessibleContext().setAccessibleName("jButtonListEvents");
 
         getAccessibleContext().setAccessibleName("frame0");
 
@@ -469,26 +461,19 @@ public class CalendarGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonDeleteUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDeleteUserMouseClicked
+       if(jComboBoxUsers.getSelectedItem() != rb.getString("select-user"))
+       {
         jButtonEditEvent.setEnabled(false);
         jButtonDeleteUser.setEnabled(false);
         deleteUserWorker = new DeleteUserWorker();
         deleteUserWorker.execute();
         jButtonDeleteUser.setEnabled(true);
+       }
     }//GEN-LAST:event_jButtonDeleteUserMouseClicked
-
-    private void jButtonSelectAllUsersMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSelectAllUsersMouseReleased
-        jButtonEditEvent.setEnabled(false);
-        jButtonDeleteEvent.setEnabled(false);
-        jButtonSelectAllUsers.setEnabled(false);
-        findAllEventsWorker = new FindAllEventsWorker();
-        findAllEventsWorker.execute();
-        
-    }//GEN-LAST:event_jButtonSelectAllUsersMouseReleased
 
     private void jButtonSelectEventsByUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSelectEventsByUserMouseClicked
         jButtonEditEvent.setEnabled(false);
         jButtonSelectEventsByUser.setEnabled(false);
-        jButtonSelectAllUsers.setEnabled(true);
         findEventByUserWorker = new FindEventByUserWorker();
         findEventByUserWorker.execute();
         jButtonSelectEventsByUser.setEnabled(true);
@@ -522,8 +507,12 @@ public class CalendarGUI extends javax.swing.JFrame {
             public void run() {
                 String selectedEmail = (String) jComboBoxUsers.getSelectedItem();
                 log.debug("jButtonEditUserActionPerformed email = " + selectedEmail);
-                //log.debug("jButtonEditUserActionPerformed email from Worker = " + userToEdit.getEmail());
+                if(selectedEmail != rb.getString("select-user"))
+                {
+                    //log.debug("jButtonEditUserActionPerformed email from Worker = " + userToEdit.getEmail());
                 new UserForm(CalendarGUI.this, null, selectedEmail, "update");
+                }
+                
             }
         });
     }//GEN-LAST:event_jButtonEditUserActionPerformed
@@ -551,18 +540,20 @@ public class CalendarGUI extends javax.swing.JFrame {
     
     }//GEN-LAST:event_jTableEventsMouseReleased
 
-    private void jButtonSelectAllUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSelectAllUsersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonSelectAllUsersActionPerformed
-
     private void jButtonFilterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonFilterMouseClicked
         // TODO add your handling code here:
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EventForm(CalendarGUI.this, null, -1, "add").setVisible(true);
+                String selectedEmail = (String) jComboBoxUsers.getSelectedItem();
+                log.debug("jButtonFilterMouseClicked email = " + selectedEmail);
+                new FilterForm(CalendarGUI.this, selectedEmail);
             }
         });
     }//GEN-LAST:event_jButtonFilterMouseClicked
+
+    private void jButtonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFilterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonFilterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -613,7 +604,6 @@ public class CalendarGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButtonEditEvent;
     private javax.swing.JButton jButtonEditUser;
     private javax.swing.JButton jButtonFilter;
-    private javax.swing.JButton jButtonSelectAllUsers;
     private javax.swing.JButton jButtonSelectEventsByUser;
     private javax.swing.JComboBox<String> jComboBoxUsers;
     private javax.swing.JLabel jLabelSelectUser;

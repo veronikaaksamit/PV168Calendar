@@ -54,7 +54,6 @@ public class UserForm extends javax.swing.JFrame {
         this.context = context;
         this.selectedEmail = selectedEmail;
         this.action = act;
-        jButtonCancel.setText(rb.getString("cancel"));
         
         
         if(selectedEmail != null && !selectedEmail.isEmpty()){   
