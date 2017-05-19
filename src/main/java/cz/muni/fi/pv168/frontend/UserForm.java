@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 public class UserForm extends javax.swing.JFrame {
 
     private final static Logger log = LoggerFactory.getLogger(UserForm.class);
-    private ResourceBundle rb = ResourceBundle.getBundle("texts");
     private String mode;
     private long userId;
     private CalendarGUI context;
@@ -39,17 +38,14 @@ public class UserForm extends javax.swing.JFrame {
         initComponents();
     }
     
-    public UserForm(String mode, long userId) {
-        super();
-        this.mode = mode;
-        this.userId = userId;
-    }
+ 
 
     /**
      * Creates new form UserForm 
      */
     public UserForm(CalendarGUI context, User user, String selectedEmail, String act) {
         initComponents();
+        myInitComponents();
         context.setEnabled(false);
         this.context = context;
         this.selectedEmail = selectedEmail;
@@ -125,13 +121,13 @@ public class UserForm extends javax.swing.JFrame {
      private User getUserFromForm(){
          String name = jTextFieldName.getText();
          if(name == null || name.length() < 3){
-             warningMessageBox(rb.getString("name-null"));
+             warningMessageBox(Localization.getRbTexts().getString("name-null"));
              return null;
          }
          
          String email= jTextFieldEmail.getText();
          if(email == null || email.length() < 3 || !email.contains("@") ){
-             warningMessageBox(rb.getString("email-not-valid"));   
+             warningMessageBox(Localization.getRbTexts().getString("email-not-valid"));   
              return null;
          }
          
@@ -190,11 +186,12 @@ public class UserForm extends javax.swing.JFrame {
         });
 
         jLabelUser.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabelUser.setText("User");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("texts"); // NOI18N
+        jLabelUser.setText(bundle.getString("User")); // NOI18N
 
-        jLabelName.setText("Name:");
+        jLabelName.setText(bundle.getString("Name")); // NOI18N
 
-        jLabelEmail.setText("Description:");
+        jLabelEmail.setText(bundle.getString("Description")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -241,6 +238,13 @@ public class UserForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void myInitComponents() {
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("texts", Localization.getCurrentLocale()); // NOI18N
+        jLabelUser.setText(bundle.getString("User")); // NOI18N
+        jLabelName.setText(bundle.getString("Name")); // NOI18N
+        jLabelEmail.setText(bundle.getString("Description")); // NOI18N
+    }
+    
     private void jButtonOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonOKMouseClicked
         if(this.action== "add"){
             addUserWorker = new AddUserWorker();

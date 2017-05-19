@@ -87,12 +87,11 @@ public class UserTableModel extends AbstractTableModel {
      @Override
     public String getColumnName(int columnIndex) {
 
-        ResourceBundle rb = ResourceBundle.getBundle("texts");
         switch (columnIndex) {
             case 0:
-                return rb.getString("fullname");
+                return Localization.getRbTexts().getString("Name");
             case 1:
-                return rb.getString("email");
+                return Localization.getRbTexts().getString("Email");
             default:
                 throw new IllegalArgumentException("columnIndex");
         }

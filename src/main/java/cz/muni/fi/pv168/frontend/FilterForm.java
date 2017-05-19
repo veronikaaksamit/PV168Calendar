@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 public class FilterForm extends javax.swing.JFrame {
 
     private final static Logger log = LoggerFactory.getLogger(UserForm.class);
-    private ResourceBundle rb = ResourceBundle.getBundle("texts");
     private CalendarGUI context;
     private User user;
     private String action;
@@ -51,6 +50,7 @@ public class FilterForm extends javax.swing.JFrame {
 
     public FilterForm(CalendarGUI context, String selectedEmail) {
         initComponents();
+        myInitComponents();
         context.setEnabled(false);
         this.context = context;
                 
@@ -77,8 +77,8 @@ public class FilterForm extends javax.swing.JFrame {
         jComboBoxCategory = new javax.swing.JComboBox<>();
         jPanelStartDate = new javax.swing.JPanel();
         jPanelEndDate = new javax.swing.JPanel();
-        jLabelCategory2 = new javax.swing.JLabel();
-        jLabelCategory3 = new javax.swing.JLabel();
+        jLabelFrom = new javax.swing.JLabel();
+        jLabelTo = new javax.swing.JLabel();
         jButtonCancel = new javax.swing.JButton();
         jButtonOK = new javax.swing.JButton();
         jCheckBoxName = new javax.swing.JCheckBox();
@@ -124,9 +124,9 @@ public class FilterForm extends javax.swing.JFrame {
             .addGap(0, 30, Short.MAX_VALUE)
         );
 
-        jLabelCategory2.setText(bundle.getString("from")); // NOI18N
+        jLabelFrom.setText(bundle.getString("From")); // NOI18N
 
-        jLabelCategory3.setText(bundle.getString("to")); // NOI18N
+        jLabelTo.setText(bundle.getString("To")); // NOI18N
 
         jButtonCancel.setText("Cancel");
         jButtonCancel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -163,8 +163,8 @@ public class FilterForm extends javax.swing.JFrame {
                                 .addComponent(jCheckBoxDate)
                                 .addGap(25, 25, 25)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelCategory3)
-                                    .addComponent(jLabelCategory2))))
+                                    .addComponent(jLabelTo)
+                                    .addComponent(jLabelFrom))))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jComboBoxCategory, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -203,11 +203,11 @@ public class FilterForm extends javax.swing.JFrame {
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanelStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelCategory2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabelFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanelEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelCategory3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabelTo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonOK)
@@ -250,6 +250,16 @@ public class FilterForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    private void myInitComponents() {
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("texts", Localization.getCurrentLocale()); // NOI18N
+        jLabelFilteryBy.setText(bundle.getString("FilterBy")); // NOI18N
+        jLabelFrom.setText(bundle.getString("From")); // NOI18N
+        jLabelTo.setText(bundle.getString("To")); // NOI18N
+        jCheckBoxName.setText(bundle.getString("Name")); // NOI18N
+        jCheckBoxCategory.setText(bundle.getString("Category")); // NOI18N
+        jCheckBoxDate.setText(bundle.getString("Date")); // NOI18N
+    }
     private void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
         this.dispose();
     }//GEN-LAST:event_jButtonCancelMouseClicked
@@ -309,9 +319,9 @@ public class FilterForm extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBoxDate;
     private javax.swing.JCheckBox jCheckBoxName;
     private javax.swing.JComboBox<String> jComboBoxCategory;
-    private javax.swing.JLabel jLabelCategory2;
-    private javax.swing.JLabel jLabelCategory3;
     private javax.swing.JLabel jLabelFilteryBy;
+    private javax.swing.JLabel jLabelFrom;
+    private javax.swing.JLabel jLabelTo;
     private javax.swing.JPanel jPanelEndDate;
     private javax.swing.JPanel jPanelStartDate;
     private javax.swing.JTextField jTextFieldFilterByName;

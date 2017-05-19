@@ -37,8 +37,8 @@
                               <Component id="jCheckBoxDate" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabelCategory3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabelCategory2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelTo" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelFrom" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -90,14 +90,14 @@
                       <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jPanelStartDate" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabelCategory2" min="-2" pref="34" max="-2" attributes="0"/>
+                          <Component id="jLabelFrom" min="-2" pref="34" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jPanelEndDate" max="32767" attributes="0"/>
-                  <Component id="jLabelCategory3" max="32767" attributes="0"/>
+                  <Component id="jLabelTo" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="33" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -184,17 +184,17 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Component class="javax.swing.JLabel" name="jLabelCategory2">
+    <Component class="javax.swing.JLabel" name="jLabelFrom">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="texts.properties" key="from" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="texts.properties" key="From" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabelCategory3">
+    <Component class="javax.swing.JLabel" name="jLabelTo">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="texts.properties" key="to" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="texts.properties" key="To" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>

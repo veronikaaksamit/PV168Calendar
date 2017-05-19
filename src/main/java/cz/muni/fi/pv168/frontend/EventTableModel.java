@@ -71,18 +71,17 @@ public class EventTableModel extends AbstractTableModel {
      @Override
     public String getColumnName(int columnIndex) {
 
-        ResourceBundle rb = ResourceBundle.getBundle("texts");
         switch (columnIndex) {
             case 0:
-                return rb.getString("event-name");
+                return Localization.getRbTexts().getString("Name");
             case 1:
-                return rb.getString("category");
+                return Localization.getRbTexts().getString("Category");
             case 2:
-                return rb.getString("start-date");
+                return Localization.getRbTexts().getString("StartDate");
             case 3:
-                return rb.getString("end-date");
+                return Localization.getRbTexts().getString("EndDate");
             case 4:
-                return rb.getString("description");
+                return Localization.getRbTexts().getString("Description");
             default:
                 throw new IllegalArgumentException("columnIndex");
         }

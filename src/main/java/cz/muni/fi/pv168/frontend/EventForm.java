@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
  */
 public class EventForm extends javax.swing.JFrame {
 
-    private ResourceBundle rb = ResourceBundle.getBundle("texts");
     private final static Logger log = LoggerFactory.getLogger(EventForm.class);
     private String mode;
     private long eventId;
@@ -54,13 +53,13 @@ public class EventForm extends javax.swing.JFrame {
      */
     public EventForm(CalendarGUI context, Event event, int rowIndex, String action) {
         initComponents();
-
+        myInitComponents();
         this.context = context;
         this.event = event;
         this.rowIndex = rowIndex;
         this.action = action;
         this.eventTableModel = context.getEventTableModel();
-        jButtonCancel.setText(rb.getString("cancel"));
+        jButtonCancel.setText(Localization.getRbTexts().getString("cancel"));
         jComboBoxUsersInEventForm.setModel(context.getjComboBoxUsers().getModel());
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -226,7 +225,7 @@ public class EventForm extends javax.swing.JFrame {
 
         String eventName = jTextFieldFullname.getText();
         if (eventName == null || eventName.isEmpty()) {
-            warningMessageBox(rb.getString("name-null"));
+            warningMessageBox(Localization.getRbTexts().getString("name-null"));
             return null;
         }
 
@@ -306,18 +305,19 @@ public class EventForm extends javax.swing.JFrame {
 
         jComboBoxCategory.setModel(categoryComboBoxModel);
 
-        jLabelStartDate.setText("Start Date:");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("texts"); // NOI18N
+        jLabelStartDate.setText(bundle.getString("StartDate")); // NOI18N
 
-        jLabelEndDate.setText("End Date:");
+        jLabelEndDate.setText(bundle.getString("EndDate")); // NOI18N
 
         eventLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        eventLabel.setText("Event");
+        eventLabel.setText(bundle.getString("Event")); // NOI18N
 
-        jLabelFullname.setText("Name:");
+        jLabelFullname.setText(bundle.getString("Name")); // NOI18N
 
-        jLabelDescription.setText("Description:");
+        jLabelDescription.setText(bundle.getString("Description")); // NOI18N
 
-        jLabelCategory.setText("Category:");
+        jLabelCategory.setText(bundle.getString("Category")); // NOI18N
 
         jPanelStartDate.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -345,7 +345,7 @@ public class EventForm extends javax.swing.JFrame {
             .addGap(0, 30, Short.MAX_VALUE)
         );
 
-        jLabelUserForEvent.setText("User:");
+        jLabelUserForEvent.setText(bundle.getString("User")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -423,6 +423,18 @@ public class EventForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    private void myInitComponents() {
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("texts", Localization.getCurrentLocale()); // NOI18N
+        jLabelStartDate.setText(bundle.getString("StartDate")); // NOI18N
+        jLabelEndDate.setText(bundle.getString("EndDate")); // NOI18N
+        eventLabel.setText(bundle.getString("Event")); // NOI18N
+        jLabelFullname.setText(bundle.getString("Name")); // NOI18N
+        jLabelDescription.setText(bundle.getString("Description")); // NOI18N
+        jLabelCategory.setText(bundle.getString("Category")); // NOI18N
+        jLabelUserForEvent.setText(bundle.getString("User"));
+        
+    }
     private void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
         // TODO add your handling code here:
         this.dispose();
